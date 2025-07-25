@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Control Interno Institucional (SCII)</title>
+    <!-- Tailwind CSS para estilos rápidos y responsivos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos personalizados para la fuente Inter y colores base */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #eef2f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-size: 0.75rem;
+        }
+        .header-container {
+            background-color: #1F4740;
+            color: #ffffff;
+            padding: 0.6rem 0.9rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 70px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+        }
+        .header-logo {
+            flex-shrink: 0;
+            margin-right: 0.4rem;
+        }
+        .header-logo img {
+            height: 50px;
+            width: auto;
+            border-radius: 0.35rem;
+        }
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+            margin: 0 0.4rem;
+        }
+        .header-title h2 {
+            font-size: 1rem;
+        }
+        .header-title h3 {
+            font-size: 0.8rem;
+        }
+        .header-nav {
+            flex-shrink: 0;
+            display: flex;
+            gap: 0.4rem;
+        }
+        .header-nav a {
+            color: #ffffff;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.35rem;
+            transition: background-color 0.3s ease;
+            font-size: 0.7rem;
+        }
+        .header-nav a:hover {
+            background-color: #333d4b;
+        }
+
+        .main-layout {
+            display: flex;
+            flex-grow: 1;
+            padding: 0.6rem;
+            gap: 0.6rem;
+            flex-wrap: nowrap;
+            align-items: flex-start;
+        }
+
+        .sidebar {
+            background-color: #ffffff;
+            border-radius: 0.6rem;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.08);
+            padding: 0.8rem;
+            width: 180px;
+            flex-shrink: 0;
+        }
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 100%;
+            }
+        }
+        .sidebar .module-header {
+            background-color: #2A5C50;
+            color: #ffffff;
+            padding: 0.4rem 0.6rem;
+            border-radius: 0.3rem;
+            margin-bottom: 0.2rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-size: 0.75rem;
+        }
+        .sidebar .module-header:hover {
+            background-color: #3A756A;
+        }
+        .sidebar .module-header svg {
+            transition: transform 0.3s ease;
+        }
+        .sidebar .module-header.collapsed svg {
+            transform: rotate(-90deg);
+        }
+
+        .sidebar .submodule-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 0.4rem;
+            padding-left: 0.2rem;
+        }
+        .sidebar .submodule-list li a {
+            display: block;
+            padding: 0.2rem 0.6rem;
+            color: #4a5568;
+            border-radius: 0.3rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            font-size: 0.7rem;
+        }
+        .sidebar .submodule-list li a:hover {
+            background-color: #dbe4ed;
+            color: #2d3748;
+        }
+        .sidebar .submodule-list li.active-item a {
+            background-color: #A0522D;
+            color: white;
+            font-weight: bold;
+        }
+
+        .content-area {
+            background-color: #ffffff;
+            border-radius: 0.6rem;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.08);
+            padding: 0.9rem;
+            flex-grow: 1;
+            min-width: calc(100% - 180px - 1.2rem);
+            overflow-y: auto;
+            height: calc(100vh - 70px - 1.2rem - 0.6rem - 1.2rem);
+        }
+        @media (max-width: 1024px) {
+            .content-area {
+                min-width: unset;
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        .data-table-container {
+            overflow-x: auto;
+            margin-top: 0.6rem;
+            border-radius: 0.3rem;
+            border: 1px solid #e2e8f0;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.65rem;
+        }
+        .data-table th, .data-table td {
+            padding: 0.35rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+        .data-table th {
+            background-color: #2A5C50;
+            color: white;
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            border-top: 2px solid #2A5C50;
+            border-left: 1px solid #3A756A;
+            border-right: 1px solid #3A756A;
+            text-align: center;
+        }
+        .data-table th:first-child {
+            border-left: none;
+        }
+        .data-table th:last-child {
+            border-right: none;
+        }
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        .data-table tbody tr:hover {
+            background-color: #f0f4f8;
+        }
+        /* Estilo para filas de tabla seleccionadas */
+        .data-table tbody tr.selected {
+            background-color: #e0f2f7; /* Azul claro para filas seleccionadas */
+            border-left: 3px solid #00796b; /* Borde verde azulado */
+        }
+
+
+        .footer-container {
+            background-color: #ffffff;
+            text-align: center;
+            padding: 0.6rem;
+            margin-top: 0.6rem;
+            border-radius: 0.6rem;
+            box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.08);
+        }
+        .footer-container label {
+            color: #4a5568;
+            font-size: 0.65rem;
+        }
+
+        /* Estilos para el selector de periodo */
+        .select-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 0.4rem;
+        }
+        .select-wrapper select {
+            appearance: none;
+            background-color: #f7fafc;
+            border: 1px solid #cbd5e0;
+            padding: 0.2rem 0.9rem 0.2rem 0.5rem;
+            border-radius: 0.3rem;
+            font-size: 0.7rem;
+            color: #2d3748;
+            cursor: pointer;
+            width: 90px;
+        }
+        .select-wrapper::after {
+            content: '▼';
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #718096;
+            font-size: 0.5rem;
+        }
+
+        /* Estilos para el botón de exportar */
+        .export-button {
+            background-color: #2A5C50;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.3rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
+            margin-bottom: 0.4rem;
+            transition: background-color 0.3s ease;
+            font-size: 0.7rem;
+        }
+        .export-button:hover {
+            background-color: #1A3F38;
+        }
+        .export-button img {
+            height: 14px;
+            width: 14px;
+        }
+
+        /* Estilos para diálogos simplificados */
+        .dialog-placeholder {
+            background-color: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.4rem;
+            padding: 0.7rem;
+            margin-top: 0.7rem;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        .dialog-placeholder h4 {
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+        .dialog-placeholder p {
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            font-size: 0.7rem;
+        }
+        .dialog-placeholder .btn-primary {
+            background-color: #A0522D;
+            color: white;
+            padding: 0.3rem 0.7rem;
+            border-radius: 0.35rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            font-size: 0.7rem;
+        }
+        .dialog-placeholder .btn-primary:hover {
+            background-color: #8B4513;
+        }
+        .dialog-placeholder .warning-text {
+            color: #e53e3e;
+            font-weight: bold;
+        }
+
+        /* Estilos para grupos de radio buttons (años y estatus) */
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.2rem;
+            justify-content: flex-start;
+        }
+        .radio-group label {
+            background-color: #f7fafc;
+            border: 1px solid #cbd5e0;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.2rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.65rem;
+            color: #4a5568;
+            min-width: 32px;
+            justify-content: center;
+        }
+        .radio-group input[type="radio"] {
+            display: none;
+        }
+        .radio-group input[type="radio"]:checked + span {
+            background-color: #A0522D;
+            color: white;
+            border-color: #A0522D;
+            box-shadow: 0 0 0 2px rgba(160, 82, 45, 0.4);
+        }
+        .radio-group label:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* Ajustes para los campos del formulario */
+        .form-field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        @media (min-width: 768px) {
+            .form-field-group {
+                flex-direction: row;
+                align-items: center;
+            }
+            .form-field-group label {
+                width: 18%;
+                flex-shrink: 0;
+                font-size: 0.75rem;
+            }
+            .form-field-group .flex-grow {
+                flex-grow: 1;
+            }
+        }
+
+        /* Estilos para el campo de texto con filtro de institución */
+        .institution-filter-container {
+            position: relative;
+            width: 100%;
+        }
+        .institution-filter-input {
+            width: 100%;
+            padding: 0.25rem 0.6rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 0.35rem;
+            font-size: 0.75rem;
+            color: #2d3748;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .institution-filter-input:focus {
+            border-color: #A0522D;
+            box-shadow: 0 0 0 2px rgba(160, 82, 45, 0.2);
+        }
+        .institution-suggestions {
+            position: absolute;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.35rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-height: 150px;
+            overflow-y: auto;
+            width: 100%;
+            z-index: 10;
+            margin-top: 0.2rem;
+        }
+        .institution-suggestions div {
+            padding: 0.4rem 0.6rem;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: #4a5568;
+            transition: background-color 0.15s ease;
+        }
+        .institution-suggestions div:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* Estilos de modales */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .modal-content {
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.6rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            max-height: 90vh; /* Altura máxima para el contenido del modal */
+            overflow-y: auto; /* Habilita el scroll vertical si el contenido excede la altura */
+        }
+        /* Ajuste de ancho máximo para el modal de edición de listas */
+        #edit-list-modal-overlay .modal-content {
+            max-width: 400px;
+        }
+        .modal-close-button {
+            position: absolute;
+            top: 0.8rem;
+            right: 0.8rem;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #4a5568;
+        }
+        .modal-header {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            text-align: center;
+        }
+        /* Ajuste para los selectores en el modal de institución para que no se desborden */
+        #institution-modal-overlay .modal-form-group select {
+            width: calc(100% - 30px); /* Ajusta el ancho para dejar espacio al botón del lápiz */
+            flex-shrink: 1; /* Permite que el select se encoja si es necesario */
+        }
+        .modal-form-group {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .modal-form-group label {
+            display: block;
+            min-width: 120px;
+            font-size: 0.75rem;
+            color: #4a5568;
+        }
+        .modal-form-group .select-wrapper,
+        .modal-form-group input[type="text"],
+        .modal-form-group input[type="date"] {
+            flex-grow: 1;
+            width: auto;
+        }
+        .modal-form-group select,
+        .modal-form-group input[type="text"],
+        .modal-form-group input[type="date"] {
+            padding: 0.3rem 0.6rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 0.3rem;
+            font-size: 0.75rem;
+        }
+        .modal-form-group .radio-group {
+            justify-content: flex-start;
+            gap: 0.5rem;
+            flex-grow: 1;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .modal-buttons button {
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.3rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .modal-buttons .btn-save {
+            background-color: #2A5C50;
+            color: white;
+        }
+        .modal-buttons .btn-save:hover {
+            background-color: #1A3F38;
+        }
+        .modal-buttons .btn-cancel {
+            background-color: #e2e8f0;
+            color: #2d3748;
+        }
+        .modal-buttons .btn-cancel:hover {
+            background-color: #cbd5e0;
+        }
+        .modal-buttons .btn-delete {
+            background-color: #ef4444;
+            color: white;
+        }
+        .modal-buttons .btn-delete:hover {
+            background-color: #dc2626;
+        }
+        .edit-list-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 0.5rem;
+            flex-shrink: 0;
+        }
+        .edit-list-button svg {
+            width: 16px;
+            height: 16px;
+            color: #4a5568;
+        }
+        .edit-list-button:hover svg {
+            color: #2d3748;
+        }
+
+
+        /* Estilos para el nuevo modal de "Programación de Periodos" */
+        .period-program-modal-content {
+            max-width: 800px; /* Ancho mayor para más contenido */
+        }
+        .period-program-modal-content .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .period-program-modal-content .grid-item {
+            background-color: #f7fafc;
+            border: 1px solid #cbd5e0;
+            border-radius: 0.4rem;
+            padding: 0.8rem;
+        }
+        .period-program-modal-content .grid-item h5 {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            color: #2d3748;
+        }
+        .period-program-modal-content .grid-item label {
+            display: block;
+            font-size: 0.7rem;
+            margin-bottom: 0.3rem;
+            cursor: pointer;
+        }
+        .period-program-modal-content .grid-item input[type="checkbox"] {
+            margin-right: 0.5rem;
+        }
+        .period-program-modal-content .selected-institution-info {
+            background-color: #e0f2f7;
+            border: 1px solid #b2ebf2;
+            padding: 0.5rem;
+            border-radius: 0.4rem;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            color: #00796b;
+            font-weight: bold;
+        }
+        /* Ajustes para los selectores en el modal de Aperturar Sistema */
+        #aperturar-modal-overlay .form-field-group .select-wrapper {
+            width: 100%; /* Asegura que el select-wrapper ocupe todo el espacio disponible */
+            margin-bottom: 0; /* Elimina el margen inferior extra */
+        }
+        #aperturar-modal-overlay .form-field-group select {
+            width: 100%; /* Asegura que el select ocupe todo el ancho de su contenedor */
+            box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+        }
+        #aperturar-modal-overlay .select-wrapper::after {
+            right: 8px; /* Ajusta la posición de la flecha para que no se corte */
+        }
+    </style>
+</head>
+<body>
+    <!-- CABECERA -->
+    <header class="header-container">
+        <div class="header-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Buen_gobierno.svg" alt="Logo Buen Gobierno">
+        </div>
+        <div class="header-title">
+            <h2 class="font-semibold">Sistema de Control Interno Institucional</h2>
+            <h3 class="">Evaluación del SCII</h3>
+            <h3 class="text-xs text-gray-200 mt-1">PROTOTIPO PARA VISUALIZAR LAS MEJORAS PROPUESTAS AL SISTEMA SICOIN</h3>
+        </div>
+        <div class="header-logo">
+            <img src="https://controlinterno.buengobierno.gob.mx/ESCII/img/logo_sicoin.jpg" alt="Logo SICOIN">
+        </div>
+        <nav class="header-nav w-full mt-2">
+            <a href="#" class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home mr-1">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Inicio
+            </a>
+        </nav>
+    </header>
+    <!-- FIN CABECERA -->
+
+    <div class="main-layout">
+        <!-- MENÚ LATERAL IZQUIERDO -->
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li>
+                        <h3 class="module-header" onclick="toggleSubmodules(this)">
+                            Consulta SCII
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </h3>
+                        <ul class="submodule-list">
+                            <li class="active-item"><a href="#" onclick="showModule('consulta-instituciones', this)">▪ Consulta Instituciones</a></li>
+                            <li><a href="#" onclick="showModule('catalogo-instituciones', this)">▪ Catálogo Instituciones</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h3 class="module-header collapsed" onclick="toggleSubmodules(this)">
+                            Administración SCII
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </h3>
+                        <ul class="submodule-list hidden">
+                            <li><a href="#" onclick="showModule('programacion-periodos', this)">▪ Programación de periodos</a></li>
+                            <li><a href="#" onclick="showModule('modifica-avance-am', this)">▪ Modifica Avance Trimestral AM</a></li>
+                            <li><a href="#" onclick="showModule('modifica-avance-ac', this)">▪ Modifica Avance Trimestral AC</a></li>
+                            <li><a href="#" onclick="showModule('procesos-registrados', this)">▪ Procesos Registrados x Oficio</a></li>
+                            <li><a href="#" onclick="showModule('control-usuarios', this)">▪ Control de Usuarios</a></li>
+                            <li><a href="#" onclick="showModule('registro-acciones', this)">▪ Registro de Acciones de Usuarios</a></li>
+                            <li><a href="#" onclick="showModule('comunicados', this)">▪ Comunicados</a></li>
+                        </ul>
+                    </li>
+                    <li class="my-2"></li>
+                    <li>
+                        <h3 class="module-header collapsed" onclick="toggleSubmodules(this)">
+                            Reportes
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </h3>
+                        <ul class="submodule-list hidden">
+                            <li><a href="#" onclick="showModule('reporte-avance-institucional', this)">▪ Reporte de Avance Institucional</a></li>
+                            <li><a href="#" onclick="showModule('acciones-mejora-reporte', this)">▪ Acciones de Mejora</a></li>
+                            <li><a href="#" onclick="showModule('acciones-control-reporte', this)">▪ Acciones de Control</a></li>
+                            <li><a href="#" onclick="showModule('seguimiento-trimestral', this)">▪ Reporte Seguimiento Trimestral</a></li>
+                            <li><a href="#" onclick="showModule('conclusion', this)">▪ Conclusión</a></li>
+                            <li><a href="#" onclick="showModule('consolidado', this)">▪ Consolidado</a></li>
+                            <li><a href="#" onclick="showModule('reporte-acciones-mejora', this)">▪ Reporte Acciones Mejora</a></li>
+                            <li><a href="#" onclick="showModule('reporte-ptci-ptar', this)">▪ Reporte PTCI y PTAR (Excel)</a></li>
+                            <li><a href="#" onclick="showModule('evaluacion-oic', this)">▪ Evaluación de OIC (Excel)</a></li>
+                            <li><a href="#" onclick="showModule('acciones-mejora-trimestre', this)">▪ Acciones Mejora por Trimestre</a></li>
+                            <li><a href="#" onclick="showModule('acciones-control-trimestre', this)">▪ Acciones Control Trimestral</a></li>
+                            <li><a href="#" onclick="showModule('imprimir-ptci', this)">▪ Imprimir Programa de Trabajo de Control Interno</a></li>
+                            <li><a href="#" onclick="showModule('imprimir-ptar', this)">▪ Imprimir Programa de Trabajo de Administración de Riesgo</a></li>
+                        </ul>
+                    </li>
+                    <li class="my-2"></li>
+                    <li>
+                        <h3 class="module-header collapsed" onclick="toggleSubmodules(this)">
+                            Usuario
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down">
+                                <path d="m6 9 6 6 6-6"/>
+                            </svg>
+                        </h3>
+                        <ul class="submodule-list hidden">
+                            <li><a href="#" onclick="showModule('cambiar-contrasena', this)">▪ Cambiar Contraseña</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        <!-- FIN MENÚ LATERAL IZQUIERDO -->
+
+        <!-- SECCION DE CONTENIDO DINAMICO -->
+        <section class="content-area">
+            <!-- Módulo de Bienvenida (visible por defecto) -->
+            <div id="module-home" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Bienvenido al Sistema de Control Interno Institucional</h2>
+                <p class="text-center text-gray-600 text-xs">Selecciona una opción del menú lateral para comenzar.</p>
+            </div>
+
+            <!-- Módulo: Consulta Instituciones -->
+            <div id="module-consulta-instituciones" class="module-content">
+                <div class="bg-gray-200 p-1.5 rounded-t-lg text-center mb-2.5">
+                    <h2 class="text-sm font-bold text-gray-800">Elige Institución y Perfil que deseas consultar</h2>
+                </div>
+
+                <form action="#" method="post" class="space-y-2.5">
+                    <div class="form-field-group">
+                        <label for="periodo" class="text-gray-700 font-medium">Periodo</label>
+                        <div class="radio-group flex-grow">
+                            <label><input type="radio" name="periodo" value="2014"><span>2014</span></label>
+                            <label><input type="radio" name="periodo" value="2015"><span>2015</span></label>
+                            <label><input type="radio" name="periodo" value="2016"><span>2016</span></label>
+                            <label><input type="radio" name="periodo" value="2017"><span>2017</span></label>
+                            <label><input type="radio" name="periodo" value="2018"><span>2018</span></label>
+                            <label><input type="radio" name="periodo" value="2019"><span>2019</span></label>
+                            <label><input type="radio" name="periodo" value="2020"><span>2020</span></label>
+                            <label><input type="radio" name="periodo" value="2021"><span>2021</span></label>
+                            <label><input type="radio" name="periodo" value="2022"><span>2022</span></label>
+                            <label><input type="radio" name="periodo" value="2023"><span>2023</span></label>
+                            <label><input type="radio" name="periodo" value="2024"><span>2024</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-field-group">
+                        <label for="estatus" class="text-gray-700 font-medium">Estatus de Institución</label>
+                        <div class="radio-group flex-grow">
+                            <label><input type="radio" name="estatus" value="1" checked><span>Activo</span></label>
+                            <label><input type="radio" name="estatus" value="0"><span>Inactivo</span></label>
+                        </div>
+                    </div>
+
+                    <div class="form-field-group">
+                        <label for="institucion-filter" class="text-gray-700 font-medium">Institución</label>
+                        <div class="institution-filter-container flex-grow">
+                            <input type="text" id="institucion-filter" class="institution-filter-input" placeholder="Buscar institución por nombre o abreviación" autocomplete="off" onclick="filterInstitutions(true)">
+                            <input type="hidden" id="institucion-id" name="institucion_id">
+                            <div id="institucion-suggestions" class="institution-suggestions hidden"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-field-group">
+                        <label for="perfil" class="text-gray-700 font-medium">Perfil</label>
+                        <div class="select-wrapper flex-grow w-full">
+                            <select id="perfil" name="perfil" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-xs">
+                                <option value="" selected>Seleccione Perfil</option>
+                                <option value="1">Coordinador de Control Interno</option>
+                                <option value="2">Instancia de Control Interno</option>
+                                <option value="5">Riesgos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end mt-3">
+                        <button type="button" class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-1 px-3 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center gap-1 text-xs">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            Visualizar
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Módulo: Catálogo Instituciones -->
+            <div id="module-catalogo-instituciones" class="module-content hidden">
+                <div class="bg-gray-200 p-1.5 rounded-t-lg text-center mb-2.5">
+                    <h2 class="text-sm font-bold text-gray-800">Catálogo de Instituciones</h2>
+                </div>
+
+                <div class="flex justify-end mb-2.5">
+                    <button type="button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-3 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center gap-1 text-xs" onclick="openInstitutionModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus">
+                            <path d="M12 5v14"/><path d="M5 12h14"/>
+                        </svg>
+                        Agregar
+                    </button>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table" id="institutions-catalog-table">
+                        <thead>
+                            <tr>
+                                <th>Siglas</th>
+                                <th>Institución</th>
+                                <th>Tipo de Institución</th>
+                                <th>Sector</th>
+                                <th>Estatus</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Las instituciones se cargarán aquí mediante JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal para Agregar/Editar Institución -->
+            <div id="institution-modal-overlay" class="modal-overlay hidden">
+                <div class="modal-content">
+                    <button class="modal-close-button" onclick="closeInstitutionModal()">&times;</button>
+                    <h3 class="modal-header" id="institution-modal-title">Agregar Institución</h3>
+                    <form id="institution-form">
+                        <input type="hidden" id="institution-id-edit">
+                        <div class="modal-form-group">
+                            <label for="modal-tipo-institucion">Tipo de Institución</label>
+                            <div class="flex-grow flex items-center gap-2">
+                                <!-- Se ajusta el ancho del select para que el botón de lápiz quepa bien -->
+                                <select id="modal-tipo-institucion" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-xs" required></select>
+                                <button type="button" class="edit-list-button" onclick="openEditListModal('tipoInstitucion')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
+                                        <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                                        <path d="M15 5l4 4"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-form-group">
+                            <label for="modal-sector">Sector</label>
+                            <div class="flex-grow flex items-center gap-2">
+                                <!-- Se ajusta el ancho del select para que el botón de lápiz quepa bien -->
+                                <select id="modal-sector" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-xs" required></select>
+                                <button type="button" class="edit-list-button" onclick="openEditListModal('sector')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
+                                        <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                                        <path d="M15 5l4 4"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-form-group">
+                            <label for="modal-estatus">Estatus</label>
+                            <div class="radio-group flex-grow">
+                                <label><input type="radio" name="modal-estatus" value="Activa" checked><span>Activa</span></label>
+                                <label><input type="radio" name="modal-estatus" value="Inactiva"><span>Inactiva</span></label>
+                            </div>
+                        </div>
+                        <div class="modal-form-group">
+                            <label for="modal-siglas">Siglas</label>
+                            <input type="text" id="modal-siglas" class="flex-grow px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required>
+                        </div>
+                        <div class="modal-form-group">
+                            <label for="modal-institucion-nombre">Institución</label>
+                            <input type="text" id="modal-institucion-nombre" class="flex-grow px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required>
+                        </div>
+                        <div class="modal-buttons">
+                            <button type="button" class="btn-cancel" onclick="closeInstitutionModal()">Cancelar</button>
+                            <button type="submit" class="btn-save">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal para Editar Listas de Tipo de Institución / Sector -->
+            <div id="edit-list-modal-overlay" class="modal-overlay hidden">
+                <div class="modal-content">
+                    <button class="modal-close-button" onclick="closeEditListModal()">&times;</button>
+                    <h3 class="modal-header" id="edit-list-modal-title">Editar Lista</h3>
+                    <div id="edit-list-container" class="max-h-60 overflow-y-auto border rounded-md mb-4">
+                        <!-- Los elementos de la lista se cargarán aquí -->
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <input type="text" id="new-list-item-input" class="flex-grow p-2 border rounded text-xs" placeholder="Nuevo elemento">
+                        <button type="button" class="bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded-lg text-xs" onclick="addListItem()">Agregar</button>
+                    </div>
+                    <div class="modal-buttons mt-4">
+                        <button type="button" class="btn-cancel" onclick="closeEditListModal()">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulo: Programación de Periodos -->
+            <div id="module-programacion-periodos" class="module-content hidden">
+                <div class="bg-gray-200 p-1.5 rounded-t-lg text-center mb-2.5">
+                    <h2 class="text-sm font-bold text-gray-800">Programación de Periodos para Evaluación, Acciones de Mejora o Acciones de Control</h2>
+                </div>
+
+                <div class="flex flex-col md:flex-row md:items-center gap-4 mb-4">
+                    <div class="form-field-group flex-grow">
+                        <label for="programacion-institucion-filter" class="text-gray-700 font-medium">Institución</label>
+                        <div class="institution-filter-container flex-grow">
+                            <input type="text" id="programacion-institucion-filter" class="institution-filter-input" placeholder="Filtrar por institución" autocomplete="off" oninput="filterProgramacionTable()" onclick="filterProgramacionTable(true)">
+                            <div id="programacion-institucion-suggestions" class="institution-suggestions hidden"></div>
+                        </div>
+                    </div>
+                    <div class="form-field-group">
+                        <label for="ptci-actualizado-filter" class="text-gray-700 font-medium whitespace-nowrap">Actualizó PTCI</label>
+                        <div class="select-wrapper flex-grow">
+                            <select id="ptci-actualizado-filter" class="px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" onchange="filterProgramacionTable()">
+                                <option value="todos">Todos</option>
+                                <option value="Sí">Sí</option>
+                                <option value="No">No</option>
+                                <option value="seleccionados">Seleccionados</option> <!-- Nueva opción -->
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-3 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center gap-1 text-xs whitespace-nowrap" onclick="openAperturarModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-unlock">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        Aperturar Sistema
+                    </button>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table" id="programacion-periodos-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all-institutions" onchange="toggleAllInstitutions(this.checked)"></th>
+                                <th>Periodo</th>
+                                <th>Siglas</th>
+                                <th>Institución</th>
+                                <th>Actualizó PTCI</th>
+                                <th>Trimestre</th>
+                                <th>Programa Habilitado</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>Opciones de Restauración</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los periodos programados se cargarán aquí mediante JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal para "Aperturar Sistema" -->
+            <div id="aperturar-modal-overlay" class="modal-overlay hidden">
+                <div class="modal-content period-program-modal-content">
+                    <button class="modal-close-button" onclick="closeAperturarModal()">&times;</button>
+                    <h3 class="modal-header">Aperturar Sistema para Instituciones Seleccionadas</h3>
+                    <div id="selected-institutions-display" class="selected-institution-info mb-4 hidden"></div>
+
+                    <form id="aperturar-form" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="form-field-group">
+                                <label for="aperturar-periodo">Periodo</label>
+                                <div class="select-wrapper flex-grow">
+                                    <select id="aperturar-periodo" class="px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required onchange="updateDatesByPeriodAndTrimestre()">
+                                        <option value="">Seleccione Periodo</option>
+                                        <option value="2014">2014</option>
+                                        <option value="2015">2015</option>
+                                        <option value="2016">2016</option>
+                                        <option value="2017">2017</option>
+                                        <option value="2018">2018</option>
+                                        <option value="2019">2019</option>
+                                        <option value="2020">2020</option>
+                                        <option value="2021">2021</option>
+                                        <option value="2022">2022</option>
+                                        <option value="2023">2023</option>
+                                        <option value="2024">2024</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-field-group">
+                                <label for="aperturar-trimestre">Trimestre</label>
+                                <div class="select-wrapper flex-grow">
+                                    <select id="aperturar-trimestre" class="px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" onchange="updateDatesByPeriodAndTrimestre()">
+                                        <option value="N/A">N/A</option>
+                                        <option value="1T">1er Trimestre</option>
+                                        <option value="2T">2do Trimestre</option>
+                                        <option value="3T">3er Trimestre</option>
+                                        <option value="4T">4to Trimestre</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-field-group">
+                                <label for="aperturar-programa">Programa</label>
+                                <div class="select-wrapper flex-grow">
+                                    <select id="aperturar-programa" class="px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required>
+                                        <option value="">Seleccione Programa</option>
+                                        <option value="Evaluación del SCII">Evaluación del SCII</option>
+                                        <option value="Seguimiento de Acciones de Mejora PTCI">Seguimiento de Acciones de Mejora PTCI</option>
+                                        <option value="PTCI Actualizado">PTCI Actualizado</option>
+                                        <option value="Captura de Riesgos">Captura de Riesgos</option>
+                                        <option value="Seguimiento de Acciones de Control">Seguimiento de Acciones de Control</option>
+                                        <option value="OIC-Revisión OIC">OIC-Revisión OIC</option>
+                                        <option value="OIC-Seguimiento de Acciones de Mejora">OIC-Seguimiento de Acciones de Mejora</option>
+                                        <option value="OIC-Seguimiento de Acciones de Control">OIC-Seguimiento de Acciones de Control</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-field-group">
+                                <label for="aperturar-fecha-inicio">Fecha Inicio</label>
+                                <input type="date" id="aperturar-fecha-inicio" class="flex-grow px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required>
+                            </div>
+                            <div class="form-field-group">
+                                <label for="aperturar-fecha-fin">Fecha Fin</label>
+                                <input type="date" id="aperturar-fecha-fin" class="flex-grow px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required>
+                            </div>
+                        </div>
+
+                        <h4 class="text-md font-bold text-gray-700 mt-6 mb-3">Opciones de Restauración (Máximo 2)</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="grid-item">
+                                <h5>Evaluación</h5>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar edición de los procesos prioritarios y ptci actualizado"> Habilitar edición de procesos prioritarios y PTCI actualizado</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Reiniciar captura de Proceso Prioritario"> Reiniciar captura de Proceso Prioritario</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Reiniciar captura de la configuración de la Evaluación"> Reiniciar captura de configuración de Evaluación</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Reiniciar responder Evaluación"> Reiniciar responder Evaluación</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar evaluación del SCII"> Habilitar evaluación del SCII</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar Captura del Informe Anual Finalizado"> Habilitar Captura de Informe Anual Finalizado</label>
+                            </div>
+                            <div class="grid-item">
+                                <h5>PTCI y PTCI Actualizado</h5>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Reiniciar Captura del PTCI"> Reiniciar Captura del PTCI</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar Captura del PTCI"> Habilitar Captura del PTCI</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar de nuevo Captura del PTCI Actualizado"> Habilitar de nuevo Captura del PTCI Actualizado</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Borrar PTCI Actualizado estado Cero"> Borrar PTCI Actualizado estado Cero</label>
+                            </div>
+                            <div class="grid-item">
+                                <h5>Seguimientos</h5>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar Captura del Seguimiento"> Habilitar Captura del Seguimiento</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar captura Reporte Trimestral AM"> Habilitar captura Reporte Trimestral AM</label>
+                            </div>
+                            <div class="grid-item">
+                                <h5>Capturas después del periodo</h5>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar captura PTCI Actualizado después del cierre"> Habilitar captura PTCI Actualizado después del cierre</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar evaluación después del cierre"> Habilitar evaluación después del cierre</label>
+                            </div>
+                            <div class="grid-item">
+                                <h5>Riesgos</h5>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar captura Riesgos en el periodo"> Habilitar captura Riesgos en el periodo</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar captura Riesgos después del cierre"> Habilitar captura Riesgos después del cierre</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar captura Seguimiento de Riesgos"> Habilitar captura Seguimiento de Riesgos</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar captura Reporte Trimestral AR"> Habilitar captura Reporte Trimestral AR</label>
+                            </div>
+                            <div class="grid-item">
+                                <h5>Evaluación OIC</h5>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar evaluación del OIC"> Habilitar evaluación del OIC</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar OIC-Seguimiento de Acciones Mejora"> Habilitar OIC-Seguimiento de Acciones Mejora</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar OIC-Reporte Trimestral AM"> Habilitar OIC-Reporte Trimestral AM</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar OIC-Seguimiento de Acciones Control"> Habilitar OIC-Seguimiento de Acciones Control</label>
+                                <label><input type="checkbox" name="restaurar-opcion" value="Habilitar OIC-Reporte Trimestral AC"> Habilitar OIC-Reporte Trimestral AC</label>
+                            </div>
+                        </div>
+
+                        <div class="modal-buttons">
+                            <button type="button" class="btn-cancel" onclick="closeAperturarModal()">Cancelar</button>
+                            <button type="submit" class="btn-save">Aperturar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Módulo: Reporte de Avance Institucional (Renombrado y reubicado) -->
+            <div id="module-reporte-avance-institucional" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-2.5 text-gray-800">Reporte Global de Avance Institucional en la Evaluación del SCI</h2>
+
+                <div class="flex flex-col mb-2.5">
+                    <div class="mb-2.5">
+                        <label for="estatus_reporte" class="sr-only">Estatus de Institución</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="estatus_reporte" value="1" checked><span>Activo</span></label>
+                            <label><input type="radio" name="estatus_reporte" value="0"><span>Inactivo</span></label>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <div class="select-wrapper">
+                            <label for="anio_input" class="sr-only">Elige periodo</label>
+                            <select id="anio_input" name="anio_input">
+                                <option value="todos">TODOS</option>
+                                <option value="2014">2014</option>
+                                <option value="2015">2015</option>
+                                <option value="2016">2016</option>
+                                <option value="2017">2017</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+                        <a href="#" class="export-button">
+                            <img src="https://placehold.co/14x14/ffffff/000000?text=XLS" alt="Exportar a Excel" title="Exportar a Excel">
+                            Exportar a Excel
+                        </a>
+                    </div>
+                </div>
+
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Periodo</th>
+                                <th rowspan="2">Siglas</th>
+                                <th rowspan="2">Institución</th>
+                                <th colspan="8" class="text-center">Evaluación del SCII</th>
+                                <th colspan="5" class="text-center">PTCI Actualizado</th>
+                                <th colspan="4" class="text-center">Seguimiento AM (1T)</th>
+                                <th colspan="4" class="text-center">Seguimiento AM (2T)</th>
+                                <th colspan="4" class="text-center">Seguimiento AM (3T)</th>
+                                <th colspan="4" class="text-center">Seguimiento AM (4T)</th>
+                                <th colspan="5" class="text-center">Riesgos</th>
+                                <th colspan="4" class="text-center">Seguimiento AC (1T)</th>
+                                <th colspan="4" class="text-center">Seguimiento AC (2T)</th>
+                                <th colspan="4" class="text-center">Seguimiento AC (3T)</th>
+                                <th colspan="4" class="text-center">Seguimiento AC (4T)</th>
+                                <th colspan="3" class="text-center">Revisión OIC</th>
+                                <th colspan="4" class="text-center">OIC-Seguimiento AM (1T)</th>
+                                <th colspan="4" class="text-center">OIC-Seguimiento AM (2T)</th>
+                                <th colspan="4" class="text-center">OIC-Seguimiento AM (3T)</th>
+                                <th colspan="4" class="text-center">OIC-Seguimiento AM (4T)</th>
+                                <th colspan="4" class="text-center">OIC-Seguimiento AC (1T)</th>
+                                <th colspan="4" class="text-center">OIC-Seguimiento AC (2T)</th>
+                                <th colspan="4" class="text-center">OIC-Seguimiento AC (3T)</th>
+                                <th colspan="4" class="text-center">OIC-Seguimiento AC (4T)</th>
+                            </tr>
+                            <tr>
+                                <th>Restaurar Avance</th>
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Procesos Prioritarios</th>
+                                <th>Config. Evaluación</th>
+                                <th>Evaluación del SCII</th>
+                                <th>Informe Anual</th>
+                                <th>PTCI Finalizado</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Actualizar</th>
+                                <th>PTCI Act Finalizado</th>
+                                <th>Finalizado</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Controles</th>
+                                <th>Estrategia</th>
+                                <th>PTAR Finalizado</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Informe OIC Finalizado</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+
+                                <th>Periodo Captura</th>
+                                <th>Abierto Hasta</th>
+                                <th>Finalizado</th>
+                                <th>Reporte Trimestral</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024</td>
+                                <td>IPPR</td>
+                                <td>Institución de Prueba para el Reporte</td>
+                                <td>Sí</td>
+                                <td>01/01/2024</td>
+                                <td>31/12/2024</td>
+                                <td>5</td>
+                                <td>Sí</td>
+                                <td>Completado</td>
+                                <td>Sí</td>
+                                <td>Sí</td>
+
+                                <td>01/01/2024</td>
+                                <td>31/12/2024</td>
+                                <td>Sí</td>
+                                <td>Sí</td>
+                                <td>Sí</td>
+
+                                <td>01/01/2024</td>
+                                <td>31/03/2024</td>
+                                <td>Sí</td>
+                                <td>Sí</td>
+
+                                <td>01/04/2024</td>
+                                <td>30/06/2024</td>
+                                <td>No</td>
+                                <td>No</td>
+
+                                <td>01/07/2024</td>
+                                <td>30/09/2024</td>
+                                <td>No</td>
+                                <td>No</td>
+
+                                <td>01/10/2024</td>
+                                <td>31/12/2024</td>
+                                <td>No</td>
+                                <td>No</td>
+
+                                <td>01/01/2024</td>
+                                <td>31/12/2024</td>
+                                <td>5</td>
+                                <td>Sí</td>
+                                <td>Sí</td>
+
+                                <td>01/01/2024</td>
+                                <td>31/03/2024</td>
+                                <td>Sí</td>
+                                <td>Sí</td>
+
+                                <td>01/04/2024</td>
+                                <td>30/06/2024</td>
+                                <td>No</td>
+                                <td>No</td>
+
+                                <td>01/07/2024</td>
+                                <td>30/09/2024</td>
+                                <td>No</td>
+                                <td>No</td>
+
+                                <td>01/10/2024</td>
+                                <td>31/12/2024</td>
+                                <td>No</td>
+                                <td>No</td>
+
+                                <td>01/01/2024</td>
+                                <td>31/12/2024</td>
+                                <td>Sí</td>
+
+                                <td>01/01/2024</td>
+                                <td>31/03/2024</td>
+                                <td>Sí</td>
+                                <td>Sí</td>
+
+                                <td>01/04/2024</td>
+                                <td>30/06/2024</td>
+                                <td>No</td>
+                                <td>No</td>
+
+                                <td>01/07/2024</td>
+                                <td>30/09/2024</td>
+                                <td>No</td>
+                                <td>No</td>
+
+                                <td>01/10/2024</td>
+                                <td>31/12/2024</td>
+                                <td>No</td>
+                                <td>No</td>
+
+                                <td>01/01/2024</td>
+                                <td>31/03/2024</td>
+                                <td>Sí</td>
+                                <td>Sí</td>
+
+                                <td>01/04/2024</td>
+                                <td>30/06/2024</td>
+                                <td>No</td>
+                                <td>No</td>
+
+                                <td>01/07/2024</td>
+                                <td>30/09/2024</td>
+                                <td>No</td>
+                                <td>No</td>
+
+                                <td>01/10/2024</td>
+                                <td>31/12/2024</td>
+                                <td>No</td>
+                                <td>No</td>
+                            </tr>
+                            <tr class="ui-datatable-empty-message">
+                                <td colspan="55" class="text-center text-gray-500 py-3">No se encontraron más resultados</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Módulo: Resetear Avance (Simplificado) -->
+            <div id="module-resetear-avance" class="module-content hidden">
+                <div class="dialog-placeholder">
+                    <h4>Resetear Avance</h4>
+                    <p>Esta es una función para reiniciar el avance de una institución. Contacta al administrador para más detalles.</p>
+                    <button class="btn-primary">Confirmar</button>
+                </div>
+            </div>
+
+            <!-- Otros módulos genéricos -->
+            <div id="module-modifica-avance-am" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Modifica Avance Trimestral AM</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para modificar avance trimestral AM.</p>
+            </div>
+
+            <div id="module-modifica-avance-ac" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Modifica Avance Trimestral AC</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para modificar avance trimestral AC.</p>
+            </div>
+
+            <div id="module-procesos-registrados" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Procesos Registrados por Oficio</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para procesos registrados por oficio.</p>
+            </div>
+
+            <div id="module-control-usuarios" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Control de Usuarios</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para el control de usuarios.</p>
+            </div>
+
+            <div id="module-registro-acciones" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Registro de Acciones de Usuarios</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para el registro de acciones de usuarios.</p>
+            </div>
+
+            <div id="module-comunicados" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Comunicados</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para comunicados.</p>
+            </div>
+
+            <div id="module-acciones-mejora-reporte" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte: Acciones de Mejora</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para el reporte de Acciones de Mejora.</p>
+            </div>
+
+            <div id="module-acciones-control-reporte" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte: Acciones de Control</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para el reporte de Acciones de Control.</p>
+            </div>
+
+            <div id="module-seguimiento-trimestral" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte Seguimiento Trimestral</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para el reporte de seguimiento trimestral.</p>
+            </div>
+
+            <div id="module-conclusion" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Conclusión</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para la conclusión.</p>
+            </div>
+
+            <div id="module-consolidado" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Consolidado</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para el consolidado.</p>
+            </div>
+
+            <div id="module-reporte-acciones-mejora" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte Acciones Mejora</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para el reporte de acciones de mejora.</p>
+            </div>
+
+            <div id="module-reporte-ptci-ptar" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte PTCI y PTAR (Excel)</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para el reporte PTCI y PTAR.</p>
+            </div>
+
+            <div id="module-evaluacion-oic" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Evaluación de OIC (Excel)</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para la evaluación de OIC.</p>
+            </div>
+
+            <div id="module-acciones-mejora-trimestre" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Acciones Mejora por Trimestre</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para acciones de mejora por trimestre.</p>
+            </div>
+
+            <div id="module-acciones-control-trimestre" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Acciones Control Trimestral</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para acciones de control trimestral.</p>
+            </div>
+
+            <div id="module-imprimir-ptci" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Imprimir Programa de Trabajo de Control Interno</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para imprimir PTCI.</p>
+            </div>
+
+            <div id="module-imprimir-ptar" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Imprimir Programa de Trabajo de Administración de Riesgo</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para imprimir PTAR.</p>
+            </div>
+
+            <div id="module-cambiar-contrasena" class="module-content hidden">
+                <h2 class="text-base font-bold text-center mb-3 text-gray-800">Cambiar Contraseña</h2>
+                <p class="text-center text-gray-600 text-xs">Contenido para cambiar la contraseña del usuario.</p>
+            </div>
+
+        </section>
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer-container">
+        <label>Insurgentes Sur 1735, Col. Guadalupe Inn Ciudad de México., C.P 01020 - Tel. 2000 3000</label>
+        <br>
+        <label>Secretaría Anticorrupción y Buen Gobierno, México - algunos derechos reservados © 2016 </label>
+    </footer>
+    <!-- FIN PIE DE PÁGINA -->
+
+    <script>
+        // Datos iniciales de instituciones, incluyendo un estado 'ptciActualizado' para demostración
+        const initialInstitutionsData = [
+            { id: '224', siglas: 'APBP', nombre: 'Administración del Patrimonio de la Beneficencia Pública', tipo: 'Organismo Descentralizado', sector: '12 SALUD', estatus: 'Activa', ptciActualizado: 'Sí' },
+            { id: '310', siglas: 'ASPNAC', nombre: 'Administración del Sistema Portuario Nacional Acapulco, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
+            { id: '44', siglas: 'ASPNA', nombre: 'Administración del Sistema Portuario Nacional Altamira, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
+            { id: '312', siglas: 'ASPNCSL', nombre: 'Administración del Sistema Portuario Nacional Cabo San Lucas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
+            { id: '45', siglas: 'ASPNCO', nombre: 'Administración del Sistema Portuario Nacional Coatzacoalcos, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
+            { id: '46', siglas: 'ASPNDB', nombre: 'Administración del Sistema Portuario Nacional Dos Bocas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
+            { id: '47', siglas: 'ASPNE', nombre: 'Administración del Sistema Portuario Nacional Ensenada, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
+            { id: '48', siglas: 'ASPNG', nombre: 'Administración del Sistema Portuario Nacional Guaymas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
+            { id: '49', siglas: 'ASPNLC', nombre: 'Administración del Sistema Portuario Nacional Lázaro Cárdenas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
+            { id: '50', siglas: 'ASPNM', nombre: 'Administración del Sistema Portuario Nacional Manzanillo, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
+            { id: '999', siglas: 'IPPR', nombre: 'Institución de Prueba para el Reporte', tipo: 'Dependencia', sector: '99 Entidad no Coordinada Sectorialmente', estatus: 'Activa', ptciActualizado: 'Sí' }
+        ];
+
+        // Listas predeterminadas para Tipo de Institución y Sector
+        const defaultTipoInstitucion = [
+            "Dependencia", "Órgano Administrativo Desconcentrado", "Organismo Descentralizado",
+            "Empresa de Participación Estatal Mayoritaria", "Organismo Descentralizado No Sectorizado",
+            "Fideicomiso Público", "Fideicomiso Público que forma parte del Sistema Financiero Mexicano",
+            "Organismo Autónomo"
+        ];
+        const defaultSector = [
+            "04 Gobernación", "05 Relaciones Exteriores", "06 Hacienda y Crédito Público",
+            "07 Defensa Nacional", "08 Agricultura y Desarrollo Rural", "09 Infraestructura, Comunicaciones y Transportes",
+            "10 Economía", "11 Educación Pública", "12 Salud", "13 Marina",
+            "14 Trabajo y Previsión Social", "15 Desarrollo Agrario, Territorial y Urbano",
+            "16 Medio Ambiente y Recursos Naturales", "17 Procuraduría General de la República",
+            "18 Energía", "20 Bienestar", "21 Turismo",
+            "25 Previsiones y Aportaciones para los Sistemas de Educación Básica, Normal, Tecnológica y de Adultos",
+            "27 Función Pública", "36 Seguridad y Protección Ciudadana",
+            "37 Consejería Jurídica del Ejecutivo Federal", "45 Comisión Reguladora de Energía",
+            "46 Comisión Nacional de Hidrocarburos", "47 Entidades no Sectorizadas", "48 Cultura",
+            "49 Fiscalía General de la República", "55 Agencia de Transformación Digital y Telecomunicaciones",
+            "99 Entidad no Coordinada Sectorialmente"
+        ];
+
+        // Cargar datos de localStorage o usar datos iniciales/predeterminados
+        let institutions = JSON.parse(localStorage.getItem('institutions')) || initialInstitutionsData;
+        let tipoInstitucionList = JSON.parse(localStorage.getItem('tipoInstitucionList')) || defaultTipoInstitucion;
+        let sectorList = JSON.parse(localStorage.getItem('sectorList')) || defaultSector;
+        let programmedPeriods = JSON.parse(localStorage.getItem('programmedPeriods')) || [];
+
+        // Instituciones actualmente seleccionadas para "Programación de Periodos"
+        let selectedInstitutionsForProgramacion = [];
+
+        // Función para mostrar el módulo de contenido principal y actualizar el menú
+        function showModule(moduleId, clickedElement) {
+            document.querySelectorAll('.module-content').forEach(function(module) {
+                module.classList.add('hidden');
+            });
+
+            const targetModule = document.getElementById('module-' + moduleId);
+            if (targetModule) {
+                targetModule.classList.remove('hidden');
+                if (moduleId === 'catalogo-instituciones') {
+                    renderInstitutionsTable();
+                    populateModalSelects(); // Volver a poblar los selects al abrir el catálogo
+                } else if (moduleId === 'programacion-periodos') {
+                    // Al entrar al módulo de programación de periodos, ajustar el filtro PTCI
+                    const ptciFilterDropdown = document.getElementById('ptci-actualizado-filter');
+                    if (selectedInstitutionsForProgramacion.length > 0) {
+                        ptciFilterDropdown.value = 'seleccionados';
+                    } else {
+                        ptciFilterDropdown.value = 'todos';
+                    }
+                    renderProgramacionPeriodosTable();
+                }
+            }
+
+            document.querySelectorAll('.sidebar ul li').forEach(function(li) {
+                li.classList.remove('active-item');
+            });
+
+            if (clickedElement && clickedElement.parentNode) {
+                clickedElement.parentNode.classList.add('active-item');
+                let parentUl = clickedElement.closest('.submodule-list');
+                if (parentUl && parentUl.classList.contains('hidden')) {
+                    parentUl.classList.remove('hidden');
+                    let header = parentUl.previousElementSibling;
+                    if (header && header.classList.contains('module-header')) {
+                        header.classList.remove('collapsed');
+                    }
+                }
+            }
+        }
+
+        // Función para alternar la visibilidad de los submódulos
+        function toggleSubmodules(headerElement) {
+            const submoduleList = headerElement.nextElementSibling;
+            if (submoduleList && submoduleList.classList.contains('submodule-list')) {
+                submoduleList.classList.toggle('hidden');
+                headerElement.classList.toggle('collapsed');
+            }
+        }
+
+        // --- Funciones para Consulta Instituciones ---
+        function filterInstitutions(showAll = false) {
+            const input = document.getElementById('institucion-filter');
+            const suggestionsContainer = document.getElementById('institucion-suggestions');
+            const filter = input.value.toLowerCase();
+            suggestionsContainer.innerHTML = '';
+
+            if (filter.length === 0 && !showAll) {
+                suggestionsContainer.classList.add('hidden');
+                return;
+            }
+
+            const filtered = institutions.filter(inst =>
+                inst.nombre.toLowerCase().includes(filter) || inst.siglas.toLowerCase().includes(filter)
+            );
+
+            if (filtered.length > 0) {
+                suggestionsContainer.classList.remove('hidden');
+                filtered.forEach(inst => {
+                    const suggestionItem = document.createElement('div');
+                    suggestionItem.classList.add('p-2', 'cursor-pointer', 'hover:bg-blue-100', 'rounded-md');
+                    suggestionItem.textContent = `${inst.siglas} - ${inst.nombre}`;
+                    suggestionItem.dataset.id = inst.id;
+                    suggestionItem.dataset.name = inst.nombre;
+                    suggestionItem.dataset.abbr = inst.siglas;
+                    suggestionItem.onclick = () => selectInstitution(inst.id, inst.nombre, inst.siglas);
+                    suggestionsContainer.appendChild(suggestionItem);
+                });
+            } else {
+                suggestionsContainer.classList.add('hidden');
+            }
+        }
+
+        function selectInstitution(id, name, abbr) {
+            const input = document.getElementById('institucion-filter');
+            const hiddenInput = document.getElementById('institucion-id');
+            const suggestionsContainer = document.getElementById('institucion-suggestions');
+
+            input.value = `${abbr} - ${name}`;
+            hiddenInput.value = id;
+            suggestionsContainer.classList.add('hidden');
+        }
+
+        // --- Funciones para Catálogo Instituciones ---
+        function renderInstitutionsTable() {
+            const tableBody = document.querySelector('#institutions-catalog-table tbody');
+            tableBody.innerHTML = '';
+
+            if (institutions.length === 0) {
+                const noDataRow = document.createElement('tr');
+                noDataRow.classList.add('ui-datatable-empty-message');
+                noDataRow.innerHTML = `<td colspan="6" class="text-center text-gray-500 py-3">No se encontraron instituciones.</td>`;
+                tableBody.appendChild(noDataRow);
+                return;
+            }
+
+            institutions.forEach(inst => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${inst.siglas}</td>
+                    <td>${inst.nombre}</td>
+                    <td>${inst.tipo}</td>
+                    <td>${inst.sector}</td>
+                    <td>${inst.estatus}</td>
+                    <td class="flex gap-1 justify-center">
+                        <button type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white p-1 rounded-md text-xs" onclick="editInstitution('${inst.id}')" title="Editar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
+                                <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                                <path d="M15 5l4 4"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="bg-red-500 hover:bg-red-600 text-white p-1 rounded-md text-xs" onclick="deleteInstitution('${inst.id}')" title="Eliminar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
+                                <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>
+                            </svg>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function populateModalSelects() {
+            const tipoSelect = document.getElementById('modal-tipo-institucion');
+            const sectorSelect = document.getElementById('modal-sector');
+
+            tipoSelect.innerHTML = '<option value="">Seleccione</option>';
+            tipoInstitucionList.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = item;
+                tipoSelect.appendChild(option);
+            });
+
+            sectorSelect.innerHTML = '<option value="">Seleccione</option>';
+            sectorList.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = item;
+                sectorSelect.appendChild(option);
+            });
+        }
+
+        function openInstitutionModal(institutionId = null) {
+            const modalOverlay = document.getElementById('institution-modal-overlay');
+            const modalTitle = document.getElementById('institution-modal-title');
+            const form = document.getElementById('institution-form');
+            form.reset();
+
+            document.getElementById('institution-id-edit').value = '';
+            populateModalSelects(); // Poblar los selects antes de establecer los valores
+
+            if (institutionId) {
+                modalTitle.textContent = 'Editar Institución';
+                const institutionToEdit = institutions.find(inst => inst.id === institutionId);
+                if (institutionToEdit) {
+                    document.getElementById('institution-id-edit').value = institutionToEdit.id;
+                    document.getElementById('modal-tipo-institucion').value = institutionToEdit.tipo;
+                    document.getElementById('modal-sector').value = institutionToEdit.sector;
+                    document.getElementById('modal-siglas').value = institutionToEdit.siglas;
+                    document.getElementById('modal-institucion-nombre').value = institutionToEdit.nombre;
+                    document.querySelector(`input[name="modal-estatus"][value="${institutionToEdit.estatus}"]`).checked = true;
+                }
+            } else {
+                modalTitle.textContent = 'Agregar Institución';
+                document.querySelector('input[name="modal-estatus"][value="Activa"]').checked = true;
+            }
+            modalOverlay.classList.remove('hidden');
+        }
+
+        function closeInstitutionModal() {
+            document.getElementById('institution-modal-overlay').classList.add('hidden');
+        }
+
+        document.getElementById('institution-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const id = document.getElementById('institution-id-edit').value;
+            const tipo = document.getElementById('modal-tipo-institucion').value;
+            const sector = document.getElementById('modal-sector').value;
+            const siglas = document.getElementById('modal-siglas').value;
+            const nombre = document.getElementById('modal-institucion-nombre').value;
+            const estatus = document.querySelector('input[name="modal-estatus"]:checked').value;
+
+            if (id) {
+                const index = institutions.findIndex(inst => inst.id === id);
+                if (index !== -1) {
+                    institutions[index] = { ...institutions[index], tipo, sector, siglas, nombre, estatus };
+                }
+            } else {
+                const newId = Date.now().toString();
+                institutions.push({ id: newId, tipo, sector, siglas, nombre, estatus, ptciActualizado: 'No' }); // Valor predeterminado para nuevas instituciones
+            }
+
+            localStorage.setItem('institutions', JSON.stringify(institutions));
+            renderInstitutionsTable();
+            closeInstitutionModal();
+        });
+
+        function editInstitution(id) {
+            openInstitutionModal(id);
+        }
+
+        function deleteInstitution(id) {
+            if (confirm('¿Está seguro de que desea eliminar esta institución?')) {
+                institutions = institutions.filter(inst => inst.id !== id);
+                localStorage.setItem('institutions', JSON.stringify(institutions));
+                renderInstitutionsTable();
+            }
+        }
+
+        // --- Funciones para Editar Listas de Tipo/Sector ---
+        let currentEditingListType = ''; // 'tipoInstitucion' o 'sector'
+
+        function openEditListModal(listType) {
+            currentEditingListType = listType;
+            const modalOverlay = document.getElementById('edit-list-modal-overlay');
+            const modalTitle = document.getElementById('edit-list-modal-title');
+            const listContainer = document.getElementById('edit-list-container');
+            listContainer.innerHTML = ''; // Limpiar lista anterior
+
+            const listToEdit = listType === 'tipoInstitucion' ? tipoInstitucionList : sectorList;
+            modalTitle.textContent = `Editar Lista de ${listType === 'tipoInstitucion' ? 'Tipo de Institución' : 'Sector'}`;
+
+            listToEdit.forEach((item, index) => {
+                const listItemDiv = document.createElement('div');
+                listItemDiv.classList.add('flex', 'items-center', 'justify-between', 'p-2', 'border-b', 'last:border-b-0');
+                listItemDiv.innerHTML = `
+                    <span class="text-sm text-gray-700">${item}</span>
+                    <button type="button" class="bg-red-500 hover:bg-red-600 text-white p-1 rounded-md text-xs" onclick="removeListItem('${listType}', ${index})">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x">
+                            <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                        </svg>
+                    </button>
+                `;
+                listContainer.appendChild(listItemDiv);
+            });
+
+            modalOverlay.classList.remove('hidden');
+        }
+
+        function closeEditListModal() {
+            document.getElementById('edit-list-modal-overlay').classList.add('hidden');
+            populateModalSelects(); // Actualizar los selects del modal de institución
+        }
+
+        function addListItem() {
+            const input = document.getElementById('new-list-item-input');
+            const newItem = input.value.trim();
+            if (newItem) {
+                if (currentEditingListType === 'tipoInstitucion') {
+                    if (!tipoInstitucionList.includes(newItem)) {
+                        tipoInstitucionList.push(newItem);
+                        localStorage.setItem('tipoInstitucionList', JSON.stringify(tipoInstitucionList));
+                    }
+                } else if (currentEditingListType === 'sector') {
+                    if (!sectorList.includes(newItem)) {
+                        sectorList.push(newItem);
+                        localStorage.setItem('sectorList', JSON.stringify(sectorList));
+                    }
+                }
+                input.value = ''; // Limpiar input
+                openEditListModal(currentEditingListType); // Volver a renderizar la lista
+            }
+        }
+
+        function removeListItem(listType, indexToRemove) {
+            if (confirm('¿Está seguro de que desea eliminar este elemento?')) {
+                if (listType === 'tipoInstitucion') {
+                    tipoInstitucionList.splice(indexToRemove, 1);
+                    localStorage.setItem('tipoInstitucionList', JSON.stringify(tipoInstitucionList));
+                } else if (listType === 'sector') {
+                    sectorList.splice(indexToRemove, 1);
+                    localStorage.setItem('sectorList', JSON.stringify(sectorList));
+                }
+                openEditListModal(listType); // Volver a renderizar la lista
+            }
+        }
+
+        // --- Funciones para Programación de Periodos ---
+        function filterProgramacionTable() {
+            const input = document.getElementById('programacion-institucion-filter');
+            const suggestionsContainer = document.getElementById('programacion-institucion-suggestions');
+            const filterText = input.value.toLowerCase();
+            const ptciFilter = document.getElementById('ptci-actualizado-filter').value;
+
+            suggestionsContainer.innerHTML = ''; // Limpiar sugerencias para la entrada de texto
+
+            // Manejar la visibilidad de las sugerencias para la entrada de texto
+            if (filterText.length === 0) {
+                suggestionsContainer.classList.add('hidden');
+            } else {
+                const filteredSuggestions = institutions.filter(inst =>
+                    inst.nombre.toLowerCase().includes(filterText) || inst.siglas.toLowerCase().includes(filterText)
+                );
+                if (filteredSuggestions.length > 0) {
+                    suggestionsContainer.classList.remove('hidden');
+                    filteredSuggestions.forEach(inst => {
+                        const suggestionItem = document.createElement('div');
+                        suggestionItem.classList.add('p-2', 'cursor-pointer', 'hover:bg-blue-100', 'rounded-md');
+                        suggestionItem.textContent = `${inst.siglas} - ${inst.nombre}`;
+                        suggestionItem.onclick = () => {
+                            input.value = `${inst.siglas} - ${inst.nombre}`;
+                            suggestionsContainer.classList.add('hidden');
+                            renderProgramacionPeriodosTable(); // Volver a renderizar la tabla después de seleccionar una sugerencia
+                        };
+                        suggestionsContainer.appendChild(suggestionItem);
+                    });
+                } else {
+                    suggestionsContainer.classList.add('hidden');
+                }
+            }
+
+            // Ahora, volver a renderizar la tabla principal basándose en todos los filtros
+            renderProgramacionPeriodosTable();
+        }
+
+        function renderProgramacionPeriodosTable() {
+            const tableBody = document.querySelector('#programacion-periodos-table tbody');
+            tableBody.innerHTML = '';
+
+            const filterInput = document.getElementById('programacion-institucion-filter').value.toLowerCase();
+            const ptciFilterSelect = document.getElementById('ptci-actualizado-filter');
+            const ptciFilter = ptciFilterSelect.value;
+
+            let institutionsToDisplay = [];
+
+            // Lógica para limpiar selectedInstitutionsForProgramacion si el filtro cambia de 'seleccionados'
+            // o si 'seleccionados' se elige pero no hay elementos seleccionados.
+            if (ptciFilter !== 'seleccionados') {
+                // Si el filtro no es 'seleccionados', limpiar cualquier selección manual existente
+                if (selectedInstitutionsForProgramacion.length > 0) {
+                    selectedInstitutionsForProgramacion = [];
+                    updateSelectedInstitutionsDisplay();
+                }
+            }
+
+            if (ptciFilter === 'seleccionados') {
+                institutionsToDisplay = selectedInstitutionsForProgramacion.filter(inst =>
+                    inst.nombre.toLowerCase().includes(filterInput) || inst.siglas.toLowerCase().includes(filterInput)
+                );
+            } else {
+                institutionsToDisplay = institutions.filter(inst => {
+                    const matchesName = inst.nombre.toLowerCase().includes(filterInput) || inst.siglas.toLowerCase().includes(filterInput);
+                    const matchesPtci = ptciFilter === 'todos' || inst.ptciActualizado === ptciFilter;
+                    return matchesName && matchesPtci;
+                });
+            }
+
+            if (institutionsToDisplay.length === 0) {
+                const noDataRow = document.createElement('tr');
+                noDataRow.classList.add('ui-datatable-empty-message');
+                noDataRow.innerHTML = `<td colspan="10" class="text-center text-gray-500 py-3">No se encontraron instituciones que coincidan con los filtros.</td>`;
+                tableBody.appendChild(noDataRow);
+                // Si 'seleccionados' se elige y no se muestran instituciones, asegurar que el desplegable refleje 'todos'
+                if (ptciFilter === 'seleccionados' && selectedInstitutionsForProgramacion.length === 0) {
+                    ptciFilterSelect.value = 'todos';
+                }
+                return;
+            }
+
+            institutionsToDisplay.forEach(inst => {
+                const programmedPeriod = programmedPeriods.find(p => p.institucionId === inst.id);
+                const isSelected = selectedInstitutionsForProgramacion.some(sInst => sInst.id === inst.id);
+
+                const row = tableBody.insertRow();
+                row.classList.toggle('selected', isSelected); // Aplicar clase 'selected'
+                row.dataset.institutionId = inst.id; // Almacenar ID en la fila
+
+                // Añadir listener de clic a la fila para alternar la selección
+                row.onclick = function(event) {
+                    // Prevenir la alternancia si el objetivo del clic es el propio checkbox
+                    if (event.target.type !== 'checkbox') {
+                        const checkbox = this.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
+                        toggleInstitutionSelection(checkbox, inst.id);
+                    }
+                };
+
+                row.innerHTML = `
+                    <td><input type="checkbox" data-institution-id="${inst.id}" onchange="toggleInstitutionSelection(this, '${inst.id}')" ${isSelected ? 'checked' : ''}></td>
+                    <td>${programmedPeriod ? programmedPeriod.periodo : 'N/A'}</td>
+                    <td>${inst.siglas}</td>
+                    <td>${inst.nombre}</td>
+                    <td>${inst.ptciActualizado}</td>
+                    <td>${programmedPeriod ? programmedPeriod.trimestre : 'N/A'}</td>
+                    <td>${programmedPeriod ? programmedPeriod.programa : 'N/A'}</td>
+                    <td>${programmedPeriod ? programmedPeriod.fechaInicio : 'N/A'}</td>
+                    <td>${programmedPeriod ? programmedPeriod.fechaFin : 'N/A'}</td>
+                    <td>${programmedPeriod && programmedPeriod.restauracionOptions.length > 0 ? programmedPeriod.restauracionOptions.join(', ') : 'N/A'}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            updateSelectAllCheckbox();
+        }
+
+        function toggleAllInstitutions(isChecked) {
+            const checkboxes = document.querySelectorAll('#programacion-periodos-table tbody input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = isChecked;
+                toggleInstitutionSelection(checkbox, checkbox.dataset.institutionId);
+            });
+        }
+
+        function toggleInstitutionSelection(checkbox, institutionId) {
+            const institution = institutions.find(inst => inst.id === institutionId);
+            const row = checkbox.closest('tr'); // Obtener la fila padre
+
+            if (institution) {
+                if (checkbox.checked) {
+                    if (!selectedInstitutionsForProgramacion.some(inst => inst.id === institutionId)) {
+                        selectedInstitutionsForProgramacion.push(institution);
+                    }
+                    row.classList.add('selected'); // Añadir clase 'selected' a la fila
+                } else {
+                    selectedInstitutionsForProgramacion = selectedInstitutionsForProgramacion.filter(inst => inst.id !== institutionId);
+                    row.classList.remove('selected'); // Eliminar clase 'selected' de la fila
+                }
+            }
+            updateSelectAllCheckbox();
+            updateSelectedInstitutionsDisplay();
+        }
+
+        function updateSelectAllCheckbox() {
+            const allCheckboxes = document.querySelectorAll('#programacion-periodos-table tbody input[type="checkbox"]');
+            const selectAllCheckbox = document.getElementById('select-all-institutions');
+            if (allCheckboxes.length > 0) {
+                const allChecked = Array.from(allCheckboxes).every(cb => cb.checked);
+                selectAllCheckbox.checked = allChecked;
+                selectAllCheckbox.indeterminate = !allChecked && Array.from(allCheckboxes).some(cb => cb.checked);
+            } else {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false;
+            }
+        }
+
+        function updateSelectedInstitutionsDisplay() {
+            const selectedInstitutionsDisplay = document.getElementById('selected-institutions-display');
+            if (selectedInstitutionsForProgramacion.length > 0) {
+                selectedInstitutionsDisplay.classList.remove('hidden');
+                selectedInstitutionsDisplay.textContent = `Instituciones seleccionadas: ${selectedInstitutionsForProgramacion.map(inst => inst.siglas).join(', ')}`;
+            } else {
+                selectedInstitutionsDisplay.classList.add('hidden');
+                selectedInstitutionsDisplay.textContent = '';
+            }
+        }
+
+        // --- Funciones para el cálculo automático de fechas en "Aperturar Sistema" ---
+        function updateDatesByPeriodAndTrimestre() {
+            const year = document.getElementById('aperturar-periodo').value;
+            const trimestre = document.getElementById('aperturar-trimestre').value;
+            const fechaInicioInput = document.getElementById('aperturar-fecha-inicio');
+            const fechaFinInput = document.getElementById('aperturar-fecha-fin');
+
+            if (!year || trimestre === 'N/A') {
+                fechaInicioInput.value = '';
+                fechaFinInput.value = '';
+                return;
+            }
+
+            let startDate;
+            switch (trimestre) {
+                case '1T':
+                    startDate = new Date(year, 0, 1); // Enero 1
+                    break;
+                case '2T':
+                    startDate = new Date(year, 3, 1); // Abril 1
+                    break;
+                case '3T':
+                    startDate = new Date(year, 6, 1); // Julio 1
+                    break;
+                case '4T':
+                    startDate = new Date(year, 9, 1); // Octubre 1
+                    break;
+                default:
+                    fechaInicioInput.value = '';
+                    fechaFinInput.value = '';
+                    return;
+            }
+
+            // Formatear fecha a YYYY-MM-DD
+            const formatDate = (date) => {
+                const d = new Date(date);
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${d.getFullYear()}-${month}-${day}`;
+            };
+
+            fechaInicioInput.value = formatDate(startDate);
+
+            let endDate = new Date(startDate);
+            let daysAdded = 0;
+            while (daysAdded < 3) {
+                endDate.setDate(endDate.getDate() + 1);
+                const dayOfWeek = endDate.getDay(); // 0 = Domingo, 6 = Sábado
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) { // Si no es domingo ni sábado
+                    daysAdded++;
+                }
+            }
+            fechaFinInput.value = formatDate(endDate);
+        }
+
+        function openAperturarModal() {
+            const modalOverlay = document.getElementById('aperturar-modal-overlay');
+            const selectedInstitutionsDisplay = document.getElementById('selected-institutions-display');
+            const aperturarForm = document.getElementById('aperturar-form');
+
+            aperturarForm.reset(); // Limpiar campos del formulario
+            document.querySelectorAll('input[name="restaurar-opcion"]').forEach(cb => cb.checked = false); // Desmarcar todas las opciones
+
+            if (selectedInstitutionsForProgramacion.length === 0) {
+                alert('Por favor, selecciona al menos una institución para aperturar el sistema.');
+                return;
+            }
+
+            updateSelectedInstitutionsDisplay(); // Actualizar la visualización dentro del modal
+
+            modalOverlay.classList.remove('hidden');
+
+            // Añadir listener de evento para la validación de checkboxes
+            const checkboxes = document.querySelectorAll('input[name="restaurar-opcion"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', validateRestauracionOptions);
+            });
+            validateRestauracionOptions(); // Validación inicial
+        }
+
+        function closeAperturarModal() {
+            document.getElementById('aperturar-modal-overlay').classList.add('hidden');
+            // Eliminar listener de evento para evitar múltiples enlaces
+            const checkboxes = document.querySelectorAll('input[name="restaurar-opcion"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.removeEventListener('change', validateRestauracionOptions);
+            });
+        }
+
+        function validateRestauracionOptions() {
+            const checkboxes = document.querySelectorAll('input[name="restaurar-opcion"]');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+
+            if (checkedCount > 2) {
+                alert('Solo puedes seleccionar un máximo de 2 opciones de restauración.');
+                // Desmarcar la última seleccionada para aplicar la regla
+                const lastChecked = Array.from(checkboxes).findLast(cb => cb.checked);
+                if (lastChecked) {
+                    lastChecked.checked = false;
+                }
+            }
+        }
+
+        document.getElementById('aperturar-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const periodo = document.getElementById('aperturar-periodo').value;
+            const trimestre = document.getElementById('aperturar-trimestre').value;
+            const programa = document.getElementById('aperturar-programa').value;
+            const fechaInicio = document.getElementById('aperturar-fecha-inicio').value;
+            const fechaFin = document.getElementById('aperturar-fecha-fin').value;
+            const restauracionOptions = Array.from(document.querySelectorAll('input[name="restaurar-opcion"]:checked')).map(cb => cb.value);
+
+            // Validar máximo 2 opciones
+            if (restauracionOptions.length > 2) {
+                alert('Solo puedes seleccionar un máximo de 2 opciones de restauración.');
+                return;
+            }
+
+            selectedInstitutionsForProgramacion.forEach(inst => {
+                const existingIndex = programmedPeriods.findIndex(p => p.institucionId === inst.id);
+                const newProgrammedPeriod = {
+                    institucionId: inst.id,
+                    siglas: inst.siglas,
+                    nombre: inst.nombre,
+                    periodo: periodo,
+                    trimestre: trimestre,
+                    programa: programa,
+                    fechaInicio: fechaInicio,
+                    fechaFin: fechaFin,
+                    restauracionOptions: restauracionOptions
+                };
+
+                if (existingIndex !== -1) {
+                    programmedPeriods[existingIndex] = newProgrammedPeriod;
+                } else {
+                    programmedPeriods.push(newProgrammedPeriod);
+                }
+            });
+
+            localStorage.setItem('programmedPeriods', JSON.stringify(programmedPeriods));
+            renderProgramacionPeriodosTable();
+            closeAperturarModal();
+            alert('Sistema aperturado/actualizado correctamente para las instituciones seleccionadas.');
+        });
+
+        // Renderizado inicial cuando el DOM está cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            const consultaInstitucionesLink = document.querySelector('.sidebar ul li.active-item a');
+            if (consultaInstitucionesLink) {
+                showModule('consulta-instituciones', consultaInstitucionesLink);
+            }
+
+            const firstModuleHeader = document.querySelector('.sidebar .module-header');
+            if (firstModuleHeader && firstModuleHeader.classList.contains('collapsed')) {
+                firstModuleHeader.classList.remove('collapsed');
+                const firstSubmoduleList = firstModuleHeader.nextElementSibling;
+                if (firstSubmoduleList && firstSubmoduleList.classList.contains('submodule-list')) {
+                    firstSubmoduleList.classList.remove('hidden');
+                }
+            }
+
+            const institucionFilterInput = document.getElementById('institucion-filter');
+            if (institucionFilterInput) {
+                institucionFilterInput.addEventListener('input', filterInstitutions);
+            }
+
+            document.addEventListener('click', function(event) {
+                const suggestionsContainer = document.getElementById('institucion-suggestions');
+                const input = document.getElementById('institucion-filter');
+                if (suggestionsContainer && input && !suggestionsContainer.contains(event.target) && !input.contains(event.target)) {
+                    suggestionsContainer.classList.add('hidden');
+                }
+
+                const programacionSuggestionsContainer = document.getElementById('programacion-institucion-suggestions');
+                const programacionInput = document.getElementById('programacion-institucion-filter');
+                if (programacionSuggestionsContainer && programacionInput && !programacionSuggestionsContainer.contains(event.target) && !programacionInput.contains(event.target)) {
+                    programacionSuggestionsContainer.classList.add('hidden');
+                }
+            });
+
+            // Población inicial de los selects para el modal de institución
+            populateModalSelects();
+        });
+    </script>
+</body>
+</html>
