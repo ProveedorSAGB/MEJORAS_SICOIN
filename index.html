@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SICOIN - BETA 1.4</title>
+    <title>SICOIN - BETA 1.5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -24,7 +24,6 @@
             justify-content: center;
             min-height: 100vh;
             width: 100%;
-            /* No position: fixed o absolute aquí, se confía en display */
         }
         /* Asegura que la página de login esté completamente oculta cuando se aplica la clase 'hidden' */
         #login-page.hidden {
@@ -71,6 +70,9 @@
             flex-shrink: 0;
             display: flex;
             gap: 0.4rem;
+            /* Alinea los botones a la izquierda */
+            margin-right: auto;
+            padding-left: 0.5rem;
         }
         .header-nav a, .header-nav button {
             color: #ffffff;
@@ -599,7 +601,7 @@
             <div class="header-logo">
                 <img src="https://controlinterno.buengobierno.gob.mx/ESCII/img/logo_sicoin.jpg" alt="Logo SICOIN">
             </div>
-            <nav class="header-nav w-full mt-2 justify-center">
+            <nav class="header-nav">
                 <a href="#" onclick="goHome(event)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                     Inicio
@@ -961,15 +963,15 @@
                         <div class="mb-2.5">
                             <label for="estatus_reporte" class="sr-only">Estatus de Institución</label>
                             <div class="radio-group">
-                                <label><input type="radio" name="estatus_reporte" value="1" checked><span>Activo</span></label>
-                                <label><input type="radio" name="estatus_reporte" value="0"><span>Inactivo</span></label>
+                                <label><input type="radio" name="estatus_reporte" value="1" checked onchange="renderReporteAvanceInstitucionalTable()"><span>Activo</span></label>
+                                <label><input type="radio" name="estatus_reporte" value="0" onchange="renderReporteAvanceInstitucionalTable()"><span>Inactivo</span></label>
                             </div>
                         </div>
 
                         <div class="flex justify-between items-center">
                             <div class="select-wrapper" style="width: auto;">
                                 <label for="anio_input" class="sr-only">Elige periodo</label>
-                                <select id="anio_input" name="anio_input" style="width: 90px; padding: 0.2rem 0.9rem 0.2rem 0.5rem; font-size: 0.7rem;">
+                                <select id="anio_input" name="anio_input" style="width: 90px; padding: 0.2rem 0.9rem 0.2rem 0.5rem; font-size: 0.7rem;" onchange="renderReporteAvanceInstitucionalTable()">
                                     <option value="todos">TODOS</option>
                                     <option value="2014">2014</option>
                                     <option value="2015">2015</option>
@@ -994,213 +996,10 @@
                     <div class="data-table-container">
                         <table class="data-table">
                             <thead>
-                                <tr>
-                                    <th rowspan="2">Periodo</th>
-                                    <th rowspan="2">Siglas</th>
-                                    <th rowspan="2">Institución</th>
-                                    <th colspan="8" class="text-center">Evaluación del SCII</th>
-                                    <th colspan="5" class="text-center">PTCI Actualizado</th>
-                                    <th colspan="4" class="text-center">Seguimiento AM (1T)</th>
-                                    <th colspan="4" class="text-center">Seguimiento AM (2T)</th>
-                                    <th colspan="4" class="text-center">Seguimiento AM (3T)</th>
-                                    <th colspan="4" class="text-center">Seguimiento AM (4T)</th>
-                                    <th colspan="5" class="text-center">Riesgos</th>
-                                    <th colspan="4" class="text-center">Seguimiento AC (1T)</th>
-                                    <th colspan="4" class="text-center">Seguimiento AC (2T)</th>
-                                    <th colspan="4" class="text-center">Seguimiento AC (3T)</th>
-                                    <th colspan="4" class="text-center">Seguimiento AC (4T)</th>
-                                    <th colspan="3" class="text-center">Revisión OIC</th>
-                                    <th colspan="4" class="text-center">OIC-Seguimiento AM (1T)</th>
-                                    <th colspan="4" class="text-center">OIC-Seguimiento AM (2T)</th>
-                                    <th colspan="4" class="text-center">OIC-Seguimiento AM (3T)</th>
-                                    <th colspan="4" class="text-center">OIC-Seguimiento AM (4T)</th>
-                                    <th colspan="4" class="text-center">OIC-Seguimiento AC (1T)</th>
-                                    <th colspan="4" class="text-center">OIC-Seguimiento AC (2T)</th>
-                                    <th colspan="4" class="text-center">OIC-Seguimiento AC (3T)</th>
-                                    <th colspan="4" class="text-center">OIC-Seguimiento AC (4T)</th>
-                                </tr>
-                                <tr>
-                                    <th>Restaurar Avance</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Procesos Prioritarios</th>
-                                    <th>Config. Evaluación</th>
-                                    <th>Evaluación del SCII</th>
-                                    <th>Informe Anual</th>
-                                    <th>PTCI Finalizado</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Actualizar</th>
-                                    <th>PTCI Act Finalizado</th>
-                                    <th>Finalizado</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Controles</th>
-                                    <th>Estrategia</th>
-                                    <th>PTAR Finalizado</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Informe OIC Finalizado</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                    <th>Periodo Captura</th>
-                                    <th>Abierto Hasta</th>
-                                    <th>Finalizado</th>
-                                    <th>Reporte Trimestral</th>
-                                </tr>
+                                <!-- Los encabezados de la tabla se generarán dinámicamente con JavaScript -->
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>2024</td>
-                                    <td>IPPR</td>
-                                    <td>Institución de Prueba para el Reporte</td>
-                                    <td>Sí</td>
-                                    <td>01/01/2024</td>
-                                    <td>31/12/2024</td>
-                                    <td>5</td>
-                                    <td>Sí</td>
-                                    <td>Completado</td>
-                                    <td>Sí</td>
-                                    <td>Sí</td>
-                                    <td>01/01/2024</td>
-                                    <td>31/12/2024</td>
-                                    <td>Sí</td>
-                                    <td>Sí</td>
-                                    <td>Sí</td>
-                                    <td>01/01/2024</td>
-                                    <td>31/03/2024</td>
-                                    <td>Sí</td>
-                                    <td>Sí</td>
-                                    <td>01/04/2024</td>
-                                    <td>30/06/2024</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                    <td>01/07/2024</td>
-                                    <td>30/09/2024</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                    <td>01/10/2024</td>
-                                    <td>31/12/2024</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                    <td>01/01/2024</td>
-                                    <td>31/12/2024</td>
-                                    <td>5</td>
-                                    <td>Sí</td>
-                                    <td>Sí</td>
-                                    <td>01/01/2024</td>
-                                    <td>31/03/2024</td>
-                                    <td>Sí</td>
-                                    <td>Sí</td>
-                                    <td>01/04/2024</td>
-                                    <td>30/06/2024</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                    <td>01/07/2024</td>
-                                    <td>30/09/2024</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                    <td>01/10/2024</td>
-                                    <td>31/12/2024</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                    <td>01/01/2024</td>
-                                    <td>31/12/2024</td>
-                                    <td>Sí</td>
-                                    <td>01/01/2024</td>
-                                    <td>31/03/2024</td>
-                                    <td>Sí</td>
-                                    <td>Sí</td>
-                                    <td>01/04/2024</td>
-                                    <td>30/06/2024</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                    <td>01/07/2024</td>
-                                    <td>30/09/2024</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                    <td>01/10/2024</td>
-                                    <td>31/12/2024</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                    <td>01/01/2024</td>
-                                    <td>31/03/2024</td>
-                                    <td>Sí</td>
-                                    <td>Sí</td>
-                                    <td>01/04/2024</td>
-                                    <td>30/06/2024</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                    <td>01/07/2024</td>
-                                    <td>30/09/2024</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                    <td>01/10/2024</td>
-                                    <td>31/12/2024</td>
-                                    <td>No</td>
-                                    <td>No</td>
-                                </tr>
-                                <tr class="ui-datatable-empty-message">
-                                    <td colspan="55" class="text-center text-gray-500 py-3">No se encontraron más resultados</td>
-                                </tr>
+                                <!-- Los datos de la tabla se generarán dinámicamente con JavaScript -->
                             </tbody>
                         </table>
                     </div>
@@ -1419,6 +1218,8 @@
                 } else if (moduleId === 'programacion-periodos') {
                     selectedInstitutionsForProgramacion = [];
                     renderProgramacionPeriodosTable();
+                } else if (moduleId === 'reporte-avance-institucional') {
+                    renderReporteAvanceInstitucionalTable();
                 }
             }
             // Eliminar la clase 'active-item' de todos los elementos de la barra lateral
@@ -2074,6 +1875,80 @@
         }
 
         function closeHistoryModal() { document.getElementById('history-modal-overlay').classList.add('hidden'); }
+
+        // --- MÓDULO: REPORTE DE AVANCE INSTITUCIONAL ---
+        function renderReporteAvanceInstitucionalTable() {
+            const table = document.querySelector('#module-reporte-avance-institucional .data-table');
+            const thead = table.querySelector('thead');
+            const tbody = table.querySelector('tbody');
+
+            // Limpiar encabezados y cuerpo existentes
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+
+            // Obtener valores de los filtros
+            const estatusFilter = document.querySelector('input[name="estatus_reporte"]:checked').value; // '1' o '0'
+            const anioFilter = document.getElementById('anio_input').value; // 'todos' o año
+
+            // Preparar todas las acciones únicas para los encabezados
+            const allAvailableActions = [];
+            for (const category in availableActionsCategories) {
+                availableActionsCategories[category].forEach(action => {
+                    allAvailableActions.push(action);
+                });
+            }
+
+            // Crear fila de encabezado
+            let headerRow = '<tr>';
+            headerRow += '<th>Periodo</th>';
+            headerRow += '<th>Siglas</th>';
+            headerRow += '<th>Institución</th>';
+            headerRow += '<th>Actualizó PTCI</th>'; // Esta columna permanece según lo solicitado
+
+            allAvailableActions.forEach(action => {
+                headerRow += `<th>${action}</th>`;
+            });
+            headerRow += '</tr>';
+            thead.innerHTML = headerRow;
+
+            // Filtrar instituciones según el estado
+            const filteredInstitutions = institutions.filter(inst => {
+                const isActive = inst.estatus === 'Activa';
+                return (estatusFilter === '1' && isActive) || (estatusFilter === '0' && !isActive);
+            });
+
+            if (filteredInstitutions.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="${4 + allAvailableActions.length}" class="text-center text-gray-500 py-3">No se encontraron instituciones con el estatus seleccionado.</td></tr>`;
+                return;
+            }
+
+            // Rellenar el cuerpo de la tabla
+            let hasData = false;
+            filteredInstitutions.forEach(inst => {
+                // Encontrar el período programado para la institución actual
+                const programmedPeriod = programmedPeriods.find(p => p.institucionId === inst.id && (anioFilter === 'todos' || p.periodo === anioFilter));
+
+                if (programmedPeriod) {
+                    hasData = true;
+                    let dataRow = '<tr>';
+                    dataRow += `<td>${programmedPeriod.periodo || 'N/A'}</td>`;
+                    dataRow += `<td>${inst.siglas}</td>`;
+                    dataRow += `<td>${inst.nombre}</td>`;
+                    dataRow += `<td>${inst.ptciActualizado || 'No'}</td>`; // Usar inst.ptciActualizado directamente
+
+                    allAvailableActions.forEach(action => {
+                        const isActionEnabled = programmedPeriod.accionesPermitidas.includes(action);
+                        dataRow += `<td>${isActionEnabled ? 'Sí' : 'No'}</td>`;
+                    });
+                    dataRow += '</tr>';
+                    tbody.innerHTML += dataRow;
+                }
+            });
+
+            if (!hasData) {
+                 tbody.innerHTML = `<tr><td colspan="${4 + allAvailableActions.length}" class="text-center text-gray-500 py-3">No se encontraron datos para el filtro seleccionado.</td></tr>`;
+            }
+        }
     </script>
 </body>
 </html>
