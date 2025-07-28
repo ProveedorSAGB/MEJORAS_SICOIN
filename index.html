@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SICOIN - BETA 1.1</title>
+    <title>SICOIN - BETA 1.3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Estilos generales para el cuerpo y la fuente */
@@ -628,7 +628,7 @@
                 <div class="header-title">
                     <h1>SICOIN – MEJORA PROPUESTA</h1>
                     <h2>Sistema de Control Interno Institucional</h2>
-                    <h3>V 1.1</h3>
+                    <h3>V 1.3</h3>
                 </div>
                 <!-- Logo derecho -->
                 <div class="header-logo">
@@ -1006,7 +1006,7 @@
 
                         <div class="flex justify-between items-center">
                             <div class="select-wrapper" style="width: auto;">
-                                <label for="anio_input" class="sr-only">Elige periodo</label>
+                                <label for="anio_input" class="text-xs font-medium text-gray-700 mr-1">Periodo:</label>
                                 <select id="anio_input" name="anio_input" style="width: 90px; padding: 0.2rem 0.9rem 0.2rem 0.5rem; font-size: 0.7rem;" onchange="renderReporteAvanceInstitucionalTable()">
                                     <option value="todos">TODOS</option>
                                     <option value="2014">2014</option>
@@ -1023,7 +1023,7 @@
                                 </select>
                             </div>
                             <div class="select-wrapper" style="width: auto; margin-left: 0.5rem;">
-                                <label for="trimestre_reporte_input" class="sr-only">Elige trimestre</label>
+                                <label for="trimestre_reporte_input" class="text-xs font-medium text-gray-700 mr-1">Trimestre:</label>
                                 <select id="trimestre_reporte_input" name="trimestre_reporte_input" style="width: 120px; padding: 0.2rem 0.9rem 0.2rem 0.5rem; font-size: 0.7rem;" onchange="renderReporteAvanceInstitucionalTable()">
                                     <option value="todos">TODOS</option>
                                     <option value="1T">1er Trimestre</option>
@@ -1047,18 +1047,18 @@
                                     <th rowspan="3">Trimestre</th>
                                     <th rowspan="3">Siglas</th>
                                     <th rowspan="3">Institución</th>
-                                    <th colspan="8">Evaluación de la Institución</th>
-                                    <th colspan="10">Evaluación del OIC</th>
+                                    <th colspan="23">Evaluación de la Institución</th>
+                                    <th colspan="11">Evaluación del OIC</th>
                                 </tr>
                                 <tr>
                                     <th colspan="4">Evaluación del SCII</th>
-                                    <th colspan="4">PTCI</th>
-                                    <th colspan="2">Seguimiento de Acciones de Mejora</th>
-                                    <th colspan="2">PTAR</th>
-                                    <th colspan="2">Seguimiento de Acciones de Control</th>
-                                    <th colspan="2">Revisión OIC</th>
-                                    <th colspan="2">OIC - Seguimiento de Acciones de Mejora</th>
-                                    <th colspan="2">OIC - Seguimiento de Acciones de Control</th>
+                                    <th colspan="6">PTCI</th>
+                                    <th colspan="4">Seguimiento de Acciones de Mejora</th>
+                                    <th colspan="5">PTAR</th>
+                                    <th colspan="4">Seguimiento de Acciones de Control</th>
+                                    <th colspan="3">Revisión OIC</th>
+                                    <th colspan="4">OIC - Seguimiento de Acciones de Mejora</th>
+                                    <th colspan="4">OIC - Seguimiento de Acciones de Control</th>
                                 </tr>
                                 <tr>
                                     <th>Periodo Captura</th>
@@ -1180,13 +1180,29 @@
                                     <label><input type="radio" name="user-estatus" value="Inactivo"><span>Inactivo</span></label>
                                 </div>
                             </div>
-                            <div class="modal-form-group">
-                                <label for="user-tipo-usuario">Tipo Usuario</label>
-                                <select id="user-tipo-usuario" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs"></select>
+                            <div class="modal-form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                                <label for="user-tipo-usuario" style="min-width: 120px;">Tipo Usuario</label>
+                                <div class="flex-grow flex items-center gap-2">
+                                    <select id="user-tipo-usuario" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required></select>
+                                    <button type="button" class="edit-list-button" onclick="openEditListModal('tipoUsuario')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
+                                            <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                                            <path d="M15 5l4 4"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="modal-form-group">
-                                <label for="user-perfil">Perfil</label>
-                                <select id="user-perfil" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required></select>
+                            <div class="modal-form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                                <label for="user-perfil" style="min-width: 120px;">Perfil</label>
+                                <div class="flex-grow flex items-center gap-2">
+                                    <select id="user-perfil" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required></select>
+                                    <button type="button" class="edit-list-button" onclick="openEditListModal('perfil')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
+                                            <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                                            <path d="M15 5l4 4"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                              <div class="modal-form-group">
                                 <label for="user-siglas-institucion-filter">Siglas Institución</label>
@@ -1200,9 +1216,17 @@
                                 <label for="user-nombre">Nombre</label>
                                 <input type="text" id="user-nombre" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required>
                             </div>
-                            <div class="modal-form-group">
-                                <label for="user-cargo">Cargo</label>
-                                <select id="user-cargo" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs"></select>
+                            <div class="modal-form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                                <label for="user-cargo" style="min-width: 120px;">Cargo</label>
+                                <div class="flex-grow flex items-center gap-2">
+                                    <select id="user-cargo" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required></select>
+                                    <button type="button" class="edit-list-button" onclick="openEditListModal('cargo')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
+                                            <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                                            <path d="M15 5l4 4"/>
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                             <!-- Nuevos campos para No. de Oficio de Designación y Cargar Archivo -->
                             <div class="modal-form-group">
@@ -1421,14 +1445,14 @@
         ];
 
         // Listas de opciones predefinidas para los selects.
-        const defaultTipoInstitucion = [
+        let defaultTipoInstitucion = [
             "Dependencia", "Órgano Administrativo Desconcentrado", "Organismo Descentralizado",
             "Empresa de Participación Estatal Mayoritaria", "Organismo Descentralizado No Sectorizado",
             "Fideicomiso Público", "Fideicomiso Público que forma parte del Sistema Financiero Mexicano",
             "Organismo Autónomo"
         ];
 
-        const defaultSector = [
+        let defaultSector = [
             "04 Gobernación", "05 Relaciones Exteriores", "06 Hacienda y Crédito Público",
             "07 Defensa Nacional", "08 Agricultura y Desarrollo Rural", "09 Infraestructura, Comunicaciones y Transportes",
             "10 Economía", "11 Educación Pública", "12 Salud", "13 Marina",
@@ -1471,9 +1495,9 @@
         ];
 
         // Listas de opciones para los campos de usuario.
-        const defaultPerfiles = ["Coordinador de Control Interno", "Instancia de Control Interno", "Riesgos"];
-        const defaultTiposUsuario = ["Interno", "Externo"];
-        const defaultCargos = ["Director General", "Director de Área", "Subdirector", "Jefe de Departamento", "Analista", "Consultor"];
+        let defaultPerfiles = ["Coordinador de Control Interno", "Instancia de Control Interno", "Riesgos"];
+        let defaultTiposUsuario = ["Interno", "Externo"];
+        let defaultCargos = ["Director General", "Director de Área", "Subdirector", "Jefe de Departamento", "Analista", "Consultor"];
         const defaultAccionesRealizadas = ["Ninguna", "Modificación", "Eliminación", "Agregación"];
         const defaultTiposEvento = ["Inicio", "Cierre", "Error"];
 
@@ -1489,6 +1513,12 @@
 
         let users = JSON.parse(localStorage.getItem('users_v11_1_1')) || initialUsersData;
         let userAccessLogs = JSON.parse(localStorage.getItem('userAccessLogs_v11_1_1')) || initialUserAccessLogs;
+
+        // Nuevas variables para las listas editables de usuario
+        let perfilesList = JSON.parse(localStorage.getItem('perfilesList_v11_1_1')) || defaultPerfiles;
+        let tiposUsuarioList = JSON.parse(localStorage.getItem('tiposUsuarioList_v11_1_1')) || defaultTiposUsuario;
+        let cargosList = JSON.parse(localStorage.getItem('cargosList_v11_1_1')) || defaultCargos;
+
 
         // Variables de estado temporales para la UI.
         let selectedInstitutionsForProgramacion = [];
@@ -1561,7 +1591,7 @@
             populateActionFilters();
             populateAperturarModalActions();
             populateModalSelects();
-            populateUserModalSelects();
+            populateUserModalSelects(); // Se llama aquí para asegurar que las listas estén pobladas al inicio
 
             // Asegura que el primer módulo de la barra lateral esté expandido por defecto.
             const firstModuleHeader = document.querySelector('.sidebar .module-header');
@@ -1658,7 +1688,7 @@
                     renderInstitutionsTable();
                     populateModalSelects();
                 } else if (moduleId === 'programacion-periodos') {
-                    selectedInstitutionsForProgramacion = []; // Limpia la selección al entrar al módulo.
+                    // No se limpia selectedInstitutionsForProgramacion aquí para mantener la selección
                     renderProgramacionPeriodosTable();
                 } else if (moduleId === 'reporte-avance-institucional') {
                     renderReporteAvanceInstitucionalTable();
@@ -1773,7 +1803,9 @@
             }
 
             // Si el contexto es para programación de periodos, re-renderiza la tabla.
-            if (contextPrefix === 'programacion-institucion') renderProgramacionPeriodosTable();
+            // Esta llamada se mueve a selectInstitution para que se active solo cuando se selecciona una sugerencia.
+            // Si el usuario solo escribe y el input pierde el foco, el filtro se aplica en el renderProgramacionPeriodosTable.
+            // Si el usuario selecciona una sugerencia, selectInstitution lo maneja.
         }
 
         /**
@@ -1797,7 +1829,9 @@
             }
 
             // Si el contexto es para programación de periodos, re-renderiza la tabla.
-            if (contextPrefix === 'programacion-institucion') renderProgramacionPeriodosTable();
+            if (contextPrefix === 'programacion-institucion') {
+                renderProgramacionPeriodosTable();
+            }
         }
 
         /**
@@ -1806,6 +1840,7 @@
         function clearInstitutionFilter() {
             const input = document.getElementById('programacion-institucion-filter');
             input.value = '';
+            document.getElementById('programacion-institucion-id').value = ''; // Limpiar el ID oculto también
             renderProgramacionPeriodosTable();
         }
 
@@ -1858,14 +1893,14 @@
             const tipoSelect = document.getElementById('modal-tipo-institucion');
             const sectorSelect = document.getElementById('modal-sector');
 
-            tipoSelect.innerHTML = '<option value="">Seleccione</option>';
+            tipoSelect.innerHTML = ''; // Eliminar la opción "Seleccione"
             tipoInstitucionList.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item;
                 option.textContent = item;
                 tipoSelect.appendChild(option);
             });
-            sectorSelect.innerHTML = '<option value="">Seleccione</option>';
+            sectorSelect.innerHTML = ''; // Eliminar la opción "Seleccione"
             sectorList.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item;
@@ -1966,7 +2001,7 @@
 
         /**
          * Abre el modal para editar las listas de tipo de institución o sector.
-         * @param {string} listType - El tipo de lista a editar ('tipoInstitucion' o 'sector').
+         * @param {string} listType - El tipo de lista a editar ('tipoInstitucion', 'sector', 'perfil', 'tipoUsuario', 'cargo').
          */
         function openEditListModal(listType) {
             currentEditingListType = listType;
@@ -1975,8 +2010,35 @@
             const listContainer = document.getElementById('edit-list-container');
             listContainer.innerHTML = '';
 
-            const listToEdit = listType === 'tipoInstitucion' ? tipoInstitucionList : sectorList;
-            modalTitle.textContent = `Editar Lista de ${listType === 'tipoInstitucion' ? 'Tipo de Institución' : 'Sector'}`;
+            let listToEdit;
+            let titleText;
+
+            switch (listType) {
+                case 'tipoInstitucion':
+                    listToEdit = tipoInstitucionList;
+                    titleText = 'Tipo de Institución';
+                    break;
+                case 'sector':
+                    listToEdit = sectorList;
+                    titleText = 'Sector';
+                    break;
+                case 'perfil':
+                    listToEdit = perfilesList;
+                    titleText = 'Perfiles';
+                    break;
+                case 'tipoUsuario':
+                    listToEdit = tiposUsuarioList;
+                    titleText = 'Tipos de Usuario';
+                    break;
+                case 'cargo':
+                    listToEdit = cargosList;
+                    titleText = 'Cargos';
+                    break;
+                default:
+                    return;
+            }
+
+            modalTitle.textContent = `Editar Lista de ${titleText}`;
             listToEdit.forEach((item, index) => {
                 const listItemDiv = document.createElement('div');
                 listItemDiv.classList.add('flex', 'items-center', 'justify-between', 'p-2', 'border-b', 'last:border-b-0');
@@ -1986,7 +2048,7 @@
                         <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white p-1 rounded-md text-xs" onclick="openEditSingleListItemModal('${listType}', ${index}, '${item}')" title="Editar">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="M15 5l4 4"/></svg>
                         </button>
-                        <button type="button" class="bg-red-500 hover:bg-red-600 text-white p-1 rounded-md text-xs" onclick="removeListItem('${listType}', ${index})" title="Borrar ${listType === 'tipoInstitucion' ? 'Tipo de Institución' : 'Sector'}">
+                        <button type="button" class="bg-red-500 hover:bg-red-600 text-white p-1 rounded-md text-xs" onclick="removeListItem('${listType}', ${index})" title="Borrar">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                         </button>
                     </div>`;
@@ -2001,6 +2063,7 @@
         function closeEditListModal() {
             document.getElementById('edit-list-modal-overlay').classList.add('hidden');
             populateModalSelects(); // Vuelve a poblar los selects después de editar las listas.
+            populateUserModalSelects(); // Vuelve a poblar los selects de usuario.
         }
 
         /**
@@ -2035,28 +2098,56 @@
             const newValue = document.getElementById('edit-single-list-item-input').value.trim();
             if (!newValue) { showAlert('El nuevo valor no puede estar vacío.'); return; }
 
-            let oldItem;
-            if (listType === 'tipoInstitucion') {
-                oldItem = tipoInstitucionList[index];
-                if (tipoInstitucionList.includes(newValue) && newValue !== oldItem) { showAlert('Este tipo de institución ya existe.'); return; }
-                tipoInstitucionList[index] = newValue;
-                // En producción: se enviaría una solicitud de actualización a la base de datos.
-                localStorage.setItem('tipoInstitucionList_v11_1_1', JSON.stringify(tipoInstitucionList));
-                // Actualiza las instituciones que usaban el valor antiguo.
-                institutions.forEach(inst => { if (inst.tipo === oldItem) inst.tipo = newValue; });
-            } else if (listType === 'sector') {
-                oldItem = sectorList[index];
-                if (sectorList.includes(newValue) && newValue !== oldItem) { showAlert('Este sector ya existe.'); return; }
-                sectorList[index] = newValue;
-                // En producción: se enviaría una solicitud de actualización a la base de datos.
-                localStorage.setItem('sectorList_v11_1_1', JSON.stringify(sectorList));
-                // Actualiza las instituciones que usaban el valor antiguo.
-                institutions.forEach(inst => { if (inst.sector === oldItem) inst.sector = newValue; });
+            let list;
+            let localStorageKey;
+            let affectedUsersProp;
+
+            switch (listType) {
+                case 'tipoInstitucion':
+                    list = tipoInstitucionList;
+                    localStorageKey = 'tipoInstitucionList_v11_1_1';
+                    affectedUsersProp = 'tipo'; // This is for institutions, not users
+                    break;
+                case 'sector':
+                    list = sectorList;
+                    localStorageKey = 'sectorList_v11_1_1';
+                    affectedUsersProp = 'sector'; // This is for institutions, not users
+                    break;
+                case 'perfil':
+                    list = perfilesList;
+                    localStorageKey = 'perfilesList_v11_1_1';
+                    affectedUsersProp = 'perfil'; // This is for users
+                    break;
+                case 'tipoUsuario':
+                    list = tiposUsuarioList;
+                    localStorageKey = 'tiposUsuarioList_v11_1_1';
+                    affectedUsersProp = 'tipoUsuario'; // This is for users
+                    break;
+                case 'cargo':
+                    list = cargosList;
+                    localStorageKey = 'cargosList_v11_1_1';
+                    affectedUsersProp = 'cargo'; // This is for users
+                    break;
+                default:
+                    return;
             }
-            // En producción: se enviaría una solicitud de actualización masiva o individual a la base de datos para las instituciones.
-            localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
+
+            const oldItem = list[index];
+            if (list.includes(newValue) && newValue !== oldItem) { showAlert(`Este ${listType} ya existe.`); return; }
+            list[index] = newValue;
+            localStorage.setItem(localStorageKey, JSON.stringify(list));
+
+            // Actualiza las instituciones o usuarios que usaban el valor antiguo.
+            if (listType === 'tipoInstitucion' || listType === 'sector') {
+                institutions.forEach(inst => { if (inst[affectedUsersProp] === oldItem) inst[affectedUsersProp] = newValue; });
+                localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
+                renderInstitutionsTable();
+            } else { // For perfil, tipoUsuario, cargo
+                users.forEach(user => { if (user[affectedUsersProp] === oldItem) user[affectedUsersProp] = newValue; });
+                localStorage.setItem('users_v11_1_1', JSON.stringify(users));
+                renderUsersTable();
+            }
             closeEditSingleListItemModal();
-            renderInstitutionsTable(); // Vuelve a renderizar la tabla de instituciones para reflejar los cambios.
         }
 
         /**
@@ -2065,21 +2156,47 @@
         function addListItem() {
             const input = document.getElementById('new-list-item-input');
             const newItem = input.value.trim();
-            if (newItem) {
-                if (currentEditingListType === 'tipoInstitucion') {
-                    if (tipoInstitucionList.includes(newItem)) { showAlert('Este tipo de institución ya existe.'); return; }
-                    tipoInstitucionList.push(newItem);
-                    // En producción: se enviaría una solicitud de adición a la base de datos.
-                    localStorage.setItem('tipoInstitucionList_v11_1_1', JSON.stringify(tipoInstitucionList));
-                } else if (currentEditingListType === 'sector') {
-                    if (sectorList.includes(newItem)) { showAlert('Este sector ya existe.'); return; }
-                    sectorList.push(newItem);
-                    // En producción: se enviaría una solicitud de adición a la base de datos.
-                    localStorage.setItem('sectorList_v11_1_1', JSON.stringify(sectorList));
-                }
-                input.value = '';
-                openEditListModal(currentEditingListType); // Recarga la lista en el modal.
+            if (!newItem) { showAlert('El nuevo elemento no puede estar vacío.'); return; }
+
+            let list;
+            let localStorageKey;
+            let alertMessage;
+
+            switch (currentEditingListType) {
+                case 'tipoInstitucion':
+                    list = tipoInstitucionList;
+                    localStorageKey = 'tipoInstitucionList_v11_1_1';
+                    alertMessage = 'Este tipo de institución ya existe.';
+                    break;
+                case 'sector':
+                    list = sectorList;
+                    localStorageKey = 'sectorList_v11_1_1';
+                    alertMessage = 'Este sector ya existe.';
+                    break;
+                case 'perfil':
+                    list = perfilesList;
+                    localStorageKey = 'perfilesList_v11_1_1';
+                    alertMessage = 'Este perfil ya existe.';
+                    break;
+                case 'tipoUsuario':
+                    list = tiposUsuarioList;
+                    localStorageKey = 'tiposUsuarioList_v11_1_1';
+                    alertMessage = 'Este tipo de usuario ya existe.';
+                    break;
+                case 'cargo':
+                    list = cargosList;
+                    localStorageKey = 'cargosList_v11_1_1';
+                    alertMessage = 'Este cargo ya existe.';
+                    break;
+                default:
+                    return;
             }
+
+            if (list.includes(newItem)) { showAlert(alertMessage); return; }
+            list.push(newItem);
+            localStorage.setItem(localStorageKey, JSON.stringify(list));
+            input.value = '';
+            openEditListModal(currentEditingListType); // Recarga la lista en el modal.
         }
 
         /**
@@ -2088,27 +2205,57 @@
          * @param {number} indexToRemove - El índice del elemento a eliminar.
          */
         function removeListItem(listType, indexToRemove) {
-            showConfirm('¿Está seguro de que desea eliminar este elemento? Las instituciones que lo usen quedarán sin un valor asignado.', () => {
+            showConfirm('¿Está seguro de que desea eliminar este elemento? Las entidades que lo usen quedarán sin un valor asignado.', () => {
+                let list;
+                let localStorageKey;
+                let affectedUsersProp;
                 let itemToRemove;
-                if (listType === 'tipoInstitucion') {
-                    itemToRemove = tipoInstitucionList[indexToRemove];
-                    tipoInstitucionList.splice(indexToRemove, 1);
-                    // En producción: se enviaría una solicitud de eliminación a la base de datos.
-                    localStorage.setItem('tipoInstitucionList_v11_1_1', JSON.stringify(tipoInstitucionList));
-                    // Elimina el tipo de institución de las instituciones que lo usaban.
-                    institutions.forEach(inst => { if (inst.tipo === itemToRemove) inst.tipo = ''; });
-                } else if (listType === 'sector') {
-                    itemToRemove = sectorList[indexToRemove];
-                    sectorList.splice(indexToRemove, 1);
-                    // En producción: se enviaría una solicitud de eliminación a la base de datos.
-                    localStorage.setItem('sectorList_v11_1_1', JSON.stringify(sectorList));
-                    // Elimina el sector de las instituciones que lo usaban.
-                    institutions.forEach(inst => { if (inst.sector === itemToRemove) inst.sector = ''; });
+
+                switch (listType) {
+                    case 'tipoInstitucion':
+                        list = tipoInstitucionList;
+                        localStorageKey = 'tipoInstitucionList_v11_1_1';
+                        affectedUsersProp = 'tipo';
+                        break;
+                    case 'sector':
+                        list = sectorList;
+                        localStorageKey = 'sectorList_v11_1_1';
+                        affectedUsersProp = 'sector';
+                        break;
+                    case 'perfil':
+                        list = perfilesList;
+                        localStorageKey = 'perfilesList_v11_1_1';
+                        affectedUsersProp = 'perfil';
+                        break;
+                    case 'tipoUsuario':
+                        list = tiposUsuarioList;
+                        localStorageKey = 'tiposUsuarioList_v11_1_1';
+                        affectedUsersProp = 'tipoUsuario';
+                        break;
+                    case 'cargo':
+                        list = cargosList;
+                        localStorageKey = 'cargosList_v11_1_1';
+                        affectedUsersProp = 'cargo';
+                        break;
+                    default:
+                        return;
                 }
-                // En producción: se enviaría una solicitud de actualización masiva o individual a la base de datos para las instituciones.
-                localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
+
+                itemToRemove = list[indexToRemove];
+                list.splice(indexToRemove, 1);
+                localStorage.setItem(localStorageKey, JSON.stringify(list));
+
+                // Actualiza las instituciones o usuarios que usaban el valor antiguo.
+                if (listType === 'tipoInstitucion' || listType === 'sector') {
+                    institutions.forEach(inst => { if (inst[affectedUsersProp] === itemToRemove) inst[affectedUsersProp] = ''; });
+                    localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
+                    renderInstitutionsTable();
+                } else { // For perfil, tipoUsuario, cargo
+                    users.forEach(user => { if (user[affectedUsersProp] === itemToRemove) user[affectedUsersProp] = ''; });
+                    localStorage.setItem('users_v11_1_1', JSON.stringify(users));
+                    renderUsersTable();
+                }
                 openEditListModal(listType); // Recarga la lista en el modal.
-                renderInstitutionsTable(); // Vuelve a renderizar la tabla de instituciones para reflejar los cambios.
             });
         }
 
@@ -2122,20 +2269,27 @@
             tableBody.innerHTML = '';
 
             const institucionFilterText = document.getElementById('programacion-institucion-filter').value.toLowerCase();
+            const institucionFilterId = document.getElementById('programacion-institucion-id').value; // Obtener el ID de la institución seleccionada
             const ptciFilter = document.getElementById('ptci-actualizado-filter').value;
             const tipoAperturaFilter = document.getElementById('tipo-accion-filter').value;
 
             let institutionsToDisplay = institutions.filter(inst => {
                 const instName = inst.nombre.toLowerCase();
                 const instSiglas = inst.siglas.toLowerCase();
-                // Filtra por siglas o nombre de la institución.
-                const matchesInstitucion = institucionFilterText === '' || instName.includes(institucionFilterText) || instSiglas.includes(institucionFilterText);
+
+                let matchesInstitution = false;
+                if (institucionFilterId) { // Si hay un ID de institución seleccionado (desde el clic en la sugerencia)
+                    matchesInstitution = inst.id === institucionFilterId;
+                } else { // Si no hay un ID seleccionado, se filtra por el texto del input
+                    matchesInstitution = institucionFilterText === '' || instName.includes(institucionFilterText) || instSiglas.includes(institucionFilterText);
+                }
+
                 const matchesPtci = ptciFilter === 'todos' || inst.ptciActualizado === ptciFilter;
 
                 const programmedPeriod = programmedPeriods.find(pp => pp.institucionId === inst.id);
                 const hasMatchingProgrammedPeriod = tipoAperturaFilter === 'todos' || (programmedPeriod && programmedPeriod.accionesPermitidas.includes(tipoAperturaFilter));
 
-                return matchesInstitucion && matchesPtci && (tipoAperturaFilter === 'todos' ? true : hasMatchingProgrammedPeriod);
+                return matchesInstitution && matchesPtci && (tipoAperturaFilter === 'todos' ? true : hasMatchingProgrammedPeriod);
             });
 
             if (institutionsToDisplay.length === 0) {
@@ -2150,25 +2304,31 @@
                 const row = tableBody.insertRow();
                 row.classList.toggle('selected', isSelected);
                 row.dataset.institutionId = inst.id;
-                // Permite seleccionar la fila haciendo clic en cualquier parte excepto en el checkbox o botones.
-                row.onclick = (event) => {
+
+                // Attach event listener for row click (excluding checkbox/buttons)
+                row.addEventListener('click', (event) => {
                     if (event.target.type !== 'checkbox' && event.target.tagName !== 'BUTTON' && event.target.tagName !== 'SVG' && event.target.tagName !== 'PATH') {
                         const checkbox = row.querySelector('input[type="checkbox"]');
                         checkbox.checked = !checkbox.checked;
                         toggleInstitutionSelection(checkbox, inst.id);
                     }
-                };
+                });
+
                 row.innerHTML = `
-                    <td><input type="checkbox" data-institution-id="${inst.id}" onchange="toggleInstitutionSelection(this, '${inst.id}')" ${isSelected ? 'checked' : ''}></td>
+                    <td><input type="checkbox" data-institution-id="${inst.id}" ${isSelected ? 'checked' : ''}></td>
                     <td>${programmedPeriod.periodo || 'N/A'}</td>
                     <td>${inst.siglas}</td>
                     <td>${inst.nombre}</td>
                     <td>${inst.ptciActualizado}</td>
                     <td>${programmedPeriod.trimestre || 'N/A'}</td>
-                    <td>${(programmedPeriod.accionesPermitidas || []).join('<br>') || 'N/A'}</td> <!-- Modificado para saltos de línea -->
+                    <td>${(programmedPeriod.accionesPermitidas || []).join('<br>')}</td> <!-- Modificado para saltos de línea -->
                     <td>${programmedPeriod.fechaInicio || 'N/A'}</td>
                     <td>${programmedPeriod.fechaFin || 'N/A'}</td>
                 `;
+
+                // Add event listener for the checkbox specifically
+                const checkbox = row.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', () => toggleInstitutionSelection(checkbox, inst.id));
             });
             updateUiPostSelection();
         }
@@ -2181,8 +2341,29 @@
             const checkboxes = document.querySelectorAll('#programacion-periodos-table tbody input[type="checkbox"]');
             checkboxes.forEach(checkbox => {
                 checkbox.checked = isChecked;
+                // Directly call toggleInstitutionSelection as it handles adding/removing from the array
                 toggleInstitutionSelection(checkbox, checkbox.dataset.institutionId);
             });
+        }
+
+        /**
+         * Alterna la selección de una institución individual.
+         * @param {HTMLElement} checkbox - El checkbox de la fila.
+         * @param {string} institutionId - El ID de la institución.
+         */
+        function toggleInstitutionSelection(checkbox, institutionId) {
+            const institution = institutions.find(inst => inst.id === institutionId);
+            if (!institution) return;
+
+            if (checkbox.checked) {
+                if (!selectedInstitutionsForProgramacion.some(inst => inst.id === institutionId)) {
+                    selectedInstitutionsForProgramacion.push(institution);
+                }
+            } else {
+                selectedInstitutionsForProgramacion = selectedInstitutionsForProgramacion.filter(inst => inst.id !== institutionId);
+            }
+            checkbox.closest('tr').classList.toggle('selected', checkbox.checked);
+            updateUiPostSelection();
         }
 
         /**
@@ -2343,6 +2524,7 @@
          * Abre el modal "Aperturar Sistema".
          */
         function openAperturarModal() {
+            // Check if selectedInstitutionsForProgramacion is populated
             if (selectedInstitutionsForProgramacion.length === 0) {
                 showAlert('Por favor, selecciona al menos una institución.');
                 return;
@@ -2483,7 +2665,7 @@
             });
 
             if (filteredInstitutions.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="22" class="text-center text-gray-500 py-3">No se encontraron instituciones con el estatus seleccionado.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="38" class="text-center text-gray-500 py-3">No se encontraron instituciones con el estatus seleccionado.</td></tr>`;
                 return;
             }
 
@@ -2501,6 +2683,7 @@
                     hasData = true;
                     // Aquí se simulan los datos de avance. En una aplicación real, estos vendrían de la base de datos.
                     const data = {
+                        // Evaluación de la Institución
                         periodoCapturaSCII: '2024-01-01',
                         abiertoHastaSCII: '2024-03-31',
                         procesosPrioritarios: 'Sí',
@@ -2524,6 +2707,7 @@
                         abiertoHastaSeguimientoAC: '2024-09-30',
                         finalizadoSeguimientoAC: 'Sí',
                         reporteTrimestralAC: 'Sí',
+                        // Evaluación del OIC
                         periodoCapturaRevisionOIC: '2024-01-01',
                         abiertoHastaRevisionOIC: '2024-03-31',
                         informeOICFinalizado: 'Sí',
@@ -2543,7 +2727,7 @@
                     dataRow += `<td>${inst.siglas}</td>`;
                     dataRow += `<td>${inst.nombre}</td>`;
 
-                    // Evaluación de la Institución
+                    // Evaluación de la Institución (23 columnas)
                     dataRow += `<td>${data.periodoCapturaSCII}</td>`;
                     dataRow += `<td>${data.abiertoHastaSCII}</td>`;
                     dataRow += `<td>${data.procesosPrioritarios}</td>`;
@@ -2568,7 +2752,7 @@
                     dataRow += `<td>${data.finalizadoSeguimientoAC}</td>`;
                     dataRow += `<td>${data.reporteTrimestralAC}</td>`;
 
-                    // Evaluación del OIC
+                    // Evaluación del OIC (11 columnas)
                     dataRow += `<td>${data.periodoCapturaRevisionOIC}</td>`;
                     dataRow += `<td>${data.abiertoHastaRevisionOIC}</td>`;
                     dataRow += `<td>${data.informeOICFinalizado}</td>`;
@@ -2587,7 +2771,7 @@
             });
 
             if (!hasData) {
-                 tbody.innerHTML = `<tr><td colspan="22" class="text-center text-gray-500 py-3">No se encontraron datos para el filtro seleccionado.</td></tr>`;
+                 tbody.innerHTML = `<tr><td colspan="38" class="text-center text-gray-500 py-3">No se encontraron datos para el filtro seleccionado.</td></tr>`;
             }
         }
 
@@ -2600,33 +2784,6 @@
             const theadRows = Array.from(table.querySelectorAll('thead tr'));
             let headers = [];
 
-            // Recorrer las filas del thead para construir los encabezados del CSV
-            theadRows.forEach((row, rowIndex) => {
-                Array.from(row.children).forEach(th => {
-                    const text = th.textContent.trim();
-                    const colspan = parseInt(th.getAttribute('colspan') || 1);
-                    const rowspan = parseInt(th.getAttribute('rowspan') || 1);
-
-                    // Para la primera fila, simplemente añadir los textos
-                    if (rowIndex === 0) {
-                        for (let i = 0; i < colspan; i++) {
-                            headers.push(text);
-                        }
-                    } else {
-                        // Para las filas subsiguientes, necesitamos combinar con los encabezados superiores
-                        // Esto es una simplificación, para un reporte complejo, se necesitaría una lógica más robusta
-                        // para mapear correctamente los encabezados anidados.
-                        // Por ahora, solo añadimos los encabezados de la última fila.
-                        if (rowIndex === theadRows.length - 1) {
-                            for (let i = 0; i < colspan; i++) {
-                                headers.push(text);
-                            }
-                        }
-                    }
-                });
-            });
-
-            // Si se generaron encabezados anidados, aplanarlos para el CSV
             // Para este caso específico, usaremos los encabezados de la última fila como los definitivos
             const finalHeaders = Array.from(theadRows[theadRows.length - 1].children).map(th => th.textContent.trim());
 
@@ -2670,8 +2827,8 @@
             const cargoSelect = document.getElementById('user-cargo');
 
             // Perfiles.
-            perfilSelect.innerHTML = '<option value="">Seleccione Perfil</option>';
-            defaultPerfiles.forEach(item => {
+            perfilSelect.innerHTML = ''; // Eliminar la opción "Seleccione Perfil"
+            perfilesList.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item;
                 option.textContent = item;
@@ -2679,8 +2836,8 @@
             });
 
             // Tipos de Usuario.
-            tipoUsuarioSelect.innerHTML = '<option value="">Seleccione Tipo</option>';
-            defaultTiposUsuario.forEach(item => {
+            tipoUsuarioSelect.innerHTML = ''; // Eliminar la opción "Seleccione Tipo"
+            tiposUsuarioList.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item;
                 option.textContent = item;
@@ -2688,8 +2845,8 @@
             });
 
             // Cargos.
-            cargoSelect.innerHTML = '<option value="">Seleccione Cargo</option>';
-            defaultCargos.forEach(item => {
+            cargoSelect.innerHTML = ''; // Eliminar la opción "Seleccione Cargo"
+            cargosList.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item;
                 option.textContent = item;
@@ -2838,8 +2995,8 @@
             const siglasInstitucion = document.getElementById('user-siglas-institucion-id').value; // Obtiene de input hidden.
 
             // Validación de campos obligatorios.
-            if (!clave || !password || !nombre || !perfil || !siglasInstitucion) {
-                showAlert('Por favor, complete todos los campos obligatorios (Nombre de Usuario, Contraseña, Nombre, Perfil, Siglas Institución).');
+            if (!clave || !password || !nombre || !perfil || !siglasInstitucion || !tipoUsuario || !cargo) {
+                showAlert('Por favor, complete todos los campos obligatorios (Nombre de Usuario, Contraseña, Nombre, Perfil, Siglas Institución, Tipo Usuario, Cargo).');
                 return;
             }
 
