@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SICOIN - BETA 1.0</title>
+    <title>SICOIN - BETA 1.1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Estilos generales para el cuerpo y la fuente */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #eef2f6;
@@ -37,6 +38,7 @@
             flex-grow: 1; /* Permite que tome la altura disponible */
         }
 
+        /* Estilos para el encabezado de la aplicación */
         .header-container {
             background-color: #1F4740;
             color: #ffffff;
@@ -98,6 +100,7 @@
         .header-nav a:hover, .header-nav button:hover {
             background-color: #333d4b;
         }
+        /* Estilos para el diseño principal de la aplicación */
         .main-layout {
             display: flex;
             flex-grow: 1;
@@ -106,6 +109,7 @@
             flex-wrap: nowrap;
             align-items: flex-start;
         }
+        /* Estilos para la barra lateral (sidebar) */
         .sidebar {
             background-color: #ffffff;
             border-radius: 0.6rem;
@@ -165,6 +169,7 @@
             color: white;
             font-weight: bold;
         }
+        /* Estilos para el área de contenido principal */
         .content-area {
             background-color: #ffffff;
             border-radius: 0.6rem;
@@ -182,6 +187,7 @@
                 height: auto;
             }
         }
+        /* Estilos para las tablas de datos */
         .data-table-container {
             overflow-x: auto;
             margin-top: 0.6rem;
@@ -197,7 +203,7 @@
             padding: 0.35rem;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
-            white-space: nowrap;
+            /* white-space: nowrap; */ /* Se elimina para permitir saltos de línea en acciones */
         }
         .data-table th {
             background-color: #2A5C50;
@@ -226,6 +232,7 @@
             background-color: #e0f2f7;
             border-left: 3px solid #00796b;
         }
+        /* Estilos para el pie de página */
         .footer-container {
             background-color: #ffffff;
             text-align: center;
@@ -238,6 +245,7 @@
             color: #4a5568;
             font-size: 0.65rem;
         }
+        /* Estilos para selectores personalizados */
         .select-wrapper {
             position: relative;
             display: inline-block;
@@ -264,6 +272,7 @@
             color: #718096;
             font-size: 0.6rem;
         }
+        /* Estilos para grupos de radio buttons */
         .radio-group {
             display: flex;
             flex-wrap: wrap;
@@ -298,6 +307,7 @@
         .radio-group label:hover {
             background-color: #e2e8f0;
         }
+        /* Estilos para grupos de campos de formulario */
         .form-field-group {
             display: flex;
             flex-direction: column;
@@ -322,6 +332,7 @@
             color: #4a5568;
             margin-bottom: 0.1rem;
         }
+        /* Estilos para el filtro de institución con sugerencias */
         .institution-filter-container {
             position: relative;
             width: 100%;
@@ -366,6 +377,7 @@
         .institution-suggestions div:hover {
             background-color: #e2e8f0;
         }
+        /* Estilos para modales (pop-ups) */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -443,6 +455,7 @@
         .modal-buttons .btn-delete:hover {
             background-color: #dc2626;
         }
+        /* Estilos específicos para botones de edición de listas */
         .edit-list-button {
             background: none;
             border: none;
@@ -523,7 +536,8 @@
             color: #374151;
         }
 
-        .btn-visualizar {
+        /* Estilos para botones de acceso y visualización */
+        .btn-visualizar, .btn-acceso {
             background-color: #A0522D;
             color: white;
             font-weight: bold;
@@ -533,33 +547,12 @@
             transition: all 0.3s ease;
             border: none;
         }
-        .btn-visualizar:hover {
+        .btn-visualizar:hover, .btn-acceso:hover {
             background-color: #8B4513;
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
             transform: translateY(-2px);
         }
-        .btn-visualizar:active {
-            background-color: #7A3D0F;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transform: translateY(0);
-        }
-
-        .btn-acceso {
-            background-color: #A0522D;
-            color: white;
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            border: none;
-        }
-        .btn-acceso:hover {
-            background-color: #8B4513;
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-            transform: translateY(-2px);
-        }
-        .btn-acceso:active {
+        .btn-visualizar:active, .btn-acceso:active {
             background-color: #7A3D0F;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transform: translateY(0);
@@ -576,6 +569,21 @@
         .credentials-box label {
             font-weight: 600;
             color: #2d3748;
+        }
+
+        /* Estilos para el modal de alerta/confirmación personalizado */
+        .custom-modal-content {
+            max-width: 400px;
+            text-align: center;
+        }
+        .custom-modal-content .modal-header {
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+        }
+        .custom-modal-content p {
+            font-size: 0.85rem;
+            color: #374151;
+            margin-bottom: 1.2rem;
         }
     </style>
 </head>
@@ -620,7 +628,7 @@
                 <div class="header-title">
                     <h1>SICOIN – MEJORA PROPUESTA</h1>
                     <h2>Sistema de Control Interno Institucional</h2>
-                    <h3>V 1.0</h3>
+                    <h3>V 1.1</h3>
                 </div>
                 <!-- Logo derecho -->
                 <div class="header-logo">
@@ -669,9 +677,8 @@
                                 <li><a href="#" onclick="showModule('programacion-periodos', this)">▪ Programación de periodos</a></li>
                                 <li><a href="#" onclick="showModule('modifica-avance-am', this)">▪ Modifica Avance Trimestral AM</a></li>
                                 <li><a href="#" onclick="showModule('modifica-avance-ac', this)">▪ Modifica Avance Trimestral AC</a></li>
-                                <li><a href="#" onclick="showModule('procesos-registrados', this)">▪ Procesos Registrados x Oficio</a></li>
+                                <!-- "Procesos Registrados x Oficio" y "Registro de Acciones de Usuarios" eliminados -->
                                 <li><a href="#" onclick="showModule('control-usuarios', this)">▪ Control de Usuarios</a></li>
-                                <li><a href="#" onclick="showModule('registro-acciones', this)">▪ Registro de Acciones de Usuarios</a></li>
                                 <li><a href="#" onclick="showModule('comunicados', this)">▪ Comunicados</a></li>
                             </ul>
                         </li>
@@ -1015,6 +1022,16 @@
                                     <option value="2024">2024</option>
                                 </select>
                             </div>
+                            <div class="select-wrapper" style="width: auto; margin-left: 0.5rem;">
+                                <label for="trimestre_reporte_input" class="sr-only">Elige trimestre</label>
+                                <select id="trimestre_reporte_input" name="trimestre_reporte_input" style="width: 120px; padding: 0.2rem 0.9rem 0.2rem 0.5rem; font-size: 0.7rem;" onchange="renderReporteAvanceInstitucionalTable()">
+                                    <option value="todos">TODOS</option>
+                                    <option value="1T">1er Trimestre</option>
+                                    <option value="2T">2do Trimestre</option>
+                                    <option value="3T">3er Trimestre</option>
+                                    <option value="4T">4to Trimestre</option>
+                                </select>
+                            </div>
                             <a href="#" class="export-button" onclick="exportReporteAvanceInstitucional()" style="background-color: #2A5C50; color: white; padding: 0.2rem 0.5rem; border-radius: 0.3rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.2rem; margin-bottom: 0.4rem; transition: background-color 0.3s ease; font-size: 0.7rem;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                                 Exportar a Excel
@@ -1025,7 +1042,60 @@
                     <div class="data-table-container">
                         <table class="data-table">
                             <thead>
-                                <!-- Los encabezados de la tabla se generarán dinámicamente con JavaScript -->
+                                <tr>
+                                    <th rowspan="3">Periodo</th>
+                                    <th rowspan="3">Trimestre</th>
+                                    <th rowspan="3">Siglas</th>
+                                    <th rowspan="3">Institución</th>
+                                    <th colspan="8">Evaluación de la Institución</th>
+                                    <th colspan="10">Evaluación del OIC</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="4">Evaluación del SCII</th>
+                                    <th colspan="4">PTCI</th>
+                                    <th colspan="2">Seguimiento de Acciones de Mejora</th>
+                                    <th colspan="2">PTAR</th>
+                                    <th colspan="2">Seguimiento de Acciones de Control</th>
+                                    <th colspan="2">Revisión OIC</th>
+                                    <th colspan="2">OIC - Seguimiento de Acciones de Mejora</th>
+                                    <th colspan="2">OIC - Seguimiento de Acciones de Control</th>
+                                </tr>
+                                <tr>
+                                    <th>Periodo Captura</th>
+                                    <th>Abierto Hasta</th>
+                                    <th>Procesos Prioritarios</th>
+                                    <th>Evaluación del SCII</th>
+                                    <th>Informe Anual</th>
+                                    <th>PTCI Finalizado</th>
+                                    <th>Periodo Captura</th>
+                                    <th>Abierto Hasta</th>
+                                    <th>Actualizar PTCI</th>
+                                    <th>PTCI Act Finalizado</th>
+                                    <th>Periodo Captura</th>
+                                    <th>Abierto Hasta</th>
+                                    <th>Finalizado</th>
+                                    <th>Reporte Trimestral</th>
+                                    <th>Periodo Captura</th>
+                                    <th>Abierto Hasta</th>
+                                    <th>Controles</th>
+                                    <th>Estrategia</th>
+                                    <th>PTAR Finalizado</th>
+                                    <th>Periodo Captura</th>
+                                    <th>Abierto Hasta</th>
+                                    <th>Finalizado</th>
+                                    <th>Reporte Trimestral</th>
+                                    <th>Periodo Captura</th>
+                                    <th>Abierto Hasta</th>
+                                    <th>Informe OIC Finalizado</th>
+                                    <th>Periodo Captura</th>
+                                    <th>Abierto Hasta</th>
+                                    <th>Finalizado</th>
+                                    <th>Reporte Trimestral</th>
+                                    <th>Periodo Captura</th>
+                                    <th>Abierto Hasta</th>
+                                    <th>Finalizado</th>
+                                    <th>Reporte Trimestral</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <!-- Los datos de la tabla se generarán dinámicamente con JavaScript -->
@@ -1077,6 +1147,7 @@
                                 <tr>
                                     <th>Siglas Institución</th>
                                     <th>Nombre Institución</th>
+                                    <th>Nombre</th> <!-- Nueva columna Nombre -->
                                     <th>Perfil</th>
                                     <th>Usuario</th>
                                     <th>Contraseña</th>
@@ -1133,6 +1204,22 @@
                                 <label for="user-cargo">Cargo</label>
                                 <select id="user-cargo" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs"></select>
                             </div>
+                            <!-- Nuevos campos para No. de Oficio de Designación y Cargar Archivo -->
+                            <div class="modal-form-group">
+                                <label for="user-no-oficio">No. de Oficio de Designación</label>
+                                <input type="text" id="user-no-oficio" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs">
+                            </div>
+                            <div class="modal-form-group">
+                                <label for="user-file-upload">Cargar Archivo</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="text" id="user-file-name" class="flex-grow px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" placeholder="Ningún archivo seleccionado" readonly>
+                                    <button type="button" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded-md text-xs" onclick="document.getElementById('user-file-input').click()">
+                                        Examinar
+                                    </button>
+                                    <input type="file" id="user-file-input" class="hidden" onchange="document.getElementById('user-file-name').value = this.files[0] ? this.files[0].name : ''">
+                                </div>
+                            </div>
+                            <!-- Fin de nuevos campos -->
                             <div class="modal-form-group">
                                 <label for="user-correo">Correo</label>
                                 <input type="email" id="user-correo" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs">
@@ -1202,76 +1289,85 @@
 
                 <div id="module-modifica-avance-am" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Modifica Avance Trimestral AM</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para modificar avance trimestral AM.</p>
+                    <!-- Código para el módulo 'Modifica Avance Trimestral AM' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-modifica-avance-ac" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Modifica Avance Trimestral AC</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para modificar avance trimestral AC.</p>
+                    <!-- Código para el módulo 'Modifica Avance Trimestral AC' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
-                <div id="module-procesos-registrados" class="module-content hidden">
-                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Procesos Registrados por Oficio</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para procesos registrados por oficio.</p>
-                </div>
-                <!-- El módulo de Registro de Acciones de Usuarios se mantiene como placeholder -->
-                <div id="module-registro-acciones" class="module-content hidden">
-                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Registro de Acciones de Usuarios</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para el registro de acciones de usuarios.</p>
-                </div>
+                <!-- Módulo 'Procesos Registrados x Oficio' eliminado -->
+                <!-- Módulo 'Registro de Acciones de Usuarios' eliminado -->
                 <div id="module-comunicados" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Comunicados</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para comunicados.</p>
+                    <!-- Código para el módulo 'Comunicados' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-acciones-mejora-reporte" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte: Acciones de Mejora</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para el reporte de Acciones de Mejora.</p>
+                    <!-- Código para el módulo 'Reporte: Acciones de Mejora' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-acciones-control-reporte" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte: Acciones de Control</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para el reporte de Acciones de Control.</p>
+                    <!-- Código para el módulo 'Reporte: Acciones de Control' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-seguimiento-trimestral" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte Seguimiento Trimestral</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para el reporte de seguimiento trimestral.</p>
+                    <!-- Código para el módulo 'Reporte Seguimiento Trimestral' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-conclusion" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Conclusión</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para la conclusión.</p>
+                    <!-- Código para el módulo 'Conclusión' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-consolidado" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Consolidado</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para el consolidado.</p>
+                    <!-- Código para el módulo 'Consolidado' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-reporte-acciones-mejora" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte Acciones Mejora</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para el reporte de acciones de mejora.</p>
+                    <!-- Código para el módulo 'Reporte Acciones Mejora' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-reporte-ptci-ptar" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte PTCI y PTAR (Excel)</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para el reporte PTCI y PTAR.</p>
+                    <!-- Código para el módulo 'Reporte PTCI y PTAR (Excel)' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-evaluacion-oic" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Evaluación de OIC (Excel)</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para la evaluación de OIC.</p>
+                    <!-- Código para el módulo 'Evaluación de OIC (Excel)' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-acciones-mejora-trimestre" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Acciones Mejora por Trimestre</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para acciones de mejora por trimestre.</p>
+                    <!-- Código para el módulo 'Acciones Mejora por Trimestre' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-acciones-control-trimestre" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Acciones Control Trimestral</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para acciones de control trimestral.</p>
+                    <!-- Código para el módulo 'Acciones Control Trimestral' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-imprimir-ptci" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Imprimir Programa de Trabajo de Control Interno</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para imprimir PTCI.</p>
+                    <!-- Código para el módulo 'Imprimir Programa de Trabajo de Control Interno' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-imprimir-ptar" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Imprimir Programa de Trabajo de Administración de Riesgo</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para imprimir PTAR.</p>
+                    <!-- Código para el módulo 'Imprimir Programa de Trabajo de Administración de Riesgo' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-cambiar-contrasena" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Cambiar Contraseña</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para cambiar la contraseña del usuario.</p>
+                    <!-- Código para el módulo 'Cambiar Contraseña' irá aquí. -->
+                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
 
             </section>
@@ -1280,8 +1376,31 @@
         <footer class="footer-container">
             <label>Insurgentes Sur 1735, Col. Guadalupe Inn Ciudad de México., C.P 01020 - Tel. 2000 3000</label>
             <br>
-            <label>Secretaría Anticorrupción y Buen Gobierno, México - algunos derechos reservados © 2016 </label>
+            <label>Secretaría Anticorrupción y Buen Gobierno, México - algunos derechos reservados © 2025 </label>
         </footer>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div id="custom-alert-modal-overlay" class="modal-overlay hidden">
+        <div class="modal-content custom-modal-content">
+            <h3 class="modal-header">Mensaje del Sistema</h3>
+            <p id="custom-alert-message"></p>
+            <div class="modal-buttons justify-center">
+                <button type="button" class="btn-save" onclick="closeAlertModal()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirm Modal -->
+    <div id="custom-confirm-modal-overlay" class="modal-overlay hidden">
+        <div class="modal-content custom-modal-content">
+            <h3 class="modal-header">Confirmación Requerida</h3>
+            <p id="custom-confirm-message"></p>
+            <div class="modal-buttons justify-center">
+                <button type="button" class="btn-cancel" onclick="handleConfirmNo()">No</button>
+                <button type="button" class="btn-save" onclick="handleConfirmYes()">Sí</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1289,15 +1408,15 @@
         // Datos iniciales para instituciones. En un entorno de producción, estos datos se cargarían desde una base de datos.
         const initialInstitutionsData = [
             { id: '224', siglas: 'APBP', nombre: 'Administración del Patrimonio de la Beneficencia Pública', tipo: 'Organismo Descentralizado', sector: '12 SALUD', estatus: 'Activa', ptciActualizado: 'Sí' },
-            { id: '310', siglas: 'ASPNAC', nombre: 'Administración del Sistema Portuario Nacional Acapulco, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
-            { id: '44', siglas: 'ASPNA', nombre: 'Administración del Sistema Portuario Nacional Altamira, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
-            { id: '312', siglas: 'ASPNCSL', nombre: 'Administración del Sistema Portuario Nacional Cabo San Lucas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
-            { id: '45', siglas: 'ASPNCO', nombre: 'Administración del Sistema Portuario Nacional Coatzacoalcos, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
-            { id: '46', siglas: 'ASPNDB', nombre: 'Administración del Sistema Portuario Nacional Dos Bocas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
-            { id: '47', siglas: 'ASPNE', nombre: 'Administración del Sistema Portuario Nacional Ensenada, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
-            { id: '48', siglas: 'ASPNG', nombre: 'Administración del Sistema Portuario Nacional Guaymas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
-            { id: '49', siglas: 'ASPNLC', nombre: 'Administración del Sistema Portuario Nacional Lázaro Cárdenas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
-            { id: '50', siglas: 'ASPNM', nombre: 'Administración del Sistema Portuario Nacional Manzanillo, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
+            { id: '310', siglas: 'ASIPONA ACAPULCO', nombre: 'Administración del Sistema Portuario Nacional Acapulco, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
+            { id: '44', siglas: 'ASIPONA ALTAMIRA', nombre: 'Administración del Sistema Portuario Nacional Altamira, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
+            { id: '312', siglas: 'ASIPONA SAN LUCAS', nombre: 'Administración del Sistema Portuario Nacional Cabo San Lucas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
+            { id: '45', siglas: 'ASIPONA COATZACOALCOS', nombre: 'Administración del Sistema Portuario Nacional Coatzacoalcos, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
+            { id: '46', siglas: 'ASIPONA DOS BOCAS', nombre: 'Administración del Sistema Portuario Nacional Dos Bocas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
+            { id: '47', siglas: 'ASIPONA ENSENADA', nombre: 'Administración del Sistema Portuario Nacional Ensenada, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
+            { id: '48', siglas: 'ASIPONA GUAYMAS', nombre: 'Administración del Sistema Portuario Nacional Guaymas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
+            { id: '49', siglas: 'ASIPONA LÁZARO CÁRDENAS', nombre: 'Administración del Sistema Portuario Nacional Lázaro Cárdenas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
+            { id: '50', siglas: 'ASIPONA MANZANILLO', nombre: 'Administración del Sistema Portuario Nacional Manzanillo, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
             { id: '999', siglas: 'IPPR', nombre: 'Institución de Prueba para el Reporte', tipo: 'Dependencia', sector: '99 Entidad no Coordinada Sectorialmente', estatus: 'Activa', ptciActualizado: 'Sí' }
         ];
 
@@ -1334,21 +1453,21 @@
 
         // Datos iniciales para usuarios. Incluye el usuario por defecto para el login.
         const initialUsersData = [
-            { id: 'user1', clave: 'admin_user', password: 'password123', nombre: 'Administrador Principal', perfil: 'Coordinador de Control Interno', estatus: 'Activo', correo: 'admin.user@example.com', telefono: '5511112222', tipoUsuario: 'Interno', cargo: 'Director General', siglasInstitucion: 'APBP' },
-            { id: 'user2', clave: 'maria_g', password: 'password123', nombre: 'María García', perfil: 'Instancia de Control Interno', estatus: 'Activo', correo: 'maria.garcia@example.com', telefono: '5587654321', tipoUsuario: 'Interno', cargo: 'Jefe de Departamento', siglasInstitucion: 'ASPNAC' },
-            { id: 'user3', clave: 'carlos_l', password: 'password123', nombre: 'Carlos López', perfil: 'Riesgos', estatus: 'Inactivo', correo: 'carlos.lopez@example.com', telefono: '5511223344', tipoUsuario: 'Externo', cargo: 'Consultor', siglasInstitucion: 'ASPNA' },
-            { id: 'user4', clave: 'ana_d', password: 'password123', nombre: 'Ana Díaz', perfil: 'Coordinador de Control Interno', estatus: 'Activo', correo: 'ana.diaz@example.com', telefono: '5599887766', tipoUsuario: 'Interno', cargo: 'Subdirector', siglasInstitucion: 'ASPNCO' },
+            { id: 'user1', clave: 'admin_user', password: 'password123', nombre: 'Administrador Principal', perfil: 'Coordinador de Control Interno', estatus: 'Activo', correo: 'admin.user@example.com', telefono: '5511112222', tipoUsuario: 'Interno', cargo: 'Director General', siglasInstitucion: 'APBP', noOficioDesignacion: 'OF-001-2024' },
+            { id: 'user2', clave: 'maria_g', password: 'password123', nombre: 'María García', perfil: 'Instancia de Control Interno', estatus: 'Activo', correo: 'maria.garcia@example.com', telefono: '5587654321', tipoUsuario: 'Interno', cargo: 'Jefe de Departamento', siglasInstitucion: 'ASIPONA ACAPULCO', noOficioDesignacion: 'OF-002-2024' },
+            { id: 'user3', clave: 'carlos_l', password: 'password123', nombre: 'Carlos López', perfil: 'Riesgos', estatus: 'Inactivo', correo: 'carlos.lopez@example.com', telefono: '5511223344', tipoUsuario: 'Externo', cargo: 'Consultor', siglasInstitucion: 'ASIPONA ALTAMIRA', noOficioDesignacion: 'N/A' },
+            { id: 'user4', clave: 'ana_d', password: 'password123', nombre: 'Ana Díaz', perfil: 'Coordinador de Control Interno', estatus: 'Activo', correo: 'ana.diaz@example.com', telefono: '5599887766', tipoUsuario: 'Interno', cargo: 'Subdirector', siglasInstitucion: 'ASIPONA COATZACOALCOS', noOficioDesignacion: 'OF-004-2024' },
         ];
 
         // Datos iniciales para los registros de acceso de usuarios.
         const initialUserAccessLogs = [
             { userId: 'user1', year: 2024, siglas: 'APBP', claveUsuario: 'admin_user', fechaAcceso: '2024-07-20', horaInicio: '09:00:00', horaCierre: '09:30:00', duracionSesion: 30, moduloAccedido: 'Consulta Instituciones', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Inicio', resultado: 'Éxito', direccionIP: '192.168.1.100', agenteUsuario: 'Chrome on Windows' },
             { userId: 'user1', year: 2024, siglas: 'APBP', claveUsuario: 'admin_user', fechaAcceso: '2024-07-20', horaInicio: '09:30:00', horaCierre: '09:35:00', duracionSesion: 5, moduloAccedido: 'Catálogo Instituciones', accionRealizada: 'Modificación', campoModificado: 'Institución APBP', tipoEvento: 'Cierre', resultado: 'Éxito', direccionIP: '192.168.1.100', agenteUsuario: 'Chrome on Windows' },
-            { userId: 'user2', year: 2024, siglas: 'ASPNAC', claveUsuario: 'maria_g', fechaAcceso: '2024-07-21', horaInicio: '10:15:00', horaCierre: '10:45:00', duracionSesion: 30, moduloAccedido: 'Programación de periodos', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Inicio', resultado: 'Éxito', direccionIP: '192.168.1.101', agenteUsuario: 'Firefox on macOS' },
-            { userId: 'user3', year: 2024, siglas: 'ASPNA', claveUsuario: 'carlos_l', fechaAcceso: '2024-07-22', horaInicio: '11:00:00', horaCierre: '11:01:00', duracionSesion: 1, moduloAccedido: 'Login', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Error', resultado: 'Fallo (Contraseña incorrecta)', direccionIP: '192.168.1.102', agenteUsuario: 'Edge on Windows' },
+            { userId: 'user2', year: 2024, siglas: 'ASIPONA ACAPULCO', claveUsuario: 'maria_g', fechaAcceso: '2024-07-21', horaInicio: '10:15:00', horaCierre: '10:45:00', duracionSesion: 30, moduloAccedido: 'Programación de periodos', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Inicio', resultado: 'Éxito', direccionIP: '192.168.1.101', agenteUsuario: 'Firefox on macOS' },
+            { userId: 'user3', year: 2024, siglas: 'ASIPONA ALTAMIRA', claveUsuario: 'carlos_l', fechaAcceso: '2024-07-22', horaInicio: '11:00:00', horaCierre: '11:01:00', duracionSesion: 1, moduloAccedido: 'Login', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Error', resultado: 'Fallo (Contraseña incorrecta)', direccionIP: '192.168.1.102', agenteUsuario: 'Edge on Windows' },
             { userId: 'user1', year: 2024, siglas: 'APBP', claveUsuario: 'admin_user', fechaAcceso: '2024-07-23', horaInicio: '08:00:00', horaCierre: '08:45:00', duracionSesion: 45, moduloAccedido: 'Control de Usuarios', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Inicio', resultado: 'Éxito', direccionIP: '192.168.1.100', agenteUsuario: 'Chrome on Windows' },
             { userId: 'user1', year: 2024, siglas: 'APBP', claveUsuario: 'admin_user', fechaAcceso: '2024-07-23', horaInicio: '08:45:00', horaCierre: '08:50:00', duracionSesion: 5, moduloAccedido: 'Control de Usuarios', accionRealizada: 'Modificación', campoModificado: 'Usuario U001', tipoEvento: 'Cierre', resultado: 'Éxito', direccionIP: '192.168.1.100', agenteUsuario: 'Chrome on Windows' },
-            { userId: 'user4', year: 2024, siglas: 'ASPNCO', claveUsuario: 'ana_d', fechaAcceso: '2024-07-24', horaInicio: '14:00:00', horaCierre: '14:10:00', duracionSesion: 10, moduloAccedido: 'Reporte de Avance Institucional', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Inicio', resultado: 'Éxito', direccionIP: '192.168.1.103', agenteUsuario: 'Safari on iOS' },
+            { userId: 'user4', year: 2024, siglas: 'ASIPONA COATZACOALCOS', claveUsuario: 'ana_d', fechaAcceso: '2024-07-24', horaInicio: '14:00:00', horaCierre: '14:10:00', duracionSesion: 10, moduloAccedido: 'Reporte de Avance Institucional', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Inicio', resultado: 'Éxito', direccionIP: '192.168.1.103', agenteUsuario: 'Safari on iOS' },
         ];
 
         // Listas de opciones para los campos de usuario.
@@ -1374,6 +1493,63 @@
         // Variables de estado temporales para la UI.
         let selectedInstitutionsForProgramacion = [];
         let currentEditingListType = '';
+        let confirmCallback = null; // Para el modal de confirmación personalizado.
+
+        // --- FUNCIONES DE MODALES PERSONALIZADOS (ALERTA Y CONFIRMACIÓN) ---
+        /**
+         * Muestra un modal de alerta personalizado con un mensaje dado.
+         * @param {string} message - El mensaje a mostrar en la alerta.
+         */
+        function showAlert(message) {
+            document.getElementById('custom-alert-message').textContent = message;
+            document.getElementById('custom-alert-modal-overlay').classList.remove('hidden');
+        }
+
+        /**
+         * Cierra el modal de alerta personalizado.
+         */
+        function closeAlertModal() {
+            document.getElementById('custom-alert-modal-overlay').classList.add('hidden');
+        }
+
+        /**
+         * Muestra un modal de confirmación personalizado con un mensaje y un callback.
+         * @param {string} message - El mensaje a mostrar en la confirmación.
+         * @param {function} callback - La función a ejecutar si el usuario confirma.
+         */
+        function showConfirm(message, callback) {
+            document.getElementById('custom-confirm-message').textContent = message;
+            confirmCallback = callback; // Almacena el callback para su ejecución posterior.
+            document.getElementById('custom-confirm-modal-overlay').classList.remove('hidden');
+        }
+
+        /**
+         * Maneja la acción de "Sí" en el modal de confirmación.
+         * Ejecuta el callback almacenado y cierra el modal.
+         */
+        function handleConfirmYes() {
+            if (confirmCallback) {
+                confirmCallback();
+            }
+            closeConfirmModal();
+        }
+
+        /**
+         * Maneja la acción de "No" en el modal de confirmación.
+         * Simplemente cierra el modal sin ejecutar el callback.
+         */
+        function handleConfirmNo() {
+            closeConfirmModal();
+        }
+
+        /**
+         * Cierra el modal de confirmación personalizado.
+         */
+        function closeConfirmModal() {
+            document.getElementById('custom-confirm-modal-overlay').classList.add('hidden');
+            confirmCallback = null; // Limpia el callback.
+        }
+
 
         // --- INICIALIZACIÓN Y NAVEGACIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -1420,7 +1596,7 @@
                 showModule('consulta-instituciones', consultaInstitucionesLink);
             } else {
                 // Si las credenciales son incorrectas, muestra una alerta y registra el intento fallido.
-                alert('Usuario o contraseña incorrectos.');
+                showAlert('Usuario o contraseña incorrectos.');
                 logUserAccess('N/A', 'N/A', usernameInput, 'Login', 'Ninguna', 'N/A', 'Error', 'Fallo (Contraseña incorrecta)');
             }
         }
@@ -1780,12 +1956,12 @@
          * @param {string} id - El ID de la institución a eliminar.
          */
         function deleteInstitution(id) {
-            if (confirm('¿Está seguro de que desea eliminar esta institución?')) {
+            showConfirm('¿Está seguro de que desea eliminar esta institución?', () => {
                 institutions = institutions.filter(inst => inst.id !== id);
                 // Guarda los cambios en localStorage. En producción, se enviaría a la base de datos.
                 localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
                 renderInstitutionsTable(); // Actualiza la tabla.
-            }
+            });
         }
 
         /**
@@ -1857,12 +2033,12 @@
             const index = document.getElementById('edit-single-list-item-index').value;
             const listType = document.getElementById('edit-single-list-item-type').value;
             const newValue = document.getElementById('edit-single-list-item-input').value.trim();
-            if (!newValue) { alert('El nuevo valor no puede estar vacío.'); return; }
+            if (!newValue) { showAlert('El nuevo valor no puede estar vacío.'); return; }
 
             let oldItem;
             if (listType === 'tipoInstitucion') {
                 oldItem = tipoInstitucionList[index];
-                if (tipoInstitucionList.includes(newValue) && newValue !== oldItem) { alert('Este tipo de institución ya existe.'); return; }
+                if (tipoInstitucionList.includes(newValue) && newValue !== oldItem) { showAlert('Este tipo de institución ya existe.'); return; }
                 tipoInstitucionList[index] = newValue;
                 // En producción: se enviaría una solicitud de actualización a la base de datos.
                 localStorage.setItem('tipoInstitucionList_v11_1_1', JSON.stringify(tipoInstitucionList));
@@ -1870,7 +2046,7 @@
                 institutions.forEach(inst => { if (inst.tipo === oldItem) inst.tipo = newValue; });
             } else if (listType === 'sector') {
                 oldItem = sectorList[index];
-                if (sectorList.includes(newValue) && newValue !== oldItem) { alert('Este sector ya existe.'); return; }
+                if (sectorList.includes(newValue) && newValue !== oldItem) { showAlert('Este sector ya existe.'); return; }
                 sectorList[index] = newValue;
                 // En producción: se enviaría una solicitud de actualización a la base de datos.
                 localStorage.setItem('sectorList_v11_1_1', JSON.stringify(sectorList));
@@ -1891,12 +2067,12 @@
             const newItem = input.value.trim();
             if (newItem) {
                 if (currentEditingListType === 'tipoInstitucion') {
-                    if (tipoInstitucionList.includes(newItem)) { alert('Este tipo de institución ya existe.'); return; }
+                    if (tipoInstitucionList.includes(newItem)) { showAlert('Este tipo de institución ya existe.'); return; }
                     tipoInstitucionList.push(newItem);
                     // En producción: se enviaría una solicitud de adición a la base de datos.
                     localStorage.setItem('tipoInstitucionList_v11_1_1', JSON.stringify(tipoInstitucionList));
                 } else if (currentEditingListType === 'sector') {
-                    if (sectorList.includes(newItem)) { alert('Este sector ya existe.'); return; }
+                    if (sectorList.includes(newItem)) { showAlert('Este sector ya existe.'); return; }
                     sectorList.push(newItem);
                     // En producción: se enviaría una solicitud de adición a la base de datos.
                     localStorage.setItem('sectorList_v11_1_1', JSON.stringify(sectorList));
@@ -1912,7 +2088,7 @@
          * @param {number} indexToRemove - El índice del elemento a eliminar.
          */
         function removeListItem(listType, indexToRemove) {
-            if (confirm('¿Está seguro de que desea eliminar este elemento? Las instituciones que lo usen quedarán sin un valor asignado.')) {
+            showConfirm('¿Está seguro de que desea eliminar este elemento? Las instituciones que lo usen quedarán sin un valor asignado.', () => {
                 let itemToRemove;
                 if (listType === 'tipoInstitucion') {
                     itemToRemove = tipoInstitucionList[indexToRemove];
@@ -1933,7 +2109,7 @@
                 localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
                 openEditListModal(listType); // Recarga la lista en el modal.
                 renderInstitutionsTable(); // Vuelve a renderizar la tabla de instituciones para reflejar los cambios.
-            }
+            });
         }
 
 
@@ -1989,7 +2165,7 @@
                     <td>${inst.nombre}</td>
                     <td>${inst.ptciActualizado}</td>
                     <td>${programmedPeriod.trimestre || 'N/A'}</td>
-                    <td>${(programmedPeriod.accionesPermitidas || []).join(', ') || 'N/A'}</td>
+                    <td>${(programmedPeriod.accionesPermitidas || []).join('<br>') || 'N/A'}</td> <!-- Modificado para saltos de línea -->
                     <td>${programmedPeriod.fechaInicio || 'N/A'}</td>
                     <td>${programmedPeriod.fechaFin || 'N/A'}</td>
                 `;
@@ -2007,25 +2183,6 @@
                 checkbox.checked = isChecked;
                 toggleInstitutionSelection(checkbox, checkbox.dataset.institutionId);
             });
-        }
-
-        /**
-         * Alterna la selección de una institución individual.
-         * @param {HTMLElement} checkbox - El checkbox de la fila.
-         * @param {string} institutionId - El ID de la institución.
-         */
-        function toggleInstitutionSelection(checkbox, institutionId) {
-            const institution = institutions.find(inst => inst.id === institutionId);
-            if (!institution) return;
-            if (checkbox.checked) {
-                if (!selectedInstitutionsForProgramacion.some(inst => inst.id === institutionId)) {
-                    selectedInstitutionsForProgramacion.push(institution);
-                }
-            } else {
-                selectedInstitutionsForProgramacion = selectedInstitutionsForProgramacion.filter(inst => inst.id !== institutionId);
-            }
-            checkbox.closest('tr').classList.toggle('selected', checkbox.checked);
-            updateUiPostSelection();
         }
 
         /**
@@ -2147,11 +2304,11 @@
             const accionesPermitidas = Array.from(document.querySelectorAll('input[name="accion-permitida"]:checked')).map(cb => cb.value);
 
             if (accionesPermitidas.length === 0) {
-                alert('Debe seleccionar al menos una acción para habilitar.');
+                showAlert('Debe seleccionar al menos una acción para habilitar.');
                 return;
             }
              if (!fechaInicio || !fechaFin) {
-                alert('Debe seleccionar una fecha de inicio y fin.');
+                showAlert('Debe seleccionar una fecha de inicio y fin.');
                 return;
             }
 
@@ -2179,7 +2336,7 @@
 
             closeAperturarModal();
             renderProgramacionPeriodosTable();
-            alert('Sistema aperturado/actualizado correctamente.');
+            showAlert('Sistema aperturado/actualizado correctamente.');
         }
 
         /**
@@ -2187,7 +2344,7 @@
          */
         function openAperturarModal() {
             if (selectedInstitutionsForProgramacion.length === 0) {
-                alert('Por favor, selecciona al menos una institución.');
+                showAlert('Por favor, selecciona al menos una institución.');
                 return;
             }
             // Resetea los checkboxes de acción al recargar el modal.
@@ -2290,7 +2447,7 @@
                 row.innerHTML = `
                     <td>${entry.periodo}</td>
                     <td>${entry.trimestre}</td>
-                    <td>${entry.accionesPermitidas.join(', ')}</td>
+                    <td>${entry.accionesPermitidas.join('<br>')}</td> <!-- Modificado para saltos de línea -->
                     <td>${entry.fechaInicio}</td>
                     <td>${entry.fechaFin}</td>
                     <td>${entry.usuario}</td>
@@ -2309,37 +2466,15 @@
          */
         function renderReporteAvanceInstitucionalTable() {
             const table = document.querySelector('#module-reporte-avance-institucional .data-table');
-            const thead = table.querySelector('thead');
             const tbody = table.querySelector('tbody');
 
-            // Limpiar encabezados y cuerpo existentes.
-            thead.innerHTML = '';
+            // Limpiar cuerpo existente.
             tbody.innerHTML = '';
 
             // Obtener valores de los filtros.
             const estatusFilter = document.querySelector('input[name="estatus_reporte"]:checked').value; // '1' o '0'.
             const anioFilter = document.getElementById('anio_input').value; // 'todos' o año.
-
-            // Preparar todas las acciones únicas para los encabezados.
-            const allAvailableActions = [];
-            for (const category in availableActionsCategories) {
-                availableActionsCategories[category].forEach(action => {
-                    allAvailableActions.push(action);
-                });
-            }
-
-            // Crear fila de encabezado.
-            let headerRow = '<tr>';
-            headerRow += '<th>Periodo</th>';
-            headerRow += '<th>Siglas</th>';
-            headerRow += '<th>Institución</th>';
-            headerRow += '<th>Actualizó PTCI</th>';
-
-            allAvailableActions.forEach(action => {
-                headerRow += `<th>${action}</th>`;
-            });
-            headerRow += '</tr>';
-            thead.innerHTML = headerRow;
+            const trimestreReporteFilter = document.getElementById('trimestre_reporte_input').value; // 'todos' o trimestre.
 
             // Filtrar instituciones según el estado.
             const filteredInstitutions = institutions.filter(inst => {
@@ -2348,7 +2483,7 @@
             });
 
             if (filteredInstitutions.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="${4 + allAvailableActions.length}" class="text-center text-gray-500 py-3">No se encontraron instituciones con el estatus seleccionado.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="22" class="text-center text-gray-500 py-3">No se encontraron instituciones con el estatus seleccionado.</td></tr>`;
                 return;
             }
 
@@ -2356,27 +2491,103 @@
             let hasData = false;
             filteredInstitutions.forEach(inst => {
                 // Encontrar el período programado para la institución actual.
-                const programmedPeriod = programmedPeriods.find(p => p.institucionId === inst.id && (anioFilter === 'todos' || p.periodo === anioFilter));
+                const programmedPeriod = programmedPeriods.find(p =>
+                    p.institucionId === inst.id &&
+                    (anioFilter === 'todos' || p.periodo === anioFilter) &&
+                    (trimestreReporteFilter === 'todos' || p.trimestre === trimestreReporteFilter)
+                );
 
                 if (programmedPeriod) {
                     hasData = true;
+                    // Aquí se simulan los datos de avance. En una aplicación real, estos vendrían de la base de datos.
+                    const data = {
+                        periodoCapturaSCII: '2024-01-01',
+                        abiertoHastaSCII: '2024-03-31',
+                        procesosPrioritarios: 'Sí',
+                        evaluacionSCII: 'Finalizado',
+                        informeAnual: 'Sí',
+                        ptciFinalizado: 'Sí',
+                        periodoCapturaPTCI: '2024-04-01',
+                        abiertoHastaPTCI: '2024-06-30',
+                        actualizarPTCI: 'Sí',
+                        ptciActFinalizado: 'Sí',
+                        periodoCapturaSeguimientoAM: '2024-07-01',
+                        abiertoHastaSeguimientoAM: '2024-09-30',
+                        finalizadoSeguimientoAM: 'Sí',
+                        reporteTrimestralAM: 'Sí',
+                        periodoCapturaPTAR: '2024-04-01',
+                        abiertoHastaPTAR: '2024-06-30',
+                        controles: 'Sí',
+                        estrategia: 'Sí',
+                        ptarFinalizado: 'Sí',
+                        periodoCapturaSeguimientoAC: '2024-07-01',
+                        abiertoHastaSeguimientoAC: '2024-09-30',
+                        finalizadoSeguimientoAC: 'Sí',
+                        reporteTrimestralAC: 'Sí',
+                        periodoCapturaRevisionOIC: '2024-01-01',
+                        abiertoHastaRevisionOIC: '2024-03-31',
+                        informeOICFinalizado: 'Sí',
+                        periodoCapturaOICSeguimientoAM: '2024-04-01',
+                        abiertoHastaOICSeguimientoAM: '2024-06-30',
+                        finalizadoOICSeguimientoAM: 'Sí',
+                        reporteTrimestralOICAM: 'Sí',
+                        periodoCapturaOICSeguimientoAC: '2024-07-01',
+                        abiertoHastaOICSeguimientoAC: '2024-09-30',
+                        finalizadoOICSeguimientoAC: 'Sí',
+                        reporteTrimestralOICAC: 'Sí',
+                    };
+
                     let dataRow = '<tr>';
                     dataRow += `<td>${programmedPeriod.periodo || 'N/A'}</td>`;
+                    dataRow += `<td>${programmedPeriod.trimestre || 'N/A'}</td>`;
                     dataRow += `<td>${inst.siglas}</td>`;
                     dataRow += `<td>${inst.nombre}</td>`;
-                    dataRow += `<td>${inst.ptciActualizado || 'No'}</td>`; // Usar inst.ptciActualizado directamente.
 
-                    allAvailableActions.forEach(action => {
-                        const isActionEnabled = programmedPeriod.accionesPermitidas.includes(action);
-                        dataRow += `<td>${isActionEnabled ? 'Sí' : 'No'}</td>`;
-                    });
+                    // Evaluación de la Institución
+                    dataRow += `<td>${data.periodoCapturaSCII}</td>`;
+                    dataRow += `<td>${data.abiertoHastaSCII}</td>`;
+                    dataRow += `<td>${data.procesosPrioritarios}</td>`;
+                    dataRow += `<td>${data.evaluacionSCII}</td>`;
+                    dataRow += `<td>${data.informeAnual}</td>`;
+                    dataRow += `<td>${data.ptciFinalizado}</td>`;
+                    dataRow += `<td>${data.periodoCapturaPTCI}</td>`;
+                    dataRow += `<td>${data.abiertoHastaPTCI}</td>`;
+                    dataRow += `<td>${data.actualizarPTCI}</td>`;
+                    dataRow += `<td>${data.ptciActFinalizado}</td>`;
+                    dataRow += `<td>${data.periodoCapturaSeguimientoAM}</td>`;
+                    dataRow += `<td>${data.abiertoHastaSeguimientoAM}</td>`;
+                    dataRow += `<td>${data.finalizadoSeguimientoAM}</td>`;
+                    dataRow += `<td>${data.reporteTrimestralAM}</td>`;
+                    dataRow += `<td>${data.periodoCapturaPTAR}</td>`;
+                    dataRow += `<td>${data.abiertoHastaPTAR}</td>`;
+                    dataRow += `<td>${data.controles}</td>`;
+                    dataRow += `<td>${data.estrategia}</td>`;
+                    dataRow += `<td>${data.ptarFinalizado}</td>`;
+                    dataRow += `<td>${data.periodoCapturaSeguimientoAC}</td>`;
+                    dataRow += `<td>${data.abiertoHastaSeguimientoAC}</td>`;
+                    dataRow += `<td>${data.finalizadoSeguimientoAC}</td>`;
+                    dataRow += `<td>${data.reporteTrimestralAC}</td>`;
+
+                    // Evaluación del OIC
+                    dataRow += `<td>${data.periodoCapturaRevisionOIC}</td>`;
+                    dataRow += `<td>${data.abiertoHastaRevisionOIC}</td>`;
+                    dataRow += `<td>${data.informeOICFinalizado}</td>`;
+                    dataRow += `<td>${data.periodoCapturaOICSeguimientoAM}</td>`;
+                    dataRow += `<td>${data.abiertoHastaOICSeguimientoAM}</td>`;
+                    dataRow += `<td>${data.finalizadoOICSeguimientoAM}</td>`;
+                    dataRow += `<td>${data.reporteTrimestralOICAM}</td>`;
+                    dataRow += `<td>${data.periodoCapturaOICSeguimientoAC}</td>`;
+                    dataRow += `<td>${data.abiertoHastaOICSeguimientoAC}</td>`;
+                    dataRow += `<td>${data.finalizadoOICSeguimientoAC}</td>`;
+                    dataRow += `<td>${data.reporteTrimestralOICAC}</td>`;
+
                     dataRow += '</tr>';
                     tbody.innerHTML += dataRow;
                 }
             });
 
             if (!hasData) {
-                 tbody.innerHTML = `<tr><td colspan="${4 + allAvailableActions.length}" class="text-center text-gray-500 py-3">No se encontraron datos para el filtro seleccionado.</td></tr>`;
+                 tbody.innerHTML = `<tr><td colspan="22" class="text-center text-gray-500 py-3">No se encontraron datos para el filtro seleccionado.</td></tr>`;
             }
         }
 
@@ -2385,16 +2596,48 @@
          */
         function exportReporteAvanceInstitucional() {
             const table = document.querySelector('#module-reporte-avance-institucional .data-table');
-            const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
-            const rows = Array.from(table.querySelectorAll('tbody tr'));
+            // Obtener encabezados de todas las filas del thead
+            const theadRows = Array.from(table.querySelectorAll('thead tr'));
+            let headers = [];
 
-            let csvContent = headers.join(',') + '\n';
+            // Recorrer las filas del thead para construir los encabezados del CSV
+            theadRows.forEach((row, rowIndex) => {
+                Array.from(row.children).forEach(th => {
+                    const text = th.textContent.trim();
+                    const colspan = parseInt(th.getAttribute('colspan') || 1);
+                    const rowspan = parseInt(th.getAttribute('rowspan') || 1);
+
+                    // Para la primera fila, simplemente añadir los textos
+                    if (rowIndex === 0) {
+                        for (let i = 0; i < colspan; i++) {
+                            headers.push(text);
+                        }
+                    } else {
+                        // Para las filas subsiguientes, necesitamos combinar con los encabezados superiores
+                        // Esto es una simplificación, para un reporte complejo, se necesitaría una lógica más robusta
+                        // para mapear correctamente los encabezados anidados.
+                        // Por ahora, solo añadimos los encabezados de la última fila.
+                        if (rowIndex === theadRows.length - 1) {
+                            for (let i = 0; i < colspan; i++) {
+                                headers.push(text);
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Si se generaron encabezados anidados, aplanarlos para el CSV
+            // Para este caso específico, usaremos los encabezados de la última fila como los definitivos
+            const finalHeaders = Array.from(theadRows[theadRows.length - 1].children).map(th => th.textContent.trim());
+
+            let csvContent = finalHeaders.map(header => `"${header}"`).join(',') + '\n';
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
 
             rows.forEach(row => {
                 const rowData = Array.from(row.querySelectorAll('td')).map(td => {
                     let text = td.textContent.trim();
                     // Escapar comas y comillas dobles en el texto.
-                    if (text.includes(',') || text.includes('"')) {
+                    if (text.includes(',') || text.includes('"') || text.includes('\n')) {
                         text = `"${text.replace(/"/g, '""')}"`;
                     }
                     return text;
@@ -2479,7 +2722,7 @@
             });
 
             if (filteredUsers.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="11" class="text-center text-gray-500 py-3">No se encontraron usuarios.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="12" class="text-center text-gray-500 py-3">No se encontraron usuarios.</td></tr>`;
                 return;
             }
 
@@ -2490,6 +2733,7 @@
                 row.innerHTML = `
                     <td>${user.siglasInstitucion}</td>
                     <td>${institutionName}</td>
+                    <td>${user.nombre}</td> <!-- Nueva columna Nombre -->
                     <td>${user.perfil}</td>
                     <td>${user.clave}</td>
                     <td>**********</td> <!-- Contraseña siempre oculta -->
@@ -2534,6 +2778,8 @@
             document.getElementById('user-siglas-institucion-filter').value = ''; // Limpia el input del filtro de institución.
             document.getElementById('user-siglas-institucion-id').value = ''; // Limpia el ID oculto de la institución.
             document.getElementById('user-password').value = ''; // Limpia la contraseña para nuevos usuarios.
+            document.getElementById('user-no-oficio').value = ''; // Limpia el campo No. de Oficio.
+            document.getElementById('user-file-name').value = ''; // Limpia el nombre del archivo.
 
             if (userId) {
                 modalTitle.textContent = 'Editar Usuario';
@@ -2548,6 +2794,7 @@
                     document.getElementById('user-telefono').value = userToEdit.telefono;
                     document.getElementById('user-tipo-usuario').value = userToEdit.tipoUsuario;
                     document.getElementById('user-cargo').value = userToEdit.cargo;
+                    document.getElementById('user-no-oficio').value = userToEdit.noOficioDesignacion || ''; // Carga el No. de Oficio.
                     // Establece el valor para el input del filtro de institución.
                     const institution = institutions.find(inst => inst.siglas === userToEdit.siglasInstitucion);
                     if (institution) {
@@ -2587,11 +2834,12 @@
             const telefono = document.getElementById('user-telefono').value.trim();
             const tipoUsuario = document.getElementById('user-tipo-usuario').value;
             const cargo = document.getElementById('user-cargo').value;
+            const noOficioDesignacion = document.getElementById('user-no-oficio').value.trim(); // Nuevo campo
             const siglasInstitucion = document.getElementById('user-siglas-institucion-id').value; // Obtiene de input hidden.
 
             // Validación de campos obligatorios.
             if (!clave || !password || !nombre || !perfil || !siglasInstitucion) {
-                alert('Por favor, complete todos los campos obligatorios (Nombre de Usuario, Contraseña, Nombre, Perfil, Siglas Institución).');
+                showAlert('Por favor, complete todos los campos obligatorios (Nombre de Usuario, Contraseña, Nombre, Perfil, Siglas Institución).');
                 return;
             }
 
@@ -2601,7 +2849,7 @@
                 const index = users.findIndex(user => user.id === id);
                 if (index !== -1) {
                     const oldUser = { ...users[index] }; // Copia los datos antiguos del usuario.
-                    users[index] = { ...oldUser, clave, password, nombre, perfil, estatus, correo, telefono, tipoUsuario, cargo, siglasInstitucion };
+                    users[index] = { ...oldUser, clave, password, nombre, perfil, estatus, correo, telefono, tipoUsuario, cargo, siglasInstitucion, noOficioDesignacion };
 
                     // Determina los campos modificados para el log.
                     const changedFields = [];
@@ -2623,10 +2871,10 @@
                 const newId = 'user' + Date.now().toString(); // Genera ID único.
                 // Verifica si la clave de usuario ya existe.
                 if (users.some(user => user.clave === clave)) {
-                    alert('La clave de usuario ya existe. Por favor, utilice una clave diferente.');
+                    showAlert('La clave de usuario ya existe. Por favor, utilice una clave diferente.');
                     return;
                 }
-                users.push({ id: newId, clave, password, nombre, perfil, estatus, correo, telefono, tipoUsuario, cargo, siglasInstitucion });
+                users.push({ id: newId, clave, password, nombre, perfil, estatus, correo, telefono, tipoUsuario, cargo, siglasInstitucion, noOficioDesignacion });
                 // Registra la acción de adición.
                 logUserAccess(newId, siglasInstitucion, clave, 'Control de Usuarios', 'Agregación', 'Nuevo usuario creado', 'Creación', 'Éxito');
             }
@@ -2635,7 +2883,7 @@
             localStorage.setItem('users_v11_1_1', JSON.stringify(users));
             renderUsersTable(); // Actualiza la tabla.
             closeUserModal();
-            alert('Usuario guardado correctamente.');
+            showAlert('Usuario guardado correctamente.');
         }
 
         /**
@@ -2643,7 +2891,7 @@
          * @param {string} userId - El ID del usuario a eliminar.
          */
         function deleteUser(userId) {
-            if (confirm('¿Está seguro de que desea eliminar este usuario? Esto también eliminará sus registros de acceso.')) {
+            showConfirm('¿Está seguro de que desea eliminar este usuario? Esto también eliminará sus registros de acceso.', () => {
                 const userToDelete = users.find(user => user.id === userId);
                 if (userToDelete) {
                     users = users.filter(user => user.id !== userId);
@@ -2652,11 +2900,11 @@
                     localStorage.setItem('users_v11_1_1', JSON.stringify(users));
                     localStorage.setItem('userAccessLogs_v11_1_1', JSON.stringify(userAccessLogs));
                     renderUsersTable(); // Actualiza la tabla.
-                    alert('Usuario eliminado correctamente.');
+                    showAlert('Usuario eliminado correctamente.');
                     // Registra la acción de eliminación.
                     logUserAccess(userToDelete.id, userToDelete.siglasInstitucion, userToDelete.clave, 'Control de Usuarios', 'Eliminación', `Usuario ${userToDelete.clave} eliminado`, 'Eliminación', 'Éxito');
                 }
-            }
+            });
         }
 
         // --- Logging de Acceso de Usuarios ---
