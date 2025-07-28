@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SICOIN - BETA 1.5</title>
+    <title>SICOIN - BETA 1.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -564,6 +564,19 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transform: translateY(0);
         }
+        /* Estilo para el recuadro de usuario y contraseña */
+        .credentials-box {
+            border: 1px solid #cbd5e0;
+            border-radius: 0.35rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            background-color: #f7fafc;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .credentials-box label {
+            font-weight: 600;
+            color: #2d3748;
+        }
     </style>
 </head>
 <body>
@@ -579,12 +592,12 @@
                 <img src="https://controlinterno.buengobierno.gob.mx/ESCII/img/logo_sicoin.jpg" alt="Logo SICOIN" class="h-16">
                 <div>
                     <div class="mb-2">
-                        <label for="username" class="text-xs text-gray-600">Usuario:</label>
-                        <input type="text" id="username" class="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm text-xs" value="admin_user" disabled>
+                        <label for="username-login" class="text-xs text-gray-600">Usuario:</label>
+                        <input type="text" id="username-login" class="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm text-xs" value="admin_user">
                     </div>
                     <div>
-                        <label for="password" class="text-xs text-gray-600">Contraseña:</label>
-                        <input type="password" id="password" class="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm text-xs" value="**********" disabled>
+                        <label for="password-login" class="text-xs text-gray-600">Contraseña:</label>
+                        <input type="password" id="password-login" class="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm text-xs" value="password123">
                     </div>
                 </div>
             </div>
@@ -605,9 +618,9 @@
                 </div>
                 <!-- Título central que se expande -->
                 <div class="header-title">
-                    <h1>SICOIN – MEJORAS PROPUESTAS</h1>
+                    <h1>SICOIN – MEJORA PROPUESTA</h1>
                     <h2>Sistema de Control Interno Institucional</h2>
-                    <h3>VISUALIZACIÓN DE MEJORAS PROPUESTAS AL SICOIN</h3>
+                    <h3>V 1.0</h3>
                 </div>
                 <!-- Logo derecho -->
                 <div class="header-logo">
@@ -971,7 +984,9 @@
                 </div>
 
                 <div id="module-reporte-avance-institucional" class="module-content hidden">
-                    <h2 class="text-base font-bold text-center mb-2.5 text-gray-800">Reporte Global de Avance Institucional en la Evaluación del SCI</h2>
+                    <div class="bg-gray-200 p-1.5 rounded-t-lg text-center mb-2.5">
+                        <h2 class="text-sm font-bold text-gray-800">Reporte Global de Avance Institucional en la Evaluación del SCI</h2>
+                    </div>
 
                     <div class="flex flex-col mb-2.5">
                         <div class="mb-2.5">
@@ -1000,8 +1015,8 @@
                                     <option value="2024">2024</option>
                                 </select>
                             </div>
-                            <a href="#" class="export-button" style="background-color: #2A5C50; color: white; padding: 0.2rem 0.5rem; border-radius: 0.3rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.2rem; margin-bottom: 0.4rem; transition: background-color 0.3s ease; font-size: 0.7rem;">
-                                <img src="https://placehold.co/14x14/ffffff/000000?text=XLS" alt="Exportar a Excel" title="Exportar a Excel" style="height: 14px; width: 14px;">
+                            <a href="#" class="export-button" onclick="exportReporteAvanceInstitucional()" style="background-color: #2A5C50; color: white; padding: 0.2rem 0.5rem; border-radius: 0.3rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.2rem; margin-bottom: 0.4rem; transition: background-color 0.3s ease; font-size: 0.7rem;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
                                 Exportar a Excel
                             </a>
                         </div>
@@ -1026,6 +1041,165 @@
                     </div>
                 </div>
 
+                <!-- Nuevo Módulo: Control de Usuarios -->
+                <div id="module-control-usuarios" class="module-content hidden">
+                    <div class="bg-gray-200 p-1.5 rounded-t-lg text-center mb-2.5">
+                        <h2 class="text-sm font-bold text-gray-800">Control de Usuarios</h2>
+                    </div>
+
+                    <div class="flex justify-between items-center mb-2.5">
+                        <div class="radio-group">
+                            <label><input type="radio" name="user_status_filter" value="todos" checked onchange="renderUsersTable()"><span>Todos</span></label>
+                            <label><input type="radio" name="user_status_filter" value="Activo" onchange="renderUsersTable()"><span>Activos</span></label>
+                            <label><input type="radio" name="user_status_filter" value="Inactivo" onchange="renderUsersTable()"><span>Inactivos</span></label>
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center gap-1 text-xs" onclick="generateHistoricalAccessReport()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                                Reporte Histórico de Accesos
+                            </button>
+                            <button type="button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-3 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center gap-1 text-xs" onclick="openUserModal()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus">
+                                    <path d="M12 5v14"/><path d="M5 12h14"/>
+                                </svg>
+                                Agregar Usuario
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-2.5">
+                        <input type="text" id="user-search-input" class="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm text-xs" placeholder="Buscar por siglas, nombre de institución o nombre de usuario..." onkeyup="renderUsersTable()">
+                    </div>
+
+                    <div class="data-table-container">
+                        <table class="data-table" id="users-table">
+                            <thead>
+                                <tr>
+                                    <th>Siglas Institución</th>
+                                    <th>Nombre Institución</th>
+                                    <th>Perfil</th>
+                                    <th>Usuario</th>
+                                    <th>Contraseña</th>
+                                    <th>Estatus</th>
+                                    <th>Correo</th>
+                                    <th>Teléfono</th>
+                                    <th>Tipo Usuario</th>
+                                    <th>Cargo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Modal para Agregar/Editar Usuario -->
+                <div id="user-modal-overlay" class="modal-overlay hidden">
+                    <div class="modal-content">
+                        <button class="modal-close-button" onclick="closeUserModal()">&times;</button>
+                        <h3 class="modal-header" id="user-modal-title">Agregar Usuario</h3>
+                        <form id="user-form">
+                            <input type="hidden" id="user-id-edit">
+
+                            <div class="modal-form-group">
+                                <label for="user-estatus">Estatus</label>
+                                <div class="radio-group">
+                                    <label><input type="radio" name="user-estatus" value="Activo" checked><span>Activo</span></label>
+                                    <label><input type="radio" name="user-estatus" value="Inactivo"><span>Inactivo</span></label>
+                                </div>
+                            </div>
+                            <div class="modal-form-group">
+                                <label for="user-tipo-usuario">Tipo Usuario</label>
+                                <select id="user-tipo-usuario" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs"></select>
+                            </div>
+                            <div class="modal-form-group">
+                                <label for="user-perfil">Perfil</label>
+                                <select id="user-perfil" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required></select>
+                            </div>
+                             <div class="modal-form-group">
+                                <label for="user-siglas-institucion-filter">Siglas Institución</label>
+                                <div class="institution-filter-container">
+                                    <input type="text" id="user-siglas-institucion-filter" class="institution-filter-input" placeholder="Buscar institución..." autocomplete="off" required>
+                                    <input type="hidden" id="user-siglas-institucion-id">
+                                    <div id="user-siglas-institucion-suggestions" class="institution-suggestions hidden"></div>
+                                </div>
+                            </div>
+                            <div class="modal-form-group">
+                                <label for="user-nombre">Nombre</label>
+                                <input type="text" id="user-nombre" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required>
+                            </div>
+                            <div class="modal-form-group">
+                                <label for="user-cargo">Cargo</label>
+                                <select id="user-cargo" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs"></select>
+                            </div>
+                            <div class="modal-form-group">
+                                <label for="user-correo">Correo</label>
+                                <input type="email" id="user-correo" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs">
+                            </div>
+                            <div class="modal-form-group">
+                                <label for="user-telefono">Teléfono</label>
+                                <input type="text" id="user-telefono" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs">
+                            </div>
+
+                            <div class="credentials-box">
+                                <h4 class="text-sm font-bold mb-3">Credenciales de Acceso</h4>
+                                <div class="modal-form-group">
+                                    <label for="user-clave">Nombre de Usuario</label>
+                                    <input type="text" id="user-clave" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required>
+                                </div>
+                                <div class="modal-form-group">
+                                    <label for="user-password">Contraseña</label>
+                                    <input type="password" id="user-password" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" placeholder="**********" required>
+                                </div>
+                            </div>
+
+                            <div class="modal-buttons">
+                                <button type="button" class="btn-cancel" onclick="closeUserModal()">Cancelar</button>
+                                <button type="submit" class="btn-save">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Modal para Reporte de Acceso de Usuario -->
+                <div id="user-access-report-modal-overlay" class="modal-overlay hidden">
+                    <div class="modal-content period-program-modal-content">
+                        <button class="modal-close-button" onclick="closeUserAccessReportModal()">&times;</button>
+                        <h3 class="modal-header">Reporte de Acceso para: <span id="report-user-name"></span> (<span id="report-user-clave"></span>)</h3>
+                        <div class="flex justify-end mb-2">
+                             <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center gap-1 text-xs" onclick="downloadUserAccessReport()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                                Descargar CSV
+                            </button>
+                        </div>
+                        <div class="data-table-container">
+                            <table class="data-table" id="user-access-report-table">
+                                <thead>
+                                    <tr>
+                                        <th>Año</th>
+                                        <th>Siglas</th>
+                                        <th>Clave de Usuario</th>
+                                        <th>Fecha de Acceso</th>
+                                        <th>Hora de Inicio</th>
+                                        <th>Hora de Cierre</th>
+                                        <th>Duración (min)</th>
+                                        <th>Módulo Accedido</th>
+                                        <th>Acción Realizada</th>
+                                        <th>Campo Modificado</th>
+                                        <th>Tipo de Evento</th>
+                                        <th>Resultado</th>
+                                        <th>Dirección IP</th>
+                                        <th>Agente de Usuario</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="user-access-report-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="module-modifica-avance-am" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Modifica Avance Trimestral AM</h2>
                     <p class="text-center text-gray-600 text-xs">Contenido para modificar avance trimestral AM.</p>
@@ -1038,10 +1212,7 @@
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Procesos Registrados por Oficio</h2>
                     <p class="text-center text-gray-600 text-xs">Contenido para procesos registrados por oficio.</p>
                 </div>
-                <div id="module-control-usuarios" class="module-content hidden">
-                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Control de Usuarios</h2>
-                    <p class="text-center text-gray-600 text-xs">Contenido para el control de usuarios.</p>
-                </div>
+                <!-- El módulo de Registro de Acciones de Usuarios se mantiene como placeholder -->
                 <div id="module-registro-acciones" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Registro de Acciones de Usuarios</h2>
                     <p class="text-center text-gray-600 text-xs">Contenido para el registro de acciones de usuarios.</p>
@@ -1115,6 +1286,7 @@
 
     <script>
         // --- BASE DE DATOS Y ESTADO GLOBAL ---
+        // Datos iniciales para instituciones. En un entorno de producción, estos datos se cargarían desde una base de datos.
         const initialInstitutionsData = [
             { id: '224', siglas: 'APBP', nombre: 'Administración del Patrimonio de la Beneficencia Pública', tipo: 'Organismo Descentralizado', sector: '12 SALUD', estatus: 'Activa', ptciActualizado: 'Sí' },
             { id: '310', siglas: 'ASPNAC', nombre: 'Administración del Sistema Portuario Nacional Acapulco, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
@@ -1129,6 +1301,7 @@
             { id: '999', siglas: 'IPPR', nombre: 'Institución de Prueba para el Reporte', tipo: 'Dependencia', sector: '99 Entidad no Coordinada Sectorialmente', estatus: 'Activa', ptciActualizado: 'Sí' }
         ];
 
+        // Listas de opciones predefinidas para los selects.
         const defaultTipoInstitucion = [
             "Dependencia", "Órgano Administrativo Desconcentrado", "Organismo Descentralizado",
             "Empresa de Participación Estatal Mayoritaria", "Organismo Descentralizado No Sectorizado",
@@ -1151,6 +1324,7 @@
             "99 Entidad no Coordinada Sectorialmente"
         ];
 
+        // Definición de las categorías y acciones disponibles para la programación de periodos.
         const availableActionsCategories = {
             "Evaluación Institución": ["Habilitar edición de procesos prioritarios y PTCI actualizado", "Habilitar evaluación del SCII", "Habilitar Captura de Informe Anual Finalizado"],
             "PTCI": ["Habilitar Captura del PTCI", "Habilitar captura del PTCI Actualizado", "Habilitar captura Seguimiento AM", "Habilitar captura Reporte Trimestral AM"],
@@ -1158,18 +1332,52 @@
             "Evaluación OIC": ["Habilitar evaluación del OIC", "Habilitar OIC-Seguimiento de Acciones Mejora", "Habilitar OIC-Reporte Trimestral AM", "Habilitar OIC-Seguimiento de Acciones Control", "Habilitar OIC-Reporte Trimestral AC"]
         };
 
+        // Datos iniciales para usuarios. Incluye el usuario por defecto para el login.
+        const initialUsersData = [
+            { id: 'user1', clave: 'admin_user', password: 'password123', nombre: 'Administrador Principal', perfil: 'Coordinador de Control Interno', estatus: 'Activo', correo: 'admin.user@example.com', telefono: '5511112222', tipoUsuario: 'Interno', cargo: 'Director General', siglasInstitucion: 'APBP' },
+            { id: 'user2', clave: 'maria_g', password: 'password123', nombre: 'María García', perfil: 'Instancia de Control Interno', estatus: 'Activo', correo: 'maria.garcia@example.com', telefono: '5587654321', tipoUsuario: 'Interno', cargo: 'Jefe de Departamento', siglasInstitucion: 'ASPNAC' },
+            { id: 'user3', clave: 'carlos_l', password: 'password123', nombre: 'Carlos López', perfil: 'Riesgos', estatus: 'Inactivo', correo: 'carlos.lopez@example.com', telefono: '5511223344', tipoUsuario: 'Externo', cargo: 'Consultor', siglasInstitucion: 'ASPNA' },
+            { id: 'user4', clave: 'ana_d', password: 'password123', nombre: 'Ana Díaz', perfil: 'Coordinador de Control Interno', estatus: 'Activo', correo: 'ana.diaz@example.com', telefono: '5599887766', tipoUsuario: 'Interno', cargo: 'Subdirector', siglasInstitucion: 'ASPNCO' },
+        ];
+
+        // Datos iniciales para los registros de acceso de usuarios.
+        const initialUserAccessLogs = [
+            { userId: 'user1', year: 2024, siglas: 'APBP', claveUsuario: 'admin_user', fechaAcceso: '2024-07-20', horaInicio: '09:00:00', horaCierre: '09:30:00', duracionSesion: 30, moduloAccedido: 'Consulta Instituciones', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Inicio', resultado: 'Éxito', direccionIP: '192.168.1.100', agenteUsuario: 'Chrome on Windows' },
+            { userId: 'user1', year: 2024, siglas: 'APBP', claveUsuario: 'admin_user', fechaAcceso: '2024-07-20', horaInicio: '09:30:00', horaCierre: '09:35:00', duracionSesion: 5, moduloAccedido: 'Catálogo Instituciones', accionRealizada: 'Modificación', campoModificado: 'Institución APBP', tipoEvento: 'Cierre', resultado: 'Éxito', direccionIP: '192.168.1.100', agenteUsuario: 'Chrome on Windows' },
+            { userId: 'user2', year: 2024, siglas: 'ASPNAC', claveUsuario: 'maria_g', fechaAcceso: '2024-07-21', horaInicio: '10:15:00', horaCierre: '10:45:00', duracionSesion: 30, moduloAccedido: 'Programación de periodos', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Inicio', resultado: 'Éxito', direccionIP: '192.168.1.101', agenteUsuario: 'Firefox on macOS' },
+            { userId: 'user3', year: 2024, siglas: 'ASPNA', claveUsuario: 'carlos_l', fechaAcceso: '2024-07-22', horaInicio: '11:00:00', horaCierre: '11:01:00', duracionSesion: 1, moduloAccedido: 'Login', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Error', resultado: 'Fallo (Contraseña incorrecta)', direccionIP: '192.168.1.102', agenteUsuario: 'Edge on Windows' },
+            { userId: 'user1', year: 2024, siglas: 'APBP', claveUsuario: 'admin_user', fechaAcceso: '2024-07-23', horaInicio: '08:00:00', horaCierre: '08:45:00', duracionSesion: 45, moduloAccedido: 'Control de Usuarios', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Inicio', resultado: 'Éxito', direccionIP: '192.168.1.100', agenteUsuario: 'Chrome on Windows' },
+            { userId: 'user1', year: 2024, siglas: 'APBP', claveUsuario: 'admin_user', fechaAcceso: '2024-07-23', horaInicio: '08:45:00', horaCierre: '08:50:00', duracionSesion: 5, moduloAccedido: 'Control de Usuarios', accionRealizada: 'Modificación', campoModificado: 'Usuario U001', tipoEvento: 'Cierre', resultado: 'Éxito', direccionIP: '192.168.1.100', agenteUsuario: 'Chrome on Windows' },
+            { userId: 'user4', year: 2024, siglas: 'ASPNCO', claveUsuario: 'ana_d', fechaAcceso: '2024-07-24', horaInicio: '14:00:00', horaCierre: '14:10:00', duracionSesion: 10, moduloAccedido: 'Reporte de Avance Institucional', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Inicio', resultado: 'Éxito', direccionIP: '192.168.1.103', agenteUsuario: 'Safari on iOS' },
+        ];
+
+        // Listas de opciones para los campos de usuario.
+        const defaultPerfiles = ["Coordinador de Control Interno", "Instancia de Control Interno", "Riesgos"];
+        const defaultTiposUsuario = ["Interno", "Externo"];
+        const defaultCargos = ["Director General", "Director de Área", "Subdirector", "Jefe de Departamento", "Analista", "Consultor"];
+        const defaultAccionesRealizadas = ["Ninguna", "Modificación", "Eliminación", "Agregación"];
+        const defaultTiposEvento = ["Inicio", "Cierre", "Error"];
+
+
+        // Carga de datos desde localStorage o uso de datos iniciales.
+        // En un entorno de producción, estas variables se inicializarían con datos obtenidos de una base de datos
+        // a través de llamadas a una API.
         let institutions = JSON.parse(localStorage.getItem('institutions_v11_1_1')) || initialInstitutionsData;
         let tipoInstitucionList = JSON.parse(localStorage.getItem('tipoInstitucionList_v11_1_1')) || defaultTipoInstitucion;
         let sectorList = JSON.parse(localStorage.getItem('sectorList_v11_1_1')) || defaultSector;
         let programmedPeriods = JSON.parse(localStorage.getItem('programmedPeriods_v11_1_1')) || [];
         let programmedPeriodsHistory = JSON.parse(localStorage.getItem('programmedPeriodsHistory_v11_1_1')) || {};
 
+        let users = JSON.parse(localStorage.getItem('users_v11_1_1')) || initialUsersData;
+        let userAccessLogs = JSON.parse(localStorage.getItem('userAccessLogs_v11_1_1')) || initialUserAccessLogs;
+
+        // Variables de estado temporales para la UI.
         let selectedInstitutionsForProgramacion = [];
         let currentEditingListType = '';
 
         // --- INICIALIZACIÓN Y NAVEGACIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Inicialmente muestra la página de login
+            // Inicialmente muestra la página de login.
             document.getElementById('login-page').classList.remove('hidden');
             document.getElementById('main-app').classList.add('hidden');
 
@@ -1177,8 +1385,9 @@
             populateActionFilters();
             populateAperturarModalActions();
             populateModalSelects();
+            populateUserModalSelects();
 
-            // Asegura que el primer módulo de la barra lateral esté expandido por defecto
+            // Asegura que el primer módulo de la barra lateral esté expandido por defecto.
             const firstModuleHeader = document.querySelector('.sidebar .module-header');
             if (firstModuleHeader && firstModuleHeader.classList.contains('collapsed')) {
                 firstModuleHeader.classList.remove('collapsed');
@@ -1189,61 +1398,106 @@
             }
         });
 
-        // Función para acceder al sistema después del login
+        /**
+         * Función para manejar el acceso al sistema (login).
+         * Valida las credenciales y redirige o muestra un error.
+         */
         function accessSystem() {
-            document.getElementById('login-page').classList.add('hidden');
-            document.getElementById('main-app').classList.remove('hidden');
-            // Asegura que el enlace "Consulta Instituciones" esté activo y su módulo visible
-            const consultaInstitucionesLink = document.querySelector('.sidebar .submodule-list li a');
-            showModule('consulta-instituciones', consultaInstitucionesLink);
+            const usernameInput = document.getElementById('username-login').value;
+            const passwordInput = document.getElementById('password-login').value;
+
+            // Busca el usuario en la lista de usuarios.
+            const authenticatedUser = users.find(u => u.clave === usernameInput && u.password === passwordInput);
+
+            if (authenticatedUser) {
+                // Si las credenciales son correctas, oculta la página de login y muestra la aplicación principal.
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('main-app').classList.remove('hidden');
+                // Registra el login exitoso.
+                logUserAccess(authenticatedUser.id, authenticatedUser.siglasInstitucion, authenticatedUser.clave, 'Login', 'Ninguna', 'N/A', 'Inicio', 'Éxito');
+                // Activa el módulo de "Consulta Instituciones" por defecto.
+                const consultaInstitucionesLink = document.querySelector('.sidebar .submodule-list li a');
+                showModule('consulta-instituciones', consultaInstitucionesLink);
+            } else {
+                // Si las credenciales son incorrectas, muestra una alerta y registra el intento fallido.
+                alert('Usuario o contraseña incorrectos.');
+                logUserAccess('N/A', 'N/A', usernameInput, 'Login', 'Ninguna', 'N/A', 'Error', 'Fallo (Contraseña incorrecta)');
+            }
         }
 
-        // Función para cerrar sesión y volver a la pantalla de login
+        /**
+         * Función para cerrar sesión y volver a la pantalla de login.
+         * @param {Event} event - El evento del click.
+         */
         function logout(event) {
             event.preventDefault();
+            // En una aplicación real, aquí se borrarían los tokens de sesión y la información de usuario del lado del cliente.
             document.getElementById('main-app').classList.add('hidden');
             document.getElementById('login-page').classList.remove('hidden');
+            // Registra el cierre de sesión.
+            const currentUser = users.find(u => u.clave === document.getElementById('username-login').value);
+            if (currentUser) {
+                logUserAccess(currentUser.id, currentUser.siglasInstitucion, currentUser.clave, 'Login', 'Ninguna', 'N/A', 'Cierre', 'Éxito');
+            }
         }
 
-        // Función para ir a la pantalla de inicio (Consulta Instituciones)
+        /**
+         * Función para navegar a la pantalla de inicio (Consulta Instituciones).
+         * @param {Event} event - El evento del click.
+         */
         function goHome(event) {
             event.preventDefault();
             const consultaInstitucionesLink = document.querySelector('.sidebar .submodule-list li a');
             showModule('consulta-instituciones', consultaInstitucionesLink);
         }
 
-        // Funciones para el modal de información
+        /**
+         * Abre el modal de información.
+         */
         function openInfoModal() {
             document.getElementById('info-modal').classList.remove('hidden');
         }
 
+        /**
+         * Cierra el modal de información.
+         */
         function closeInfoModal() {
             document.getElementById('info-modal').classList.add('hidden');
         }
 
+        /**
+         * Muestra el contenido de un módulo específico y actualiza el estado de la barra lateral.
+         * @param {string} moduleId - El ID del módulo a mostrar (ej. 'consulta-instituciones').
+         * @param {HTMLElement} clickedElement - El elemento de la barra lateral que fue clickeado.
+         */
         function showModule(moduleId, clickedElement) {
+            // Oculta todos los contenidos de módulos.
             document.querySelectorAll('.module-content').forEach(module => module.classList.add('hidden'));
             const targetModule = document.getElementById('module-' + moduleId);
             if (targetModule) {
+                // Muestra el módulo objetivo.
                 targetModule.classList.remove('hidden');
+                // Realiza acciones específicas al cargar ciertos módulos.
                 if (moduleId === 'catalogo-instituciones') {
                     renderInstitutionsTable();
                     populateModalSelects();
                 } else if (moduleId === 'programacion-periodos') {
-                    selectedInstitutionsForProgramacion = [];
+                    selectedInstitutionsForProgramacion = []; // Limpia la selección al entrar al módulo.
                     renderProgramacionPeriodosTable();
                 } else if (moduleId === 'reporte-avance-institucional') {
                     renderReporteAvanceInstitucionalTable();
+                } else if (moduleId === 'control-usuarios') {
+                    renderUsersTable(); // Renderiza la tabla de usuarios al entrar al módulo.
                 }
             }
-            // Eliminar la clase 'active-item' de todos los elementos de la barra lateral
+            // Elimina la clase 'active-item' de todos los elementos de la barra lateral.
             document.querySelectorAll('.sidebar .submodule-list li').forEach(li => li.classList.remove('active-item'));
-            // Si se hizo clic en un elemento, agregar la clase 'active-item' a su padre <li>
+            // Si se hizo clic en un elemento, agrega la clase 'active-item' a su padre <li>.
             if (clickedElement) {
                 const parentLi = clickedElement.closest('li');
                 if (parentLi) parentLi.classList.add('active-item');
 
-                // Asegurarse de que el módulo padre esté expandido
+                // Asegura que el módulo padre esté expandido.
                 let parentUl = clickedElement.closest('.submodule-list');
                 if (parentUl && parentUl.classList.contains('hidden')) {
                     parentUl.classList.remove('hidden');
@@ -1255,22 +1509,38 @@
             }
         }
 
+        /**
+         * Alterna la visibilidad de los submódulos en la barra lateral.
+         * @param {HTMLElement} headerElement - El encabezado del módulo clickeado.
+         */
         function toggleSubmodules(headerElement) {
             headerElement.nextElementSibling.classList.toggle('hidden');
             headerElement.classList.toggle('collapsed');
         }
 
+        /**
+         * Configura los event listeners para los campos de filtro de institución.
+         */
         function setupEventListeners() {
             const consultaInput = document.getElementById('consulta-institucion-filter');
             if(consultaInput) {
-                consultaInput.addEventListener('input', () => handleInstitutionFilter(consultaInput.value, 'consulta', institutions));
-                consultaInput.addEventListener('click', () => handleInstitutionFilter('', 'consulta', institutions, true));
+                // Pasa el ID completo del elemento de sugerencias para evitar TypeError.
+                consultaInput.addEventListener('input', () => handleInstitutionFilter(consultaInput.value, 'consulta-institucion', institutions));
+                consultaInput.addEventListener('click', () => handleInstitutionFilter('', 'consulta-institucion', institutions, true));
             }
 
             const programacionInput = document.getElementById('programacion-institucion-filter');
             if(programacionInput) {
-                programacionInput.addEventListener('input', () => handleInstitutionFilter(programacionInput.value, 'programacion', institutions));
-                programacionInput.addEventListener('click', () => handleInstitutionFilter('', 'programacion', institutions, true));
+                // Pasa el ID completo del elemento de sugerencias para evitar TypeError.
+                programacionInput.addEventListener('input', () => handleInstitutionFilter(programacionInput.value, 'programacion-institucion', institutions));
+                programacionInput.addEventListener('click', () => handleInstitutionFilter('', 'programacion-institucion', institutions, true));
+            }
+
+            const userModalInstitutionFilter = document.getElementById('user-siglas-institucion-filter');
+            if (userModalInstitutionFilter) {
+                // Pasa el ID completo del elemento de sugerencias para evitar TypeError.
+                userModalInstitutionFilter.addEventListener('input', () => handleInstitutionFilter(userModalInstitutionFilter.value, 'user-siglas-institucion', institutions));
+                userModalInstitutionFilter.addEventListener('click', () => handleInstitutionFilter('', 'user-siglas-institucion', institutions, true));
             }
 
             const institutionForm = document.getElementById('institution-form');
@@ -1278,6 +1548,12 @@
                 institutionForm.addEventListener('submit', handleInstitutionFormSubmit);
             }
 
+            const userForm = document.getElementById('user-form');
+            if (userForm) {
+                userForm.addEventListener('submit', handleUserFormSubmit);
+            }
+
+            // Cierra las sugerencias de institución al hacer clic fuera.
             document.addEventListener('click', (event) => {
                 if (!event.target.closest('.institution-filter-container')) {
                     document.querySelectorAll('.institution-suggestions').forEach(el => el.classList.add('hidden'));
@@ -1285,14 +1561,26 @@
             });
         }
 
-        // --- LÓGICA DE FILTROS ---
-        function handleInstitutionFilter(filterValue, context, data, showAll = false) {
-            const suggestionsContainer = document.getElementById(`${context}-institucion-suggestions`);
+        /**
+         * Maneja el filtrado de instituciones y muestra sugerencias.
+         * @param {string} filterValue - El texto de búsqueda.
+         * @param {string} contextPrefix - El prefijo del ID del elemento (ej. 'consulta-institucion').
+         * @param {Array<Object>} data - La lista de instituciones a filtrar.
+         * @param {boolean} showAll - Si se deben mostrar todas las sugerencias al hacer clic.
+         */
+        function handleInstitutionFilter(filterValue, contextPrefix, data, showAll = false) {
+            const suggestionsContainer = document.getElementById(`${contextPrefix}-suggestions`);
+            if (!suggestionsContainer) {
+                console.error(`Error: Elemento con ID ${contextPrefix}-suggestions no encontrado.`);
+                return;
+            }
             suggestionsContainer.innerHTML = '';
             const lowerCaseFilter = filterValue.toLowerCase();
 
             const filtered = data.filter(inst =>
-                lowerCaseFilter === '' || inst.nombre.toLowerCase().includes(lowerCaseFilter) || inst.siglas.toLowerCase().includes(lowerCaseFilter)
+                lowerCaseFilter === '' ||
+                inst.nombre.toLowerCase().includes(lowerCaseFilter) ||
+                inst.siglas.toLowerCase().includes(lowerCaseFilter)
             );
 
             if (filtered.length > 0 && (lowerCaseFilter.length > 0 || showAll)) {
@@ -1300,26 +1588,45 @@
                 filtered.forEach(inst => {
                     const suggestionItem = document.createElement('div');
                     suggestionItem.textContent = `${inst.siglas} - ${inst.nombre}`;
-                    suggestionItem.onmousedown = () => selectInstitution(inst, context);
+                    // Usa onmousedown para evitar que el blur del input oculte las sugerencias antes del click.
+                    suggestionItem.onmousedown = () => selectInstitution(inst, contextPrefix);
                     suggestionsContainer.appendChild(suggestionItem);
                 });
             } else {
                 suggestionsContainer.classList.add('hidden');
             }
 
-            if (context === 'programacion') renderProgramacionPeriodosTable();
+            // Si el contexto es para programación de periodos, re-renderiza la tabla.
+            if (contextPrefix === 'programacion-institucion') renderProgramacionPeriodosTable();
         }
 
-        function selectInstitution(inst, context) {
-            document.getElementById(`${context}-institucion-filter`).value = `${inst.siglas} - ${inst.nombre}`;
-            if(document.getElementById(`${context}-institucion-id`)) {
-                document.getElementById(`${context}-institucion-id`).value = inst.id;
+        /**
+         * Selecciona una institución de las sugerencias y actualiza el campo de entrada.
+         * @param {Object} inst - El objeto de la institución seleccionada.
+         * @param {string} contextPrefix - El prefijo del ID del elemento.
+         */
+        function selectInstitution(inst, contextPrefix) {
+            document.getElementById(`${contextPrefix}-filter`).value = `${inst.siglas} - ${inst.nombre}`;
+            // Si existe un input hidden para el ID, actualízalo.
+            const hiddenIdInput = document.getElementById(`${contextPrefix}-id`);
+            if(hiddenIdInput) {
+                hiddenIdInput.value = inst.id;
             }
-            document.getElementById(`${context}-institucion-suggestions`).classList.add('hidden');
-            if (context === 'programacion') renderProgramacionPeriodosTable();
+            // Oculta las sugerencias.
+            document.getElementById(`${contextPrefix}-suggestions`).classList.add('hidden');
+
+            // Lógica específica para la selección de institución en el modal de usuario.
+            if (contextPrefix === 'user-siglas-institucion') {
+                document.getElementById('user-siglas-institucion-id').value = inst.siglas; // Almacena las siglas.
+            }
+
+            // Si el contexto es para programación de periodos, re-renderiza la tabla.
+            if (contextPrefix === 'programacion-institucion') renderProgramacionPeriodosTable();
         }
 
-        // Función para limpiar el filtro de institución en Programación de Periodos
+        /**
+         * Limpia el filtro de institución en el módulo de Programación de Periodos.
+         */
         function clearInstitutionFilter() {
             const input = document.getElementById('programacion-institucion-filter');
             input.value = '';
@@ -1327,6 +1634,9 @@
         }
 
         // --- MÓDULO: CATÁLOGO DE INSTITUCIONES ---
+        /**
+         * Renderiza la tabla de instituciones.
+         */
         function renderInstitutionsTable() {
             const tableBody = document.querySelector('#institutions-catalog-table tbody');
             tableBody.innerHTML = '';
@@ -1365,6 +1675,9 @@
             });
         }
 
+        /**
+         * Popula los selects de tipo de institución y sector en el modal de institución.
+         */
         function populateModalSelects() {
             const tipoSelect = document.getElementById('modal-tipo-institucion');
             const sectorSelect = document.getElementById('modal-sector');
@@ -1385,14 +1698,18 @@
             });
         }
 
+        /**
+         * Abre el modal para agregar o editar una institución.
+         * @param {string} [institutionId=null] - El ID de la institución a editar. Si es null, se abre para agregar.
+         */
         function openInstitutionModal(institutionId = null) {
             const modalOverlay = document.getElementById('institution-modal-overlay');
             const modalTitle = document.getElementById('institution-modal-title');
             const form = document.getElementById('institution-form');
-            form.reset();
+            form.reset(); // Limpia el formulario.
 
             document.getElementById('institution-id-edit').value = '';
-            populateModalSelects();
+            populateModalSelects(); // Vuelve a poblar los selects para asegurar que estén actualizados.
 
             if (institutionId) {
                 modalTitle.textContent = 'Editar Institución';
@@ -1407,15 +1724,22 @@
                 }
             } else {
                 modalTitle.textContent = 'Agregar Institución';
-                document.querySelector('input[name="modal-estatus"][value="Activa"]').checked = true;
+                document.querySelector('input[name="modal-estatus"][value="Activa"]').checked = true; // Por defecto, activa.
             }
             modalOverlay.classList.remove('hidden');
         }
 
+        /**
+         * Cierra el modal de institución.
+         */
         function closeInstitutionModal() {
             document.getElementById('institution-modal-overlay').classList.add('hidden');
         }
 
+        /**
+         * Maneja el envío del formulario de institución (agregar/editar).
+         * @param {Event} event - El evento del submit.
+         */
         function handleInstitutionFormSubmit(event) {
             event.preventDefault();
             const id = document.getElementById('institution-id-edit').value;
@@ -1426,32 +1750,48 @@
             const estatus = document.querySelector('input[name="modal-estatus"]:checked').value;
 
             if (id) {
+                // Edita una institución existente.
                 const index = institutions.findIndex(inst => inst.id === id);
                 if (index !== -1) {
                     institutions[index] = { ...institutions[index], tipo, sector, siglas, nombre, estatus };
                 }
             } else {
-                const newId = Date.now().toString();
+                // Agrega una nueva institución.
+                const newId = Date.now().toString(); // Genera un ID único.
                 institutions.push({ id: newId, tipo, sector, siglas, nombre, estatus, ptciActualizado: 'No' });
             }
 
+            // Guarda los cambios en localStorage. En producción, se enviaría a la base de datos.
             localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
-            renderInstitutionsTable();
+            renderInstitutionsTable(); // Actualiza la tabla.
             closeInstitutionModal();
         }
 
+        /**
+         * Edita una institución existente.
+         * @param {string} id - El ID de la institución a editar.
+         */
         function editInstitution(id) {
             openInstitutionModal(id);
         }
 
+        /**
+         * Elimina una institución.
+         * @param {string} id - El ID de la institución a eliminar.
+         */
         function deleteInstitution(id) {
             if (confirm('¿Está seguro de que desea eliminar esta institución?')) {
                 institutions = institutions.filter(inst => inst.id !== id);
+                // Guarda los cambios en localStorage. En producción, se enviaría a la base de datos.
                 localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
-                renderInstitutionsTable();
+                renderInstitutionsTable(); // Actualiza la tabla.
             }
         }
 
+        /**
+         * Abre el modal para editar las listas de tipo de institución o sector.
+         * @param {string} listType - El tipo de lista a editar ('tipoInstitucion' o 'sector').
+         */
         function openEditListModal(listType) {
             currentEditingListType = listType;
             const modalOverlay = document.getElementById('edit-list-modal-overlay');
@@ -1479,25 +1819,40 @@
             modalOverlay.classList.remove('hidden');
         }
 
+        /**
+         * Cierra el modal de edición de listas.
+         */
         function closeEditListModal() {
             document.getElementById('edit-list-modal-overlay').classList.add('hidden');
-            populateModalSelects(); // Vuelve a poblar los selects después de editar las listas
+            populateModalSelects(); // Vuelve a poblar los selects después de editar las listas.
         }
 
+        /**
+         * Abre el modal para editar un solo elemento de una lista.
+         * @param {string} listType - El tipo de lista.
+         * @param {number} index - El índice del elemento a editar.
+         * @param {string} value - El valor actual del elemento.
+         */
         function openEditSingleListItemModal(listType, index, value) {
             document.getElementById('edit-single-list-item-modal-overlay').classList.remove('hidden');
             document.getElementById('edit-single-list-item-index').value = index;
             document.getElementById('edit-single-list-item-type').value = listType;
             document.getElementById('edit-single-list-item-input').value = value;
             document.getElementById('edit-single-list-item-input').focus();
-            document.getElementById('edit-list-modal-overlay').classList.add('hidden'); // Oculta el modal de lista mientras se edita un solo elemento
+            document.getElementById('edit-list-modal-overlay').classList.add('hidden'); // Oculta el modal de lista mientras se edita un solo elemento.
         }
 
+        /**
+         * Cierra el modal de edición de un solo elemento de lista.
+         */
         function closeEditSingleListItemModal() {
             document.getElementById('edit-single-list-item-modal-overlay').classList.add('hidden');
-            openEditListModal(document.getElementById('edit-single-list-item-type').value); // Vuelve a abrir el modal de lista
+            openEditListModal(document.getElementById('edit-single-list-item-type').value); // Vuelve a abrir el modal de lista.
         }
 
+        /**
+         * Guarda el elemento de lista editado.
+         */
         function saveEditedListItem() {
             const index = document.getElementById('edit-single-list-item-index').value;
             const listType = document.getElementById('edit-single-list-item-type').value;
@@ -1509,22 +1864,28 @@
                 oldItem = tipoInstitucionList[index];
                 if (tipoInstitucionList.includes(newValue) && newValue !== oldItem) { alert('Este tipo de institución ya existe.'); return; }
                 tipoInstitucionList[index] = newValue;
+                // En producción: se enviaría una solicitud de actualización a la base de datos.
                 localStorage.setItem('tipoInstitucionList_v11_1_1', JSON.stringify(tipoInstitucionList));
-                // Actualiza las instituciones que usaban el valor antiguo
+                // Actualiza las instituciones que usaban el valor antiguo.
                 institutions.forEach(inst => { if (inst.tipo === oldItem) inst.tipo = newValue; });
             } else if (listType === 'sector') {
                 oldItem = sectorList[index];
                 if (sectorList.includes(newValue) && newValue !== oldItem) { alert('Este sector ya existe.'); return; }
                 sectorList[index] = newValue;
+                // En producción: se enviaría una solicitud de actualización a la base de datos.
                 localStorage.setItem('sectorList_v11_1_1', JSON.stringify(sectorList));
-                // Actualiza las instituciones que usaban el valor antiguo
+                // Actualiza las instituciones que usaban el valor antiguo.
                 institutions.forEach(inst => { if (inst.sector === oldItem) inst.sector = newValue; });
             }
+            // En producción: se enviaría una solicitud de actualización masiva o individual a la base de datos para las instituciones.
             localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
             closeEditSingleListItemModal();
-            renderInstitutionsTable(); // Vuelve a renderizar la tabla de instituciones para reflejar los cambios
+            renderInstitutionsTable(); // Vuelve a renderizar la tabla de instituciones para reflejar los cambios.
         }
 
+        /**
+         * Agrega un nuevo elemento a una lista de opciones.
+         */
         function addListItem() {
             const input = document.getElementById('new-list-item-input');
             const newItem = input.value.trim();
@@ -1532,41 +1893,54 @@
                 if (currentEditingListType === 'tipoInstitucion') {
                     if (tipoInstitucionList.includes(newItem)) { alert('Este tipo de institución ya existe.'); return; }
                     tipoInstitucionList.push(newItem);
+                    // En producción: se enviaría una solicitud de adición a la base de datos.
                     localStorage.setItem('tipoInstitucionList_v11_1_1', JSON.stringify(tipoInstitucionList));
                 } else if (currentEditingListType === 'sector') {
                     if (sectorList.includes(newItem)) { alert('Este sector ya existe.'); return; }
                     sectorList.push(newItem);
+                    // En producción: se enviaría una solicitud de adición a la base de datos.
                     localStorage.setItem('sectorList_v11_1_1', JSON.stringify(sectorList));
                 }
                 input.value = '';
-                openEditListModal(currentEditingListType); // Recarga la lista en el modal
+                openEditListModal(currentEditingListType); // Recarga la lista en el modal.
             }
         }
 
+        /**
+         * Elimina un elemento de una lista de opciones.
+         * @param {string} listType - El tipo de lista.
+         * @param {number} indexToRemove - El índice del elemento a eliminar.
+         */
         function removeListItem(listType, indexToRemove) {
             if (confirm('¿Está seguro de que desea eliminar este elemento? Las instituciones que lo usen quedarán sin un valor asignado.')) {
                 let itemToRemove;
                 if (listType === 'tipoInstitucion') {
                     itemToRemove = tipoInstitucionList[indexToRemove];
                     tipoInstitucionList.splice(indexToRemove, 1);
+                    // En producción: se enviaría una solicitud de eliminación a la base de datos.
                     localStorage.setItem('tipoInstitucionList_v11_1_1', JSON.stringify(tipoInstitucionList));
-                    // Elimina el tipo de institución de las instituciones que lo usaban
+                    // Elimina el tipo de institución de las instituciones que lo usaban.
                     institutions.forEach(inst => { if (inst.tipo === itemToRemove) inst.tipo = ''; });
                 } else if (listType === 'sector') {
                     itemToRemove = sectorList[indexToRemove];
                     sectorList.splice(indexToRemove, 1);
+                    // En producción: se enviaría una solicitud de eliminación a la base de datos.
                     localStorage.setItem('sectorList_v11_1_1', JSON.stringify(sectorList));
-                    // Elimina el sector de las instituciones que lo usaban
+                    // Elimina el sector de las instituciones que lo usaban.
                     institutions.forEach(inst => { if (inst.sector === itemToRemove) inst.sector = ''; });
                 }
+                // En producción: se enviaría una solicitud de actualización masiva o individual a la base de datos para las instituciones.
                 localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
-                openEditListModal(listType); // Recarga la lista en el modal
-                renderInstitutionsTable(); // Vuelve a renderizar la tabla de instituciones para reflejar los cambios
+                openEditListModal(listType); // Recarga la lista en el modal.
+                renderInstitutionsTable(); // Vuelve a renderizar la tabla de instituciones para reflejar los cambios.
             }
         }
 
 
         // --- MÓDULO: PROGRAMACIÓN DE PERIODOS ---
+        /**
+         * Renderiza la tabla de programación de periodos.
+         */
         function renderProgramacionPeriodosTable() {
             const tableBody = document.querySelector('#programacion-periodos-table tbody');
             tableBody.innerHTML = '';
@@ -1578,11 +1952,8 @@
             let institutionsToDisplay = institutions.filter(inst => {
                 const instName = inst.nombre.toLowerCase();
                 const instSiglas = inst.siglas.toLowerCase();
-                const filterParts = institucionFilterText.split(' - ');
-                const siglaFilter = filterParts[0];
-                const nameFilter = filterParts.length > 1 ? filterParts.slice(1).join(' - ') : siglaFilter;
-
-                const matchesInstitucion = institucionFilterText === '' || instName.includes(nameFilter) || instSiglas.includes(siglaFilter);
+                // Filtra por siglas o nombre de la institución.
+                const matchesInstitucion = institucionFilterText === '' || instName.includes(institucionFilterText) || instSiglas.includes(institucionFilterText);
                 const matchesPtci = ptciFilter === 'todos' || inst.ptciActualizado === ptciFilter;
 
                 const programmedPeriod = programmedPeriods.find(pp => pp.institucionId === inst.id);
@@ -1603,6 +1974,7 @@
                 const row = tableBody.insertRow();
                 row.classList.toggle('selected', isSelected);
                 row.dataset.institutionId = inst.id;
+                // Permite seleccionar la fila haciendo clic en cualquier parte excepto en el checkbox o botones.
                 row.onclick = (event) => {
                     if (event.target.type !== 'checkbox' && event.target.tagName !== 'BUTTON' && event.target.tagName !== 'SVG' && event.target.tagName !== 'PATH') {
                         const checkbox = row.querySelector('input[type="checkbox"]');
@@ -1625,6 +1997,10 @@
             updateUiPostSelection();
         }
 
+        /**
+         * Selecciona o deselecciona todas las instituciones visibles en la tabla de programación.
+         * @param {boolean} isChecked - Si el checkbox maestro está marcado.
+         */
         function toggleAllInstitutions(isChecked) {
             const checkboxes = document.querySelectorAll('#programacion-periodos-table tbody input[type="checkbox"]');
             checkboxes.forEach(checkbox => {
@@ -1633,6 +2009,11 @@
             });
         }
 
+        /**
+         * Alterna la selección de una institución individual.
+         * @param {HTMLElement} checkbox - El checkbox de la fila.
+         * @param {string} institutionId - El ID de la institución.
+         */
         function toggleInstitutionSelection(checkbox, institutionId) {
             const institution = institutions.find(inst => inst.id === institutionId);
             if (!institution) return;
@@ -1647,6 +2028,9 @@
             updateUiPostSelection();
         }
 
+        /**
+         * Actualiza el estado del checkbox "seleccionar todo" y la visibilidad del botón de historial.
+         */
         function updateUiPostSelection() {
             const allCheckboxes = document.querySelectorAll('#programacion-periodos-table tbody input[type="checkbox"]');
             const selectAllCheckbox = document.getElementById('select-all-institutions');
@@ -1658,10 +2042,14 @@
                 selectAllCheckbox.checked = false;
                 selectAllCheckbox.indeterminate = false;
             }
+            // Muestra el botón de historial solo si hay exactamente una institución seleccionada.
             document.getElementById('history-button').style.display = selectedInstitutionsForProgramacion.length === 1 ? 'inline-flex' : 'none';
         }
 
         // --- MODALES Y LÓGICA DE DATOS ---
+        /**
+         * Popula los filtros de acción en el módulo de programación de periodos y el modal de historial.
+         */
         function populateActionFilters() {
             const mainFilter = document.getElementById('tipo-accion-filter');
             const historyFilter = document.getElementById('history-action-filter');
@@ -1683,6 +2071,9 @@
             }
         }
 
+        /**
+         * Popula el formulario del modal "Aperturar Sistema" con opciones de periodo y acciones.
+         */
         function populateAperturarModalActions() {
             const form = document.getElementById('aperturar-form');
             form.innerHTML = '';
@@ -1743,6 +2134,10 @@
             form.addEventListener('submit', handleAperturarSubmit);
         }
 
+        /**
+         * Maneja el envío del formulario "Aperturar Sistema".
+         * @param {Event} event - El evento del submit.
+         */
         function handleAperturarSubmit(event) {
             event.preventDefault();
             const periodo = document.getElementById('aperturar-periodo').value;
@@ -1764,7 +2159,7 @@
                 const newAction = {
                     periodo, trimestre, fechaInicio, fechaFin,
                     accionesPermitidas,
-                    usuario: 'admin_user',
+                    usuario: 'admin_user', // Usuario por defecto para el log.
                     timestamp: new Date().toISOString()
                 };
 
@@ -1778,6 +2173,7 @@
                 if (!programmedPeriodsHistory[inst.id]) programmedPeriodsHistory[inst.id] = [];
                 programmedPeriodsHistory[inst.id].push(newAction);
             });
+            // Guarda los cambios en localStorage. En producción, se enviaría a la base de datos.
             localStorage.setItem('programmedPeriods_v11_1_1', JSON.stringify(programmedPeriods));
             localStorage.setItem('programmedPeriodsHistory_v11_1_1', JSON.stringify(programmedPeriodsHistory));
 
@@ -1786,14 +2182,17 @@
             alert('Sistema aperturado/actualizado correctamente.');
         }
 
+        /**
+         * Abre el modal "Aperturar Sistema".
+         */
         function openAperturarModal() {
             if (selectedInstitutionsForProgramacion.length === 0) {
                 alert('Por favor, selecciona al menos una institución.');
                 return;
             }
-            // Reset automático de "Acciones" al recargar Aperturar Sistema
+            // Resetea los checkboxes de acción al recargar el modal.
             document.querySelectorAll('input[name="accion-permitida"]').forEach(cb => cb.checked = false);
-            // Actualizar fechas al abrir el modal
+            // Actualiza las fechas al abrir el modal.
             updateDatesByPeriodAndTrimestre();
 
             const display = document.getElementById('selected-institutions-display');
@@ -1801,9 +2200,15 @@
             display.classList.remove('hidden');
             document.getElementById('aperturar-modal-overlay').classList.remove('hidden');
         }
+
+        /**
+         * Cierra el modal "Aperturar Sistema".
+         */
         function closeAperturarModal() { document.getElementById('aperturar-modal-overlay').classList.add('hidden'); }
 
-        // Función para calcular y establecer las fechas de inicio y fin automáticamente
+        /**
+         * Calcula y establece automáticamente las fechas de inicio y fin basándose en el periodo y trimestre seleccionados.
+         */
         function updateDatesByPeriodAndTrimestre() {
             const year = parseInt(document.getElementById('aperturar-periodo').value);
             const trimestre = document.getElementById('aperturar-trimestre').value;
@@ -1850,16 +2255,21 @@
             fechaFinInput.value = endDate.toISOString().split('T')[0];
         }
 
-
+        /**
+         * Abre el modal de historial para una institución seleccionada.
+         */
         function openHistoryModal() {
-            if (selectedInstitutionsForProgramacion.length !== 1) return;
+            if (selectedInstitutionsForProgramacion.length !== 1) return; // Solo si hay una institución seleccionada.
             const inst = selectedInstitutionsForProgramacion[0];
             document.getElementById('history-institution-name').textContent = `${inst.siglas} - ${inst.nombre}`;
-            document.getElementById('history-action-filter').value = 'todos';
-            renderHistoryTable();
+            document.getElementById('history-action-filter').value = 'todos'; // Filtro por defecto.
+            renderHistoryTable(); // Renderiza la tabla de historial.
             document.getElementById('history-modal-overlay').classList.remove('hidden');
         }
 
+        /**
+         * Renderiza la tabla de historial de programación de periodos.
+         */
         function renderHistoryTable() {
             const inst = selectedInstitutionsForProgramacion[0];
             if (!inst) return;
@@ -1869,7 +2279,7 @@
             const actionFilter = document.getElementById('history-action-filter').value;
             const historyForInst = (programmedPeriodsHistory[inst.id] || []).filter(entry =>
                 actionFilter === 'todos' || entry.accionesPermitidas.includes(actionFilter)
-            ).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            ).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)); // Ordena por fecha descendente.
             if (historyForInst.length === 0) {
                 historyTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-gray-500 py-3">No hay historial para el filtro seleccionado.</td></tr>`;
                 return;
@@ -1888,23 +2298,29 @@
             });
         }
 
+        /**
+         * Cierra el modal de historial.
+         */
         function closeHistoryModal() { document.getElementById('history-modal-overlay').classList.add('hidden'); }
 
         // --- MÓDULO: REPORTE DE AVANCE INSTITUCIONAL ---
+        /**
+         * Renderiza la tabla del reporte de avance institucional.
+         */
         function renderReporteAvanceInstitucionalTable() {
             const table = document.querySelector('#module-reporte-avance-institucional .data-table');
             const thead = table.querySelector('thead');
             const tbody = table.querySelector('tbody');
 
-            // Limpiar encabezados y cuerpo existentes
+            // Limpiar encabezados y cuerpo existentes.
             thead.innerHTML = '';
             tbody.innerHTML = '';
 
-            // Obtener valores de los filtros
-            const estatusFilter = document.querySelector('input[name="estatus_reporte"]:checked').value; // '1' o '0'
-            const anioFilter = document.getElementById('anio_input').value; // 'todos' o año
+            // Obtener valores de los filtros.
+            const estatusFilter = document.querySelector('input[name="estatus_reporte"]:checked').value; // '1' o '0'.
+            const anioFilter = document.getElementById('anio_input').value; // 'todos' o año.
 
-            // Preparar todas las acciones únicas para los encabezados
+            // Preparar todas las acciones únicas para los encabezados.
             const allAvailableActions = [];
             for (const category in availableActionsCategories) {
                 availableActionsCategories[category].forEach(action => {
@@ -1912,12 +2328,12 @@
                 });
             }
 
-            // Crear fila de encabezado
+            // Crear fila de encabezado.
             let headerRow = '<tr>';
             headerRow += '<th>Periodo</th>';
             headerRow += '<th>Siglas</th>';
             headerRow += '<th>Institución</th>';
-            headerRow += '<th>Actualizó PTCI</th>'; // Esta columna permanece según lo solicitado
+            headerRow += '<th>Actualizó PTCI</th>';
 
             allAvailableActions.forEach(action => {
                 headerRow += `<th>${action}</th>`;
@@ -1925,7 +2341,7 @@
             headerRow += '</tr>';
             thead.innerHTML = headerRow;
 
-            // Filtrar instituciones según el estado
+            // Filtrar instituciones según el estado.
             const filteredInstitutions = institutions.filter(inst => {
                 const isActive = inst.estatus === 'Activa';
                 return (estatusFilter === '1' && isActive) || (estatusFilter === '0' && !isActive);
@@ -1936,10 +2352,10 @@
                 return;
             }
 
-            // Rellenar el cuerpo de la tabla
+            // Rellenar el cuerpo de la tabla.
             let hasData = false;
             filteredInstitutions.forEach(inst => {
-                // Encontrar el período programado para la institución actual
+                // Encontrar el período programado para la institución actual.
                 const programmedPeriod = programmedPeriods.find(p => p.institucionId === inst.id && (anioFilter === 'todos' || p.periodo === anioFilter));
 
                 if (programmedPeriod) {
@@ -1948,7 +2364,7 @@
                     dataRow += `<td>${programmedPeriod.periodo || 'N/A'}</td>`;
                     dataRow += `<td>${inst.siglas}</td>`;
                     dataRow += `<td>${inst.nombre}</td>`;
-                    dataRow += `<td>${inst.ptciActualizado || 'No'}</td>`; // Usar inst.ptciActualizado directamente
+                    dataRow += `<td>${inst.ptciActualizado || 'No'}</td>`; // Usar inst.ptciActualizado directamente.
 
                     allAvailableActions.forEach(action => {
                         const isActionEnabled = programmedPeriod.accionesPermitidas.includes(action);
@@ -1963,6 +2379,479 @@
                  tbody.innerHTML = `<tr><td colspan="${4 + allAvailableActions.length}" class="text-center text-gray-500 py-3">No se encontraron datos para el filtro seleccionado.</td></tr>`;
             }
         }
+
+        /**
+         * Exporta los datos del reporte de avance institucional a un archivo CSV.
+         */
+        function exportReporteAvanceInstitucional() {
+            const table = document.querySelector('#module-reporte-avance-institucional .data-table');
+            const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            let csvContent = headers.join(',') + '\n';
+
+            rows.forEach(row => {
+                const rowData = Array.from(row.querySelectorAll('td')).map(td => {
+                    let text = td.textContent.trim();
+                    // Escapar comas y comillas dobles en el texto.
+                    if (text.includes(',') || text.includes('"')) {
+                        text = `"${text.replace(/"/g, '""')}"`;
+                    }
+                    return text;
+                });
+                csvContent += rowData.join(',') + '\n';
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            const date = new Date();
+            const dateString = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+            link.setAttribute('href', url);
+            link.setAttribute('download', `ReporteAvanceInstitucional_${dateString}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+
+        // --- MÓDULO: CONTROL DE USUARIOS ---
+
+        /**
+         * Popula los selects del modal de agregar/editar usuario.
+         */
+        function populateUserModalSelects() {
+            const perfilSelect = document.getElementById('user-perfil');
+            const tipoUsuarioSelect = document.getElementById('user-tipo-usuario');
+            const cargoSelect = document.getElementById('user-cargo');
+
+            // Perfiles.
+            perfilSelect.innerHTML = '<option value="">Seleccione Perfil</option>';
+            defaultPerfiles.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = item;
+                perfilSelect.appendChild(option);
+            });
+
+            // Tipos de Usuario.
+            tipoUsuarioSelect.innerHTML = '<option value="">Seleccione Tipo</option>';
+            defaultTiposUsuario.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = item;
+                tipoUsuarioSelect.appendChild(option);
+            });
+
+            // Cargos.
+            cargoSelect.innerHTML = '<option value="">Seleccione Cargo</option>';
+            defaultCargos.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = item;
+                cargoSelect.appendChild(option);
+            });
+        }
+
+        /**
+         * Renderiza la tabla de usuarios en el módulo de control de usuarios.
+         */
+        function renderUsersTable() {
+            const tableBody = document.querySelector('#users-table tbody');
+            tableBody.innerHTML = '';
+
+            const statusFilter = document.querySelector('input[name="user_status_filter"]:checked').value;
+            const searchTerm = document.getElementById('user-search-input').value.toLowerCase();
+
+            const filteredUsers = users.filter(user => {
+                const matchesStatus = statusFilter === 'todos' || user.estatus === statusFilter;
+                const institution = institutions.find(inst => inst.siglas === user.siglasInstitucion);
+                const institutionName = institution ? institution.nombre.toLowerCase() : '';
+
+                const matchesSearch = searchTerm === '' ||
+                                      user.clave.toLowerCase().includes(searchTerm) ||
+                                      user.nombre.toLowerCase().includes(searchTerm) ||
+                                      user.siglasInstitucion.toLowerCase().includes(searchTerm) ||
+                                      institutionName.includes(searchTerm); // Busca por nombre de institución también.
+
+                return matchesStatus && matchesSearch;
+            });
+
+            if (filteredUsers.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="11" class="text-center text-gray-500 py-3">No se encontraron usuarios.</td></tr>`;
+                return;
+            }
+
+            filteredUsers.forEach(user => {
+                const institution = institutions.find(inst => inst.siglas === user.siglasInstitucion);
+                const institutionName = institution ? institution.nombre : 'N/A';
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${user.siglasInstitucion}</td>
+                    <td>${institutionName}</td>
+                    <td>${user.perfil}</td>
+                    <td>${user.clave}</td>
+                    <td>**********</td> <!-- Contraseña siempre oculta -->
+                    <td>${user.estatus}</td>
+                    <td>${user.correo || 'N/A'}</td>
+                    <td>${user.telefono || 'N/A'}</td>
+                    <td>${user.tipoUsuario || 'N/A'}</td>
+                    <td>${user.cargo || 'N/A'}</td>
+                    <td class="flex gap-1 justify-center">
+                        <button type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white p-1 rounded-md text-xs" onclick="openUserModal('${user.id}')" title="Editar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
+                                <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                                <path d="M15 5l4 4"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="bg-blue-500 hover:bg-blue-600 text-white p-1 rounded-md text-xs" onclick="openUserAccessReportModal('${user.id}')" title="Generar Reporte de Accesos">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                        </button>
+                        <button type="button" class="bg-red-500 hover:bg-red-600 text-white p-1 rounded-md text-xs" onclick="deleteUser('${user.id}')" title="Eliminar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
+                                <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>
+                            </svg>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        /**
+         * Abre el modal para agregar o editar un usuario.
+         * @param {string} [userId=null] - El ID del usuario a editar. Si es null, se abre para agregar.
+         */
+        function openUserModal(userId = null) {
+            const modalOverlay = document.getElementById('user-modal-overlay');
+            const modalTitle = document.getElementById('user-modal-title');
+            const form = document.getElementById('user-form');
+            form.reset(); // Limpia el formulario.
+            populateUserModalSelects(); // Asegura que los selects estén poblados.
+
+            document.getElementById('user-id-edit').value = '';
+            document.getElementById('user-siglas-institucion-filter').value = ''; // Limpia el input del filtro de institución.
+            document.getElementById('user-siglas-institucion-id').value = ''; // Limpia el ID oculto de la institución.
+            document.getElementById('user-password').value = ''; // Limpia la contraseña para nuevos usuarios.
+
+            if (userId) {
+                modalTitle.textContent = 'Editar Usuario';
+                const userToEdit = users.find(user => user.id === userId);
+                if (userToEdit) {
+                    document.getElementById('user-id-edit').value = userToEdit.id;
+                    document.getElementById('user-clave').value = userToEdit.clave;
+                    document.getElementById('user-nombre').value = userToEdit.nombre;
+                    document.getElementById('user-perfil').value = userToEdit.perfil;
+                    document.querySelector(`input[name="user-estatus"][value="${userToEdit.estatus}"]`).checked = true;
+                    document.getElementById('user-correo').value = userToEdit.correo;
+                    document.getElementById('user-telefono').value = userToEdit.telefono;
+                    document.getElementById('user-tipo-usuario').value = userToEdit.tipoUsuario;
+                    document.getElementById('user-cargo').value = userToEdit.cargo;
+                    // Establece el valor para el input del filtro de institución.
+                    const institution = institutions.find(inst => inst.siglas === userToEdit.siglasInstitucion);
+                    if (institution) {
+                        document.getElementById('user-siglas-institucion-filter').value = `${institution.siglas} - ${institution.nombre}`;
+                        document.getElementById('user-siglas-institucion-id').value = institution.siglas; // Almacena las siglas.
+                    }
+                    document.getElementById('user-password').value = userToEdit.password; // Muestra la contraseña para edición.
+                }
+            } else {
+                modalTitle.textContent = 'Agregar Usuario';
+                document.querySelector('input[name="user-estatus"][value="Activo"]').checked = true; // Por defecto, activo.
+            }
+            modalOverlay.classList.remove('hidden');
+        }
+
+        /**
+         * Cierra el modal de agregar/editar usuario.
+         */
+        function closeUserModal() {
+            document.getElementById('user-modal-overlay').classList.add('hidden');
+            document.getElementById('user-siglas-institucion-suggestions').classList.add('hidden'); // Oculta las sugerencias.
+        }
+
+        /**
+         * Maneja el envío del formulario de usuario (agregar/editar).
+         * @param {Event} event - El evento del submit.
+         */
+        function handleUserFormSubmit(event) {
+            event.preventDefault();
+            const id = document.getElementById('user-id-edit').value;
+            const clave = document.getElementById('user-clave').value.trim();
+            const password = document.getElementById('user-password').value.trim();
+            const nombre = document.getElementById('user-nombre').value.trim();
+            const perfil = document.getElementById('user-perfil').value;
+            const estatus = document.querySelector('input[name="user-estatus"]:checked').value;
+            const correo = document.getElementById('user-correo').value.trim();
+            const telefono = document.getElementById('user-telefono').value.trim();
+            const tipoUsuario = document.getElementById('user-tipo-usuario').value;
+            const cargo = document.getElementById('user-cargo').value;
+            const siglasInstitucion = document.getElementById('user-siglas-institucion-id').value; // Obtiene de input hidden.
+
+            // Validación de campos obligatorios.
+            if (!clave || !password || !nombre || !perfil || !siglasInstitucion) {
+                alert('Por favor, complete todos los campos obligatorios (Nombre de Usuario, Contraseña, Nombre, Perfil, Siglas Institución).');
+                return;
+            }
+
+            let modifiedFields = 'N/A';
+            if (id) {
+                // Edita un usuario existente.
+                const index = users.findIndex(user => user.id === id);
+                if (index !== -1) {
+                    const oldUser = { ...users[index] }; // Copia los datos antiguos del usuario.
+                    users[index] = { ...oldUser, clave, password, nombre, perfil, estatus, correo, telefono, tipoUsuario, cargo, siglasInstitucion };
+
+                    // Determina los campos modificados para el log.
+                    const changedFields = [];
+                    for (const key in users[index]) {
+                        if (users[index][key] !== oldUser[key] && key !== 'id') {
+                            changedFields.push(key);
+                        }
+                    }
+                    if (changedFields.length > 0) {
+                        modifiedFields = `Datos de usuario modificados: ${changedFields.join(', ')}`;
+                    } else {
+                        modifiedFields = 'Ninguna';
+                    }
+                }
+                // Registra la acción de modificación.
+                logUserAccess(id, siglasInstitucion, clave, 'Control de Usuarios', 'Modificación', modifiedFields, 'Edición', 'Éxito');
+            } else {
+                // Agrega un nuevo usuario.
+                const newId = 'user' + Date.now().toString(); // Genera ID único.
+                // Verifica si la clave de usuario ya existe.
+                if (users.some(user => user.clave === clave)) {
+                    alert('La clave de usuario ya existe. Por favor, utilice una clave diferente.');
+                    return;
+                }
+                users.push({ id: newId, clave, password, nombre, perfil, estatus, correo, telefono, tipoUsuario, cargo, siglasInstitucion });
+                // Registra la acción de adición.
+                logUserAccess(newId, siglasInstitucion, clave, 'Control de Usuarios', 'Agregación', 'Nuevo usuario creado', 'Creación', 'Éxito');
+            }
+
+            // Guarda los cambios en localStorage. En producción, se enviaría a la base de datos.
+            localStorage.setItem('users_v11_1_1', JSON.stringify(users));
+            renderUsersTable(); // Actualiza la tabla.
+            closeUserModal();
+            alert('Usuario guardado correctamente.');
+        }
+
+        /**
+         * Elimina un usuario del sistema.
+         * @param {string} userId - El ID del usuario a eliminar.
+         */
+        function deleteUser(userId) {
+            if (confirm('¿Está seguro de que desea eliminar este usuario? Esto también eliminará sus registros de acceso.')) {
+                const userToDelete = users.find(user => user.id === userId);
+                if (userToDelete) {
+                    users = users.filter(user => user.id !== userId);
+                    userAccessLogs = userAccessLogs.filter(log => log.userId !== userId); // Elimina logs asociados.
+                    // Guarda los cambios en localStorage. En producción, se enviaría a la base de datos.
+                    localStorage.setItem('users_v11_1_1', JSON.stringify(users));
+                    localStorage.setItem('userAccessLogs_v11_1_1', JSON.stringify(userAccessLogs));
+                    renderUsersTable(); // Actualiza la tabla.
+                    alert('Usuario eliminado correctamente.');
+                    // Registra la acción de eliminación.
+                    logUserAccess(userToDelete.id, userToDelete.siglasInstitucion, userToDelete.clave, 'Control de Usuarios', 'Eliminación', `Usuario ${userToDelete.clave} eliminado`, 'Eliminación', 'Éxito');
+                }
+            }
+        }
+
+        // --- Logging de Acceso de Usuarios ---
+        /**
+         * Registra un evento de acceso de usuario.
+         * @param {string} userId - ID del usuario.
+         * @param {string} siglas - Siglas de la institución del usuario.
+         * @param {string} claveUsuario - Clave del usuario.
+         * @param {string} moduloAccedido - Módulo al que se accedió.
+         * @param {string} accionRealizada - Acción realizada (ej. 'Modificación', 'Agregación').
+         * @param {string} campoModificado - Campo o entidad modificada (ej. 'Datos de usuario', 'Institución X').
+         * @param {string} tipoEvento - Tipo de evento ('Inicio', 'Cierre', 'Error', 'Edición', 'Creación', 'Eliminación').
+         * @param {string} resultado - Resultado de la acción ('Éxito', 'Fallo').
+         */
+        function logUserAccess(userId, siglas, claveUsuario, moduloAccedido, accionRealizada, campoModificado, tipoEvento, resultado) {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const day = now.getDate().toString().padStart(2, '0');
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+
+            const fechaAcceso = `${year}-${month}-${day}`;
+            const horaInicio = `${hours}:${minutes}:${seconds}`;
+            const horaCierre = `${hours}:${minutes}:${seconds}`; // Simplificado para el prototipo.
+
+            userAccessLogs.push({
+                userId,
+                year,
+                siglas,
+                claveUsuario,
+                fechaAcceso,
+                horaInicio,
+                horaCierre,
+                duracionSesion: 0, // Simplificado, en una app real se calcularía.
+                moduloAccedido,
+                accionRealizada,
+                campoModificado, // Nuevo campo.
+                tipoEvento,
+                resultado,
+                direccionIP: '127.0.0.1', // Placeholder. En producción, se obtendría la IP real.
+                agenteUsuario: navigator.userAgent // Información del navegador.
+            });
+            // Guarda los logs en localStorage. En producción, se enviaría a la base de datos.
+            localStorage.setItem('userAccessLogs_v11_1_1', JSON.stringify(userAccessLogs));
+        }
+
+        /**
+         * Abre el modal para mostrar el reporte de acceso de un usuario específico.
+         * @param {string} userId - El ID del usuario.
+         */
+        function openUserAccessReportModal(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+
+            document.getElementById('report-user-name').textContent = user.nombre;
+            document.getElementById('report-user-clave').textContent = user.clave;
+
+            const reportTableBody = document.getElementById('user-access-report-table-body');
+            reportTableBody.innerHTML = '';
+
+            const userLogs = userAccessLogs.filter(log => log.userId === userId);
+
+            if (userLogs.length === 0) {
+                reportTableBody.innerHTML = `<tr><td colspan="14" class="text-center text-gray-500 py-3">No hay registros de acceso para este usuario.</td></tr>`;
+            } else {
+                userLogs.forEach(log => {
+                    const row = reportTableBody.insertRow();
+                    row.innerHTML = `
+                        <td>${log.year}</td>
+                        <td>${log.siglas}</td>
+                        <td>${log.claveUsuario}</td>
+                        <td>${log.fechaAcceso}</td>
+                        <td>${log.horaInicio}</td>
+                        <td>${log.horaCierre}</td>
+                        <td>${log.duracionSesion}</td>
+                        <td>${log.moduloAccedido}</td>
+                        <td>${log.accionRealizada}</td>
+                        <td>${log.campoModificado || 'N/A'}</td>
+                        <td>${log.tipoEvento}</td>
+                        <td>${log.resultado}</td>
+                        <td>${log.direccionIP}</td>
+                        <td>${log.agenteUsuario}</td>
+                    `;
+                });
+            }
+            document.getElementById('user-access-report-modal-overlay').classList.remove('hidden');
+        }
+
+        /**
+         * Cierra el modal del reporte de acceso de usuario.
+         */
+        function closeUserAccessReportModal() {
+            document.getElementById('user-access-report-modal-overlay').classList.add('hidden');
+        }
+
+        /**
+         * Descarga el reporte de acceso de un usuario específico como archivo CSV.
+         */
+        function downloadUserAccessReport() {
+            const userId = users.find(u => u.clave === document.getElementById('report-user-clave').textContent)?.id;
+            if (!userId) return;
+
+            const user = users.find(u => u.id === userId);
+            const logs = userAccessLogs.filter(log => log.userId === userId);
+
+            const headers = ["Año", "Siglas", "Clave de Usuario", "Fecha de Acceso", "Hora de Inicio", "Hora de Cierre", "Duración (min)", "Módulo Accedido", "Acción Realizada", "Campo Modificado", "Tipo de Evento", "Resultado", "Dirección IP", "Agente de Usuario"];
+            let csvContent = headers.map(header => `"${header}"`).join(',') + '\n';
+
+            logs.forEach(log => {
+                const rowData = [
+                    log.year,
+                    log.siglas,
+                    log.claveUsuario,
+                    log.fechaAcceso,
+                    log.horaInicio,
+                    log.horaCierre,
+                    log.duracionSesion,
+                    log.moduloAccedido,
+                    log.accionRealizada,
+                    log.campoModificado || 'N/A',
+                    log.tipoEvento,
+                    log.resultado,
+                    log.direccionIP,
+                    log.agenteUsuario
+                ];
+                csvContent += rowData.map(item => {
+                    let text = String(item);
+                    if (text.includes(',') || text.includes('"') || text.includes('\n')) {
+                        text = `"${text.replace(/"/g, '""')}"`;
+                    }
+                    return text;
+                }).join(',') + '\n';
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            const date = new Date();
+            const dateString = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+            link.setAttribute('href', url);
+            link.setAttribute('download', `ReporteAccesos_${user.clave}_${dateString}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        /**
+         * Genera y descarga el reporte histórico de accesos de todos los usuarios como archivo CSV.
+         */
+        function generateHistoricalAccessReport() {
+            const headers = ["Año", "Siglas", "Clave de Usuario", "Fecha de Acceso", "Hora de Inicio", "Hora de Cierre", "Duración (min)", "Módulo Accedido", "Acción Realizada", "Campo Modificado", "Tipo de Evento", "Resultado", "Dirección IP", "Agente de Usuario"];
+            let csvContent = headers.map(header => `"${header}"`).join(',') + '\n';
+
+            userAccessLogs.forEach(log => {
+                const rowData = [
+                    log.year,
+                    log.siglas,
+                    log.claveUsuario,
+                    log.fechaAcceso,
+                    log.horaInicio,
+                    log.horaCierre,
+                    log.duracionSesion,
+                    log.moduloAccedido,
+                    log.accionRealizada,
+                    log.campoModificado || 'N/A',
+                    log.tipoEvento,
+                    log.resultado,
+                    log.direccionIP,
+                    log.agenteUsuario
+                ];
+                csvContent += rowData.map(item => {
+                    let text = String(item);
+                    if (text.includes(',') || text.includes('"') || text.includes('\n')) {
+                        text = `"${text.replace(/"/g, '""')}"`;
+                    }
+                    return text;
+                }).join(',') + '\n';
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            const date = new Date();
+            const dateString = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+            link.setAttribute('href', url);
+            link.setAttribute('download', `ReporteAccesos_${dateString}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
     </script>
 </body>
 </html>
