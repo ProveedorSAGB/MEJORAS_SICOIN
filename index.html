@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SICOIN - BETA 1.4</title>
+    <title>SICOIN - BETA 1.5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Estilos generales para el cuerpo y la fuente */
@@ -189,7 +189,7 @@
         }
         /* Estilos para las tablas de datos */
         .data-table-container {
-            overflow-x: auto;
+            overflow-x: auto; /* Permite scroll horizontal */
             margin-top: 0.6rem;
             border-radius: 0.3rem;
             border: 1px solid #e2e8f0;
@@ -215,6 +215,9 @@
             border-left: 1px solid #3A756A;
             border-right: 1px solid #3A756A;
             text-align: center;
+            position: sticky; /* Fija los encabezados */
+            top: 0; /* Fija en la parte superior del contenedor de scroll */
+            z-index: 2; /* Asegura que esté por encima del contenido de la tabla */
         }
         .data-table th:first-child {
             border-left: none;
@@ -397,6 +400,11 @@
         #edit-single-list-item-modal-overlay {
             z-index: 103; /* Highest for the single item edit modal */
         }
+        /* CORRECCIÓN: z-index para el modal de confirmación */
+        #custom-confirm-modal-overlay {
+            z-index: 104; /* Asegura que el modal de confirmación esté por encima de todo */
+        }
+
 
         .modal-content {
             background-color: #ffffff;
@@ -595,6 +603,11 @@
             color: #374151;
             margin-bottom: 1.2rem;
         }
+
+        /* Estilos para centrar contenido en tablas */
+        .data-table .text-center-col {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -638,7 +651,7 @@
                 <div class="header-title">
                     <h1>SICOIN – MEJORA PROPUESTA</h1>
                     <h2>Sistema de Control Interno Institucional</h2>
-                    <h3>V 1.4</h3>
+                    <h3>V 1.5</h3>
                 </div>
                 <!-- Logo derecho -->
                 <div class="header-logo">
@@ -770,6 +783,10 @@
                             <div class="institution-filter-container flex-grow">
                                 <input type="text" id="consulta-institucion-filter" class="institution-filter-input" placeholder="Buscar institución..." autocomplete="off">
                                 <input type="hidden" id="consulta-institucion-id" name="institucion_id">
+                                <!-- CORRECCIÓN: Botón "Limpiar filtro" para Consulta Institución -->
+                                <button type="button" onclick="clearConsultaInstitutionFilter()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" title="Limpiar filtro">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H3"/><path d="M10 5a2 2 0 0 1 4 0"/><path d="M12 2v3"/><path d="M3 9h18"/><path d="M18 9l-1.81 10.86a2 2 0 0 1-2 1.14H9.81a2 2 0 0 1-2-1.14L6 9"/></svg>
+                                </button>
                                 <div id="consulta-institucion-suggestions" class="institution-suggestions hidden"></div>
                             </div>
                         </div>
@@ -795,6 +812,20 @@
                         <h2 class="text-sm font-bold text-gray-800">Catálogo de Instituciones</h2>
                     </div>
 
+                    <!-- CORRECCIÓN: Filtro por institución para Catálogo de Instituciones -->
+                    <div class="form-field-group mb-2.5">
+                        <label for="catalogo-institucion-filter" class="sr-only">Filtrar Institución</label>
+                        <div class="institution-filter-container">
+                            <input type="text" id="catalogo-institucion-filter" class="institution-filter-input" placeholder="Filtrar por siglas o nombre de institución..." autocomplete="off">
+                            <input type="hidden" id="catalogo-institucion-id" name="institucion_id">
+                            <button type="button" onclick="clearCatalogoInstitutionFilter()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" title="Limpiar filtro">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H3"/><path d="M10 5a2 2 0 0 1 4 0"/><path d="M12 2v3"/><path d="M3 9h18"/><path d="M18 9l-1.81 10.86a2 2 0 0 1-2 1.14H9.81a2 2 0 0 1-2-1.14L6 9"/></svg>
+                            </button>
+                            <div id="catalogo-institucion-suggestions" class="institution-suggestions hidden"></div>
+                        </div>
+                    </div>
+                    <!-- FIN CORRECCIÓN -->
+
                     <div class="flex justify-end mb-2.5">
                         <button type="button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-3 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center gap-1 text-xs" onclick="openInstitutionModal()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus">
@@ -808,12 +839,12 @@
                         <table class="data-table" id="institutions-catalog-table">
                             <thead>
                                 <tr>
-                                    <th>Siglas</th>
+                                    <th class="text-center-col">Siglas</th>
                                     <th>Institución</th>
                                     <th>Tipo de Institución</th>
                                     <th>Sector</th>
-                                    <th>Estatus</th>
-                                    <th>Acciones</th>
+                                    <th class="text-center-col">Estatus</th>
+                                    <th class="text-center-col">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -928,7 +959,7 @@
                                     <!-- CORRECCIÓN: Se eliminó el atributo oninput para manejarlo centralizadamente en JavaScript -->
                                     <input type="text" id="programacion-institucion-filter" class="institution-filter-input" placeholder="Filtrar por institución..." autocomplete="off">
                                     <input type="hidden" id="programacion-institucion-id" name="institucion_id">
-                                    <button onclick="clearInstitutionFilter()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" title="Limpiar filtro">
+                                    <button onclick="clearProgramacionInstitutionFilter()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" title="Limpiar filtro">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H3"/><path d="M10 5a2 2 0 0 1 4 0"/><path d="M12 2v3"/><path d="M3 9h18"/><path d="M18 9l-1.81 10.86a2 2 0 0 1-2 1.14H9.81a2 2 0 0 1-2-1.14L6 9"/></svg>
                                     </button>
                                     <div id="programacion-institucion-suggestions" class="institution-suggestions hidden"></div>
@@ -956,15 +987,15 @@
                         <table class="data-table" id="programacion-periodos-table">
                             <thead>
                                 <tr>
-                                    <th><input type="checkbox" id="select-all-institutions" onchange="toggleAllInstitutions(this.checked)"></th>
-                                    <th>Periodo</th>
-                                    <th>Siglas</th>
+                                    <th class="text-center-col"><input type="checkbox" id="select-all-institutions" onchange="toggleAllInstitutions(this.checked)"></th>
+                                    <th class="text-center-col">Periodo</th>
+                                    <th class="text-center-col">Siglas</th>
                                     <th>Institución</th>
-                                    <th>Actualizó PTCI</th>
-                                    <th>Trimestre</th>
+                                    <th class="text-center-col">Actualizó PTCI</th>
+                                    <th class="text-center-col">Trimestre</th>
                                     <th>ACCIÓN PERMITIDA</th>
-                                    <th>Fecha Inicio</th>
-                                    <th>Fecha Fin</th>
+                                    <th class="text-center-col">Fecha Inicio</th>
+                                    <th class="text-center-col">Fecha Fin</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -1149,26 +1180,31 @@
                         </div>
                     </div>
 
-                    <div class="mb-2.5">
+                    <div class="mb-2.5 flex items-center gap-2">
                         <input type="text" id="user-search-input" class="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm text-xs" placeholder="Buscar por siglas, nombre de institución o nombre de usuario..." onkeyup="renderUsersTable()">
+                        <!-- CORRECCIÓN: Botón "Limpiar filtro" para Control de Usuarios -->
+                        <button type="button" onclick="clearUserSearchFilter()" class="flex-shrink-0 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1.5 px-3 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center gap-1 text-xs" title="Limpiar filtro">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H3"/><path d="M10 5a2 2 0 0 1 4 0"/><path d="M12 2v3"/><path d="M3 9h18"/><path d="M18 9l-1.81 10.86a2 2 0 0 1-2 1.14H9.81a2 2 0 0 1-2-1.14L6 9"/></svg>
+                            Limpiar
+                        </button>
                     </div>
 
                     <div class="data-table-container">
                         <table class="data-table" id="users-table">
                             <thead>
                                 <tr>
-                                    <th>Siglas Institución</th>
+                                    <th class="text-center-col">Siglas Institución</th>
                                     <th>Nombre Institución</th>
                                     <th>Nombre</th> <!-- Nueva columna Nombre -->
                                     <th>Perfil</th>
-                                    <th>Usuario</th>
-                                    <th>Contraseña</th>
-                                    <th>Estatus</th>
+                                    <th class="text-center-col">Usuario</th>
+                                    <th class="text-center-col">Contraseña</th>
+                                    <th class="text-center-col">Estatus</th>
                                     <th>Correo</th>
                                     <th>Teléfono</th>
                                     <th>Tipo Usuario</th>
                                     <th>Cargo</th>
-                                    <th>Acciones</th>
+                                    <th class="text-center-col">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1300,13 +1336,13 @@
                             <table class="data-table" id="user-access-report-table">
                                 <thead>
                                     <tr>
-                                        <th>Año</th>
-                                        <th>Siglas</th>
-                                        <th>Clave de Usuario</th>
-                                        <th>Fecha de Acceso</th>
-                                        <th>Hora de Inicio</th>
-                                        <th>Hora de Cierre</th>
-                                        <th>Duración (min)</th>
+                                        <th class="text-center-col">Año</th>
+                                        <th class="text-center-col">Siglas</th>
+                                        <th class="text-center-col">Clave de Usuario</th>
+                                        <th class="text-center-col">Fecha de Acceso</th>
+                                        <th class="text-center-col">Hora de Inicio</th>
+                                        <th class="text-center-col">Hora de Cierre</th>
+                                        <th class="text-center-col">Duración (min)</th>
                                         <th>Módulo Accedido</th>
                                         <th>Acción Realizada</th>
                                         <th>Campo Modificado</th>
@@ -1453,7 +1489,10 @@
             { id: '48', siglas: 'ASIPONA GUAYMAS', nombre: 'Administración del Sistema Portuario Nacional Guaymas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
             { id: '49', siglas: 'ASIPONA LÁZARO CÁRDENAS', nombre: 'Administración del Sistema Portuario Nacional Lázaro Cárdenas, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'Sí' },
             { id: '50', siglas: 'ASIPONA MANZANILLO', nombre: 'Administración del Sistema Portuario Nacional Manzanillo, S.A. de C.V.', tipo: 'Empresa de Participación Estatal Mayoritaria', sector: '09 Infraestructura, Comunicaciones y Transportes', estatus: 'Activa', ptciActualizado: 'No' },
-            { id: '999', siglas: 'IPPR', nombre: 'Institución de Prueba para el Reporte', tipo: 'Dependencia', sector: '99 Entidad no Coordinada Sectorialmente', estatus: 'Activa', ptciActualizado: 'Sí' }
+            { id: '999', siglas: 'IPPR', nombre: 'Institución de Prueba para el Reporte', tipo: 'Dependencia', sector: '99 Entidad no Coordinada Sectorialmente', estatus: 'Activa', ptciActualizado: 'Sí' },
+            // NUEVOS REGISTROS DE EJEMPLO PARA REPORTE DE AVANCE INSTITUCIONAL
+            { id: 'REP01', siglas: 'INST_REP1', nombre: 'Institución de Reporte Ejemplo 1', tipo: 'Organismo Descentralizado', sector: '11 Educación Pública', estatus: 'Activa', ptciActualizado: 'Sí' },
+            { id: 'REP02', siglas: 'INST_REP2', nombre: 'Institución de Reporte Ejemplo 2', tipo: 'Dependencia', sector: '12 SALUD', estatus: 'Activa', ptciActualizado: 'No' }
         ];
 
         // Listas de opciones predefinidas para los selects.
@@ -1504,6 +1543,9 @@
             { userId: 'user1', year: 2024, siglas: 'APBP', claveUsuario: 'admin_user', fechaAcceso: '2024-07-23', horaInicio: '08:00:00', horaCierre: '08:45:00', duracionSesion: 45, moduloAccedido: 'Control de Usuarios', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Inicio', resultado: 'Éxito', direccionIP: '192.168.1.100', agenteUsuario: 'Chrome on Windows' },
             { userId: 'user1', year: 2024, siglas: 'APBP', claveUsuario: 'admin_user', fechaAcceso: '2024-07-23', horaInicio: '08:45:00', horaCierre: '08:50:00', duracionSesion: 5, moduloAccedido: 'Control de Usuarios', accionRealizada: 'Modificación', campoModificado: 'Usuario U001', tipoEvento: 'Cierre', resultado: 'Éxito', direccionIP: '192.168.1.100', agenteUsuario: 'Chrome on Windows' },
             { userId: 'user4', year: 2024, siglas: 'ASIPONA COATZACOALCOS', claveUsuario: 'ana_d', fechaAcceso: '2024-07-24', horaInicio: '14:00:00', horaCierre: '14:10:00', duracionSesion: 10, moduloAccedido: 'Reporte de Avance Institucional', accionRealizada: 'Ninguna', campoModificado: 'N/A', tipoEvento: 'Inicio', resultado: 'Éxito', direccionIP: '192.168.1.103', agenteUsuario: 'Safari on iOS' },
+            // Nuevos logs para las instituciones de ejemplo en el reporte de avance institucional
+            { userId: 'user1', year: 2024, siglas: 'INST_REP1', claveUsuario: 'admin_user', fechaAcceso: '2024-07-25', horaInicio: '10:00:00', horaCierre: '10:15:00', duracionSesion: 15, moduloAccedido: 'Reporte de Avance Institucional', accionRealizada: 'Visualización', campoModificado: 'N/A', tipoEvento: 'Consulta', resultado: 'Éxito', direccionIP: '192.168.1.100', agenteUsuario: 'Chrome on Windows' },
+            { userId: 'user1', year: 2024, siglas: 'INST_REP2', claveUsuario: 'admin_user', fechaAcceso: '2024-07-25', horaInicio: '10:20:00', horaCierre: '10:30:00', duracionSesion: 10, moduloAccedido: 'Reporte de Avance Institucional', accionRealizada: 'Visualización', campoModificado: 'N/A', tipoEvento: 'Consulta', resultado: 'Éxito', direccionIP: '192.168.1.100', agenteUsuario: 'Chrome on Windows' }
         ];
 
         // Listas de opciones para los campos de usuario.
@@ -1522,6 +1564,38 @@
         let sectorList = JSON.parse(localStorage.getItem('sectorList_v11_1_1')) || defaultSector;
         let programmedPeriods = JSON.parse(localStorage.getItem('programmedPeriods_v11_1_1')) || [];
         let programmedPeriodsHistory = JSON.parse(localStorage.getItem('programmedPeriodsHistory_v11_1_1')) || {};
+
+        // Añadir datos de ejemplo para las nuevas instituciones en el reporte de avance institucional
+        const exampleProgrammedPeriods = [
+            {
+                institucionId: 'REP01',
+                periodo: '2024',
+                trimestre: '2T',
+                fechaInicio: '2024-04-01',
+                fechaFin: '2024-06-30',
+                accionesPermitidas: ["Habilitar evaluación del SCII", "Habilitar Captura del PTCI"]
+            },
+            {
+                institucionId: 'REP02',
+                periodo: '2024',
+                trimestre: '2T',
+                fechaInicio: '2024-04-01',
+                fechaFin: '2024-06-30',
+                accionesPermitidas: ["Habilitar evaluación del SCII"]
+            }
+        ];
+        // Merge example programmed periods with existing ones, avoiding duplicates based on institutionId and period/trimestre
+        exampleProgrammedPeriods.forEach(newPeriod => {
+            const exists = programmedPeriods.some(existingPeriod =>
+                existingPeriod.institucionId === newPeriod.institucionId &&
+                existingPeriod.periodo === newPeriod.periodo &&
+                existingPeriod.trimestre === newPeriod.trimestre
+            );
+            if (!exists) {
+                programmedPeriods.push(newPeriod);
+            }
+        });
+
 
         let users = JSON.parse(localStorage.getItem('users_v11_1_1')) || initialUsersData;
         let userAccessLogs = JSON.parse(localStorage.getItem('userAccessLogs_v11_1_1')) || initialUserAccessLogs;
@@ -1689,6 +1763,18 @@
          * @param {HTMLElement} clickedElement - El elemento de la barra lateral que fue clickeado.
          */
         function showModule(moduleId, clickedElement) {
+            // CORRECCIÓN: Reiniciar la selección de instituciones al cambiar de módulo si el módulo actual es 'programacion-periodos'
+            const currentModuleId = document.querySelector('.module-content:not(.hidden)')?.id;
+            if (currentModuleId === 'module-programacion-periodos' && moduleId !== 'programacion-periodos') {
+                selectedInstitutionsForProgramacion = []; // Reinicia la selección
+                const allCheckboxes = document.querySelectorAll('#programacion-periodos-table tbody input[type="checkbox"]');
+                allCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false; // Desmarca todos los checkboxes
+                    checkbox.closest('tr').classList.remove('selected'); // Remueve la clase 'selected'
+                });
+                updateUiPostSelection(); // Actualiza el estado del checkbox "seleccionar todo" y el botón de historial
+            }
+
             // Oculta todos los contenidos de módulos.
             document.querySelectorAll('.module-content').forEach(module => module.classList.add('hidden'));
             const targetModule = document.getElementById('module-' + moduleId);
@@ -1699,6 +1785,9 @@
                 if (moduleId === 'catalogo-instituciones') {
                     renderInstitutionsTable();
                     populateModalSelects();
+                    // Limpia el filtro de catálogo al cargar el módulo
+                    document.getElementById('catalogo-institucion-filter').value = '';
+                    document.getElementById('catalogo-institucion-id').value = '';
                 } else if (moduleId === 'programacion-periodos') {
                     // No se limpia selectedInstitutionsForProgramacion aquí para mantener la selección
                     renderProgramacionPeriodosTable();
@@ -1706,6 +1795,9 @@
                     renderReporteAvanceInstitucionalTable();
                 } else if (moduleId === 'control-usuarios') {
                     renderUsersTable(); // Renderiza la tabla de usuarios al entrar al módulo.
+                    // Limpia el filtro de búsqueda de usuarios al cargar el módulo
+                    document.getElementById('user-search-input').value = '';
+                    document.querySelector('input[name="user_status_filter"][value="todos"]').checked = true;
                 }
             }
             // Elimina la clase 'active-item' de todos los elementos de la barra lateral.
@@ -1764,6 +1856,18 @@
                 
                 programacionInput.addEventListener('click', () => handleInstitutionFilter('', 'programacion-institucion', institutions, true));
             }
+
+            // CORRECCIÓN: Event listeners para el nuevo filtro en Catálogo de Instituciones
+            const catalogoInput = document.getElementById('catalogo-institucion-filter');
+            if(catalogoInput) {
+                catalogoInput.addEventListener('input', () => {
+                    document.getElementById('catalogo-institucion-id').value = '';
+                    handleInstitutionFilter(catalogoInput.value, 'catalogo-institucion', institutions);
+                    renderInstitutionsTable(); // Re-renderiza la tabla del catálogo al filtrar
+                });
+                catalogoInput.addEventListener('click', () => handleInstitutionFilter('', 'catalogo-institucion', institutions, true));
+            }
+
 
             const userModalInstitutionFilter = document.getElementById('user-siglas-institucion-filter');
             if (userModalInstitutionFilter) {
@@ -1850,12 +1954,16 @@
             if (contextPrefix === 'programacion-institucion') {
                 renderProgramacionPeriodosTable();
             }
+            // CORRECCIÓN: Si el contexto es para catálogo de instituciones, re-renderiza la tabla.
+            if (contextPrefix === 'catalogo-institucion') {
+                renderInstitutionsTable();
+            }
         }
 
         /**
          * Limpia el filtro de institución en el módulo de Programación de Periodos.
          */
-        function clearInstitutionFilter() {
+        function clearProgramacionInstitutionFilter() {
             const input = document.getElementById('programacion-institucion-filter');
             const hiddenIdInput = document.getElementById('programacion-institucion-id');
 
@@ -1868,6 +1976,39 @@
             renderProgramacionPeriodosTable(); // Vuelve a renderizar la tabla sin el filtro.
         }
 
+        /**
+         * Limpia el filtro de institución en el módulo de Consulta Institución.
+         */
+        function clearConsultaInstitutionFilter() {
+            const input = document.getElementById('consulta-institucion-filter');
+            const hiddenIdInput = document.getElementById('consulta-institucion-id');
+
+            if (input) {
+                input.value = '';
+            }
+            if (hiddenIdInput) {
+                hiddenIdInput.value = ''; // Limpiar el ID oculto también
+            }
+            // No hay tabla que renderizar en este módulo, solo se limpia el input.
+        }
+
+        /**
+         * Limpia el filtro de institución en el módulo de Catálogo de Instituciones.
+         */
+        function clearCatalogoInstitutionFilter() {
+            const input = document.getElementById('catalogo-institucion-filter');
+            const hiddenIdInput = document.getElementById('catalogo-institucion-id');
+
+            if (input) {
+                input.value = '';
+            }
+            if (hiddenIdInput) {
+                hiddenIdInput.value = ''; // Limpiar el ID oculto también
+            }
+            renderInstitutionsTable(); // Vuelve a renderizar la tabla sin el filtro.
+        }
+
+
         // --- MÓDULO: CATÁLOGO DE INSTITUCIONES ---
         /**
          * Renderiza la tabla de instituciones.
@@ -1876,7 +2017,25 @@
             const tableBody = document.querySelector('#institutions-catalog-table tbody');
             tableBody.innerHTML = '';
 
-            if (institutions.length === 0) {
+            // CORRECCIÓN: Obtener valor del filtro de catálogo
+            const catalogoFilterInput = document.getElementById('catalogo-institucion-filter');
+            const catalogoFilterText = catalogoFilterInput ? catalogoFilterInput.value.toLowerCase() : '';
+            const catalogoFilterId = document.getElementById('catalogo-institucion-id').value; // Obtener el ID seleccionado
+
+            const filteredInstitutions = institutions.filter(inst => {
+                const instName = inst.nombre.toLowerCase();
+                const instSiglas = inst.siglas.toLowerCase();
+
+                // Si hay un ID seleccionado, filtrar por ID. De lo contrario, usar el filtro de texto.
+                if (catalogoFilterId) {
+                    return inst.id === catalogoFilterId;
+                } else {
+                    return catalogoFilterText === '' || instName.includes(catalogoFilterText) || instSiglas.includes(catalogoFilterText);
+                }
+            });
+
+
+            if (filteredInstitutions.length === 0) {
                 const noDataRow = document.createElement('tr');
                 noDataRow.classList.add('ui-datatable-empty-message');
                 noDataRow.innerHTML = `<td colspan="6" class="text-center text-gray-500 py-3">No se encontraron instituciones.</td>`;
@@ -1884,15 +2043,15 @@
                 return;
             }
 
-            institutions.forEach(inst => {
+            filteredInstitutions.forEach(inst => {
                 const row = tableBody.insertRow();
                 row.innerHTML = `
-                    <td>${inst.siglas}</td>
+                    <td class="text-center-col">${inst.siglas}</td>
                     <td>${inst.nombre}</td>
                     <td>${inst.tipo}</td>
                     <td>${inst.sector}</td>
-                    <td>${inst.estatus}</td>
-                    <td class="flex gap-1 justify-center">
+                    <td class="text-center-col">${inst.estatus}</td>
+                    <td class="flex gap-1 justify-center text-center-col">
                         <button type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white p-1 rounded-md text-xs" onclick="editInstitution('${inst.id}')" title="Editar">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
                                 <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
@@ -2353,15 +2512,15 @@
                 });
 
                 row.innerHTML = `
-                    <td><input type="checkbox" data-institution-id="${inst.id}" ${isSelected ? 'checked' : ''}></td>
-                    <td>${programmedPeriod.periodo || 'N/A'}</td>
-                    <td>${inst.siglas}</td>
+                    <td class="text-center-col"><input type="checkbox" data-institution-id="${inst.id}" ${isSelected ? 'checked' : ''}></td>
+                    <td class="text-center-col">${programmedPeriod.periodo || 'N/A'}</td>
+                    <td class="text-center-col">${inst.siglas}</td>
                     <td>${inst.nombre}</td>
-                    <td>${inst.ptciActualizado}</td>
-                    <td>${programmedPeriod.trimestre || 'N/A'}</td>
+                    <td class="text-center-col">${inst.ptciActualizado}</td>
+                    <td class="text-center-col">${programmedPeriod.trimestre || 'N/A'}</td>
                     <td>${(programmedPeriod.accionesPermitidas || []).join('<br>')}</td>
-                    <td>${programmedPeriod.fechaInicio || 'N/A'}</td>
-                    <td>${programmedPeriod.fechaFin || 'N/A'}</td>
+                    <td class="text-center-col">${programmedPeriod.fechaInicio || 'N/A'}</td>
+                    <td class="text-center-col">${programmedPeriod.fechaFin || 'N/A'}</td>
                 `;
 
                 const checkbox = row.querySelector('input[type="checkbox"]');
@@ -2697,11 +2856,11 @@
             historyForInst.forEach(entry => {
                 const row = historyTableBody.insertRow();
                 row.innerHTML = `
-                    <td>${entry.periodo || 'N/A'}</td>
-                    <td>${entry.trimestre || 'N/A'}</td>
+                    <td class="text-center-col">${entry.periodo || 'N/A'}</td>
+                    <td class="text-center-col">${entry.trimestre || 'N/A'}</td>
                     <td>${(entry.accionesPermitidas || []).join('<br>')}</td> <!-- Modificado para saltos de línea -->
-                    <td>${entry.fechaInicio || 'N/A'}</td>
-                    <td>${entry.fechaFin || 'N/A'}</td>
+                    <td class="text-center-col">${entry.fechaInicio || 'N/A'}</td>
+                    <td class="text-center-col">${entry.fechaFin || 'N/A'}</td>
                     <td>${entry.usuario || 'N/A'}</td>
                 `;
             });
@@ -2798,48 +2957,48 @@
                     };
 
                     let dataRow = '<tr>';
-                    dataRow += `<td>${programmedPeriod.periodo || 'N/A'}</td>`;
-                    dataRow += `<td>${programmedPeriod.trimestre || 'N/A'}</td>`;
-                    dataRow += `<td>${inst.siglas}</td>`;
+                    dataRow += `<td class="text-center-col">${programmedPeriod.periodo || 'N/A'}</td>`;
+                    dataRow += `<td class="text-center-col">${programmedPeriod.trimestre || 'N/A'}</td>`;
+                    dataRow += `<td class="text-center-col">${inst.siglas}</td>`;
                     dataRow += `<td>${inst.nombre}</td>`;
 
                     // Evaluación de la Institución (23 columnas)
-                    dataRow += `<td>${data.periodoCapturaSCII}</td>`;
-                    dataRow += `<td>${data.abiertoHastaSCII}</td>`;
-                    dataRow += `<td>${data.procesosPrioritarios}</td>`;
-                    dataRow += `<td>${data.evaluacionSCII}</td>`;
-                    dataRow += `<td>${data.informeAnual}</td>`;
-                    dataRow += `<td>${data.ptciFinalizado}</td>`;
-                    dataRow += `<td>${data.periodoCapturaPTCI}</td>`;
-                    dataRow += `<td>${data.abiertoHastaPTCI}</td>`;
-                    dataRow += `<td>${data.actualizarPTCI}</td>`;
-                    dataRow += `<td>${data.ptciActFinalizado}</td>`;
-                    dataRow += `<td>${data.periodoCapturaSeguimientoAM}</td>`;
-                    dataRow += `<td>${data.abiertoHastaSeguimientoAM}</td>`;
-                    dataRow += `<td>${data.finalizadoSeguimientoAM}</td>`;
-                    dataRow += `<td>${data.reporteTrimestralAM}</td>`;
-                    dataRow += `<td>${data.periodoCapturaPTAR}</td>`;
-                    dataRow += `<td>${data.abiertoHastaPTAR}</td>`;
-                    dataRow += `<td>${data.controles}</td>`;
-                    dataRow += `<td>${data.estrategia}</td>`;
-                    dataRow += `<td>${data.ptarFinalizado}</td>`;
-                    dataRow += `<td>${data.periodoCapturaSeguimientoAC}</td>`;
-                    dataRow += `<td>${data.abiertoHastaSeguimientoAC}</td>`;
-                    dataRow += `<td>${data.finalizadoSeguimientoAC}</td>`;
-                    dataRow += `<td>${data.reporteTrimestralAC}</td>`;
+                    dataRow += `<td class="text-center-col">${data.periodoCapturaSCII}</td>`;
+                    dataRow += `<td class="text-center-col">${data.abiertoHastaSCII}</td>`;
+                    dataRow += `<td class="text-center-col">${data.procesosPrioritarios}</td>`;
+                    dataRow += `<td class="text-center-col">${data.evaluacionSCII}</td>`;
+                    dataRow += `<td class="text-center-col">${data.informeAnual}</td>`;
+                    dataRow += `<td class="text-center-col">${data.ptciFinalizado}</td>`;
+                    dataRow += `<td class="text-center-col">${data.periodoCapturaPTCI}</td>`;
+                    dataRow += `<td class="text-center-col">${data.abiertoHastaPTCI}</td>`;
+                    dataRow += `<td class="text-center-col">${data.actualizarPTCI}</td>`;
+                    dataRow += `<td class="text-center-col">${data.ptciActFinalizado}</td>`;
+                    dataRow += `<td class="text-center-col">${data.periodoCapturaSeguimientoAM}</td>`;
+                    dataRow += `<td class="text-center-col">${data.abiertoHastaSeguimientoAM}</td>`;
+                    dataRow += `<td class="text-center-col">${data.finalizadoSeguimientoAM}</td>`;
+                    dataRow += `<td class="text-center-col">${data.reporteTrimestralAM}</td>`;
+                    dataRow += `<td class="text-center-col">${data.periodoCapturaPTAR}</td>`;
+                    dataRow += `<td class="text-center-col">${data.abiertoHastaPTAR}</td>`;
+                    dataRow += `<td class="text-center-col">${data.controles}</td>`;
+                    dataRow += `<td class="text-center-col">${data.estrategia}</td>`;
+                    dataRow += `<td class="text-center-col">${data.ptarFinalizado}</td>`;
+                    dataRow += `<td class="text-center-col">${data.periodoCapturaSeguimientoAC}</td>`;
+                    dataRow += `<td class="text-center-col">${data.abiertoHastaSeguimientoAC}</td>`;
+                    dataRow += `<td class="text-center-col">${data.finalizadoSeguimientoAC}</td>`;
+                    dataRow += `<td class="text-center-col">${data.reporteTrimestralAC}</td>`;
 
                     // Evaluación del OIC (11 columnas)
-                    dataRow += `<td>${data.periodoCapturaRevisionOIC}</td>`;
-                    dataRow += `<td>${data.abiertoHastaRevisionOIC}</td>`;
-                    dataRow += `<td>${data.informeOICFinalizado}</td>`;
-                    dataRow += `<td>${data.periodoCapturaOICSeguimientoAM}</td>`;
-                    dataRow += `<td>${data.abiertoHastaOICSeguimientoAM}</td>`;
-                    dataRow += `<td>${data.finalizadoOICSeguimientoAM}</td>`;
-                    dataRow += `<td>${data.reporteTrimestralOICAM}</td>`;
-                    dataRow += `<td>${data.periodoCapturaOICSeguimientoAC}</td>`;
-                    dataRow += `<td>${data.abiertoHastaOICSeguimientoAC}</td>`;
-                    dataRow += `<td>${data.finalizadoOICSeguimientoAC}</td>`;
-                    dataRow += `<td>${data.reporteTrimestralOICAC}</td>`;
+                    dataRow += `<td class="text-center-col">${data.periodoCapturaRevisionOIC}</td>`;
+                    dataRow += `<td class="text-center-col">${data.abiertoHastaRevisionOIC}</td>`;
+                    dataRow += `<td class="text-center-col">${data.informeOICFinalizado}</td>`;
+                    dataRow += `<td class="text-center-col">${data.periodoCapturaOICSeguimientoAM}</td>`;
+                    dataRow += `<td class="text-center-col">${data.abiertoHastaOICSeguimientoAM}</td>`;
+                    dataRow += `<td class="text-center-col">${data.finalizadoOICSeguimientoAM}</td>`;
+                    dataRow += `<td class="text-center-col">${data.reporteTrimestralOICAM}</td>`;
+                    dataRow += `<td class="text-center-col">${data.periodoCapturaOICSeguimientoAC}</td>`;
+                    dataRow += `<td class="text-center-col">${data.abiertoHastaOICSeguimientoAC}</td>`;
+                    dataRow += `<td class="text-center-col">${data.finalizadoOICSeguimientoAC}</td>`;
+                    dataRow += `<td class="text-center-col">${data.reporteTrimestralOICAC}</td>`;
 
                     dataRow += '</tr>';
                     tbody.innerHTML += dataRow;
@@ -2855,18 +3014,30 @@
          * Exporta los datos del reporte de avance institucional a un archivo CSV.
          */
         function exportReporteAvanceInstitucional() {
-            const table = document.querySelector('#module-reporte-avance-institucional .data-table');
-            // Obtener encabezados de todas las filas del thead
-            const theadRows = Array.from(table.querySelectorAll('thead tr'));
-            let headers = [];
+            // CORRECCIÓN: Definición manual de encabezados para el CSV para asegurar que sean idénticos.
+            const headers = [
+                "Periodo", "Trimestre", "Siglas", "Institución",
+                "Evaluación del SCII - Periodo Captura", "Evaluación del SCII - Abierto Hasta", "Evaluación del SCII - Procesos Prioritarios", "Evaluación del SCII - Evaluación del SCII",
+                "Evaluación del SCII - Informe Anual", "Evaluación del SCII - PTCI Finalizado", "PTCI - Periodo Captura", "PTCI - Abierto Hasta",
+                "PTCI - Actualizar PTCI", "PTCI - PTCI Act Finalizado", "Seguimiento de Acciones de Mejora - Periodo Captura", "Seguimiento de Acciones de Mejora - Abierto Hasta",
+                "Seguimiento de Acciones de Mejora - Finalizado", "Seguimiento de Acciones de Mejora - Reporte Trimestral", "PTAR - Periodo Captura", "PTAR - Abierto Hasta",
+                "PTAR - Controles", "PTAR - Estrategia", "PTAR - PTAR Finalizado", "Seguimiento de Acciones de Control - Periodo Captura",
+                "Seguimiento de Acciones de Control - Abierto Hasta", "Seguimiento de Acciones de Control - Finalizado", "Seguimiento de Acciones de Control - Reporte Trimestral",
+                "Revisión OIC - Periodo Captura", "Revisión OIC - Abierto Hasta", "Revisión OIC - Informe OIC Finalizado",
+                "OIC - Seguimiento de Acciones de Mejora - Periodo Captura", "OIC - Seguimiento de Acciones de Mejora - Abierto Hasta", "OIC - Seguimiento de Acciones de Mejora - Finalizado", "OIC - Seguimiento de Acciones de Mejora - Reporte Trimestral",
+                "OIC - Seguimiento de Acciones de Control - Periodo Captura", "OIC - Seguimiento de Acciones de Control - Abierto Hasta", "OIC - Seguimiento de Acciones de Control - Finalizado", "OIC - Seguimiento de Acciones de Control - Reporte Trimestral"
+            ];
 
-            // Para este caso específico, usaremos los encabezados de la última fila como los definitivos
-            const finalHeaders = Array.from(theadRows[theadRows.length - 1].children).map(th => th.textContent.trim());
-
-            let csvContent = finalHeaders.map(header => `"${header}"`).join(',') + '\n';
-            const rows = Array.from(table.querySelectorAll('tbody tr'));
+            let csvContent = headers.map(header => `"${header}"`).join(',') + '\n';
+            const tableBody = document.querySelector('#module-reporte-avance-institucional .data-table tbody');
+            const rows = Array.from(tableBody.querySelectorAll('tr'));
 
             rows.forEach(row => {
+                // Saltar filas que no contienen datos (ej. "No se encontraron datos...")
+                if (row.classList.contains('text-center')) {
+                    return;
+                }
+
                 const rowData = Array.from(row.querySelectorAll('td')).map(td => {
                     let text = td.textContent.trim();
                     // Escapar comas y comillas dobles en el texto.
@@ -2976,18 +3147,18 @@
                 const institutionName = institution ? institution.nombre : 'N/A';
                 const row = tableBody.insertRow();
                 row.innerHTML = `
-                    <td>${user.siglasInstitucion}</td>
+                    <td class="text-center-col">${user.siglasInstitucion}</td>
                     <td>${institutionName}</td>
                     <td>${user.nombre}</td> <!-- Nueva columna Nombre -->
                     <td>${user.perfil}</td>
-                    <td>${user.clave}</td>
-                    <td>**********</td> <!-- Contraseña siempre oculta -->
-                    <td>${user.estatus}</td>
+                    <td class="text-center-col">${user.clave}</td>
+                    <td class="text-center-col">**********</td> <!-- Contraseña siempre oculta -->
+                    <td class="text-center-col">${user.estatus}</td>
                     <td>${user.correo || 'N/A'}</td>
                     <td>${user.telefono || 'N/A'}</td>
                     <td>${user.tipoUsuario || 'N/A'}</td>
                     <td>${user.cargo || 'N/A'}</td>
-                    <td class="flex gap-1 justify-center">
+                    <td class="flex gap-1 justify-center text-center-col">
                         <button type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white p-1 rounded-md text-xs" onclick="openUserModal('${user.id}')" title="Editar">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
                                 <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
@@ -3008,6 +3179,14 @@
             });
         }
      
+        /**
+         * Limpia el filtro de búsqueda de usuarios y re-renderiza la tabla.
+         */
+        function clearUserSearchFilter() {
+            document.getElementById('user-search-input').value = '';
+            renderUsersTable();
+        }
+
         /**
          * Abre el modal para agregar o editar un usuario.
          * @param {string} [userId=null] - El ID del usuario a editar. Si es null, se abre para agregar.
@@ -3224,13 +3403,13 @@
                 userLogs.forEach(log => {
                     const row = reportTableBody.insertRow();
                     row.innerHTML = `
-                        <td>${log.year || 'N/A'}</td>
-                        <td>${log.siglas || 'N/A'}</td>
-                        <td>${log.claveUsuario || 'N/A'}</td>
-                        <td>${log.fechaAcceso || 'N/A'}</td>
-                        <td>${log.horaInicio || 'N/A'}</td>
-                        <td>${log.horaCierre || 'N/A'}</td>
-                        <td>${log.duracionSesion || 'N/A'}</td>
+                        <td class="text-center-col">${log.year || 'N/A'}</td>
+                        <td class="text-center-col">${log.siglas || 'N/A'}</td>
+                        <td class="text-center-col">${log.claveUsuario || 'N/A'}</td>
+                        <td class="text-center-col">${log.fechaAcceso || 'N/A'}</td>
+                        <td class="text-center-col">${log.horaInicio || 'N/A'}</td>
+                        <td class="text-center-col">${log.horaCierre || 'N/A'}</td>
+                        <td class="text-center-col">${log.duracionSesion || 'N/A'}</td>
                         <td>${log.moduloAccedido || 'N/A'}</td>
                         <td>${log.accionRealizada || 'N/A'}</td>
                         <td>${log.campoModificado || 'N/A'}</td>
