@@ -393,16 +393,19 @@
             align-items: center;
             z-index: 100; /* Base z-index for all modals */
         }
-        /* Specific z-index for edit list modal to ensure it's on top */
+        
         #edit-list-modal-overlay {
-            z-index: 102; /* Higher than other modals if it opens on top of them */
+            z-index: 102; 
         }
         #edit-single-list-item-modal-overlay {
-            z-index: 103; /* Highest for the single item edit modal */
+            z-index: 103; 
         }
-        /* CORRECCIÓN: z-index para el modal de confirmación */
         #custom-confirm-modal-overlay {
-            z-index: 104; /* Asegura que el modal de confirmación esté por encima de todo */
+            z-index: 105; 
+        }
+        /* MEJORA 1: Asegurar que el modal de alerta esté siempre al frente. */
+        #custom-alert-modal-overlay {
+            z-index: 110;
         }
 
 
@@ -532,6 +535,13 @@
             border-collapse: collapse;
             font-size: 0.7rem;
         }
+        .data-table-container table.data-table thead th.quarter-header {
+            background-color: #3A756A; /* Un tono más oscuro para los trimestres */
+            color: white;
+            font-size: 0.5rem;
+            padding: 0.2rem;
+            text-align: center;
+        }
         #history-modal-overlay .history-table th,
         #history-modal-overlay .history-table td {
             padding: 0.4rem;
@@ -608,6 +618,92 @@
         .data-table .text-center-col {
             text-align: center;
         }
+        
+        /* MEJORA 2: Estilos para el modal de avance */
+        .advance-modal-content {
+            max-width: 500px;
+        }
+        .advance-modal-content .input-group {
+            display: flex;
+            flex-direction: column; /* Apilar elementos verticalmente */
+            gap: 0.5rem; /* Espacio entre elementos */
+            margin-bottom: 0.75rem;
+        }
+        .advance-modal-content .input-group .label-and-input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .advance-modal-content .input-group label {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .advance-modal-content .input-group .input-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .advance-modal-content .input-group input[type="number"] {
+            width: 60px; /* Ancho fijo para el input numérico */
+            padding: 0.2rem 0.5rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 0.3rem;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+        .advance-modal-content .input-group span {
+            font-size: 0.75rem;
+            color: #4a5568;
+        }
+        .advance-modal-content input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+        .advance-modal-content input[type="range"]:hover {
+            opacity: 1;
+        }
+        .advance-modal-content input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #A0522D;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .advance-modal-content input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #A0522D;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .advance-modal-content .total-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Alinear a la derecha */
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e2e8f0;
+            font-weight: bold;
+        }
+        .advance-modal-content .total-row label {
+            font-size: 0.85rem;
+            margin-right: 1rem;
+        }
+        .advance-modal-content .total-row span {
+            font-size: 0.9rem;
+            color: #2A5C50;
+            min-width: 50px;
+            text-align: right;
+        }
     </style>
 </head>
 <body>
@@ -649,9 +745,9 @@
                 </div>
                 <!-- Título central que se expande -->
                 <div class="header-title">
-                    <h1>Sistema de Control Interno Institucional</h1>
-                    <h2>SICOIN</h2>
-                    <h3>Mejoras Propuestas v1.0</h3>
+                    <h1>SICOIN – MEJORA PROPUESTA</h1>
+                    <h2>Sistema de Control Interno Institucional</h2>
+                    <h3>V 1.7</h3>
                 </div>
                 <!-- Logo derecho -->
                 <div class="header-logo">
@@ -783,7 +879,6 @@
                             <div class="institution-filter-container flex-grow">
                                 <input type="text" id="consulta-institucion-filter" class="institution-filter-input" placeholder="Buscar institución..." autocomplete="off">
                                 <input type="hidden" id="consulta-institucion-id" name="institucion_id">
-                                <!-- CORRECCIÓN: Botón "Limpiar filtro" para Consulta Institución -->
                                 <button type="button" onclick="clearConsultaInstitutionFilter()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" title="Limpiar filtro">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H3"/><path d="M10 5a2 2 0 0 1 4 0"/><path d="M12 2v3"/><path d="M3 9h18"/><path d="M18 9l-1.81 10.86a2 2 0 0 1-2 1.14H9.81a2 2 0 0 1-2-1.14L6 9"/></svg>
                                 </button>
@@ -812,7 +907,6 @@
                         <h2 class="text-sm font-bold text-gray-800">Catálogo de Instituciones</h2>
                     </div>
 
-                    <!-- CORRECCIÓN: Filtro por institución para Catálogo de Instituciones -->
                     <div class="form-field-group mb-2.5">
                         <label for="catalogo-institucion-filter" class="sr-only">Filtrar Institución</label>
                         <div class="institution-filter-container">
@@ -824,7 +918,6 @@
                             <div id="catalogo-institucion-suggestions" class="institution-suggestions hidden"></div>
                         </div>
                     </div>
-                    <!-- FIN CORRECCIÓN -->
 
                     <div class="flex justify-end mb-2.5">
                         <button type="button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 px-3 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center gap-1 text-xs" onclick="openInstitutionModal()">
@@ -956,7 +1049,6 @@
                             <div class="form-field-group">
                                 <label for="programacion-institucion-filter">Institución</label>
                                 <div class="institution-filter-container">
-                                    <!-- CORRECCIÓN: Se eliminó el atributo oninput para manejarlo centralizadamente en JavaScript -->
                                     <input type="text" id="programacion-institucion-filter" class="institution-filter-input" placeholder="Filtrar por institución..." autocomplete="off">
                                     <input type="hidden" id="programacion-institucion-id" name="institucion_id">
                                     <button onclick="clearProgramacionInstitutionFilter()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" title="Limpiar filtro">
@@ -1182,7 +1274,6 @@
 
                     <div class="mb-2.5 flex items-center gap-2">
                         <input type="text" id="user-search-input" class="w-full px-3 py-1.5 border border-gray-300 rounded-md shadow-sm text-xs" placeholder="Buscar por siglas, nombre de institución o nombre de usuario..." onkeyup="renderUsersTable()">
-                        <!-- CORRECCIÓN: Botón "Limpiar filtro" para Control de Usuarios -->
                         <button type="button" onclick="clearUserSearchFilter()" class="flex-shrink-0 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1.5 px-3 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center gap-1 text-xs" title="Limpiar filtro">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H3"/><path d="M10 5a2 2 0 0 1 4 0"/><path d="M12 2v3"/><path d="M3 9h18"/><path d="M18 9l-1.81 10.86a2 2 0 0 1-2 1.14H9.81a2 2 0 0 1-2-1.14L6 9"/></svg>
                             Limpiar
@@ -1195,7 +1286,7 @@
                                 <tr>
                                     <th class="text-center-col">Siglas Institución</th>
                                     <th>Nombre Institución</th>
-                                    <th>Nombre</th> <!-- Nueva columna Nombre -->
+                                    <th>Nombre</th> 
                                     <th>Perfil</th>
                                     <th class="text-center-col">Usuario</th>
                                     <th class="text-center-col">Contraseña</th>
@@ -1276,7 +1367,6 @@
                                     </button>
                                 </div>
                             </div>
-                            <!-- Nuevos campos para No. de Oficio de Designación y Cargar Archivo -->
                             <div class="modal-form-group">
                                 <label for="user-no-oficio">No. de Oficio de Designación</label>
                                 <input type="text" id="user-no-oficio" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs">
@@ -1291,7 +1381,6 @@
                                     <input type="file" id="user-file-input" class="hidden" onchange="document.getElementById('user-file-name').value = this.files[0] ? this.files[0].name : ''">
                                 </div>
                             </div>
-                            <!-- Fin de nuevos campos -->
                             <div class="modal-form-group">
                                 <label for="user-correo">Correo</label>
                                 <input type="email" id="user-correo" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs">
@@ -1359,16 +1448,224 @@
                     </div>
                 </div>
 
+                <!-- MEJORA 3: Módulo: Modifica Avance Trimestral AM actualizado -->
                 <div id="module-modifica-avance-am" class="module-content hidden">
-                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Modifica Avance Trimestral AM</h2>
-                    <!-- Código para el módulo 'Modifica Avance Trimestral AM' irá aquí. -->
-                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
+                    <div class="bg-gray-200 p-1.5 rounded-t-lg text-center mb-2.5">
+                        <h2 class="text-sm font-bold text-gray-800">Modifica Avance Trimestral AM</h2>
+                    </div>
+                    <form action="#" method="post" class="space-y-2.5">
+                        <div class="form-field-group row-layout">
+                            <label for="am-periodo-select">Periodo</label>
+                            <div class="select-wrapper flex-grow">
+                                <select id="am-periodo-select" class="w-full">
+                                    <!-- Opciones de periodo se cargarán dinámicamente -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-field-group row-layout">
+                            <label for="am-institucion-filter">Institución</label>
+                            <div class="institution-filter-container flex-grow">
+                                <input type="text" id="am-institucion-filter" class="institution-filter-input" placeholder="Buscar institución..." autocomplete="off">
+                                <input type="hidden" id="am-institucion-id" name="institucion_id">
+                                <button type="button" onclick="clearAMInstitutionFilter()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" title="Limpiar filtro">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H3"/><path d="M10 5a2 2 0 0 1 4 0"/><path d="M12 2v3"/><path d="M3 9h18"/><path d="M18 9l-1.81 10.86a2 2 0 0 1-2 1.14H9.81a2 2 0 0 1-2-1.14L6 9"/></svg>
+                                </button>
+                                <div id="am-institucion-suggestions" class="institution-suggestions hidden"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end mt-3">
+                            <button type="button" class="btn-visualizar" onclick="renderAvanceAMTable()">Visualizar</button>
+                        </div>
+                    </form>
+
+                    <div class="data-table-container">
+                        <table class="data-table" id="avance-am-table">
+                            <thead>
+                                <tr>
+                                    <th>Periodo</th>
+                                    <th>No.</th>
+                                    <th>Actividad (s) Realizada (s)</th>
+                                    <th class="quarter-header">1T</th>
+                                    <th class="quarter-header">2T</th>
+                                    <th class="quarter-header">3T</th>
+                                    <th class="quarter-header">4T</th>
+                                    <th class="text-center-col">Editar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Datos de la tabla se cargarán aquí -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+                <!-- MEJORA 2: Modal para Modificar Avance (AM) actualizado -->
+                <div id="am-advance-modal-overlay" class="modal-overlay hidden">
+                    <div class="modal-content advance-modal-content">
+                        <button class="modal-close-button" onclick="closeAMAdvanceModal()">&times;</button>
+                        <h3 class="modal-header">Modifica Avance</h3>
+                        <h4 id="am-advance-modal-subtitle" class="text-center text-sm text-gray-600 -mt-3 mb-4"></h4>
+                        
+                        <div class="input-group">
+                            <div class="label-and-input">
+                                <label>Primer Trimestre</label>
+                                <div class="input-container">
+                                    <input type="number" id="am-avance-1t" value="0" min="0" max="100" oninput="syncSlider('am-avance-1t', 'am-slider-1t'); calculateAMAccumulated();">
+                                    <span>%</span>
+                                </div>
+                            </div>
+                            <input type="range" id="am-slider-1t" min="0" max="100" value="0" oninput="syncNumberInput('am-slider-1t', 'am-avance-1t'); calculateAMAccumulated();">
+                        </div>
+                        <div class="input-group">
+                            <div class="label-and-input">
+                                <label>Segundo Trimestre</label>
+                                <div class="input-container">
+                                    <input type="number" id="am-avance-2t" value="0" min="0" max="100" oninput="syncSlider('am-avance-2t', 'am-slider-2t'); calculateAMAccumulated();">
+                                    <span>%</span>
+                                </div>
+                            </div>
+                            <input type="range" id="am-slider-2t" min="0" max="100" value="0" oninput="syncNumberInput('am-slider-2t', 'am-avance-2t'); calculateAMAccumulated();">
+                        </div>
+                        <div class="input-group">
+                            <div class="label-and-input">
+                                <label>Tercer Trimestre</label>
+                                <div class="input-container">
+                                    <input type="number" id="am-avance-3t" value="0" min="0" max="100" oninput="syncSlider('am-avance-3t', 'am-slider-3t'); calculateAMAccumulated();">
+                                    <span>%</span>
+                                </div>
+                            </div>
+                            <input type="range" id="am-slider-3t" min="0" max="100" value="0" oninput="syncNumberInput('am-slider-3t', 'am-avance-3t'); calculateAMAccumulated();">
+                        </div>
+                        <div class="input-group">
+                            <div class="label-and-input">
+                                <label>Cuarto Trimestre</label>
+                                <div class="input-container">
+                                    <input type="number" id="am-avance-4t" value="0" min="0" max="100" oninput="syncSlider('am-avance-4t', 'am-slider-4t'); calculateAMAccumulated();">
+                                    <span>%</span>
+                                </div>
+                            </div>
+                            <input type="range" id="am-slider-4t" min="0" max="100" value="0" oninput="syncNumberInput('am-slider-4t', 'am-avance-4t'); calculateAMAccumulated();">
+                        </div>
+
+                        <div class="total-row">
+                            <label>% Acumulado</label>
+                            <span id="am-avance-acumulado">0%</span>
+                        </div>
+                        <div class="modal-buttons justify-center mt-6">
+                            <button type="button" class="btn-save" onclick="saveAMAdvance()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEJORA 3: Módulo: Modifica Avance Trimestral AC actualizado -->
                 <div id="module-modifica-avance-ac" class="module-content hidden">
-                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Modifica Avance Trimestral AC</h2>
-                    <!-- Código para el módulo 'Modifica Avance Trimestral AC' irá aquí. -->
-                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
+                    <div class="bg-gray-200 p-1.5 rounded-t-lg text-center mb-2.5">
+                        <h2 class="text-sm font-bold text-gray-800">Modifica Avance Trimestral AC</h2>
+                    </div>
+                    <form action="#" method="post" class="space-y-2.5">
+                        <div class="form-field-group row-layout">
+                            <label for="ac-periodo-select">Periodo</label>
+                            <div class="select-wrapper flex-grow">
+                                <select id="ac-periodo-select" class="w-full">
+                                    <!-- Opciones de periodo se cargarán dinámicamente -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-field-group row-layout">
+                            <label for="ac-institucion-filter">Institución</label>
+                            <div class="institution-filter-container flex-grow">
+                                <input type="text" id="ac-institucion-filter" class="institution-filter-input" placeholder="Buscar institución..." autocomplete="off">
+                                <input type="hidden" id="ac-institucion-id" name="institucion_id">
+                                <button type="button" onclick="clearACInstitutionFilter()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" title="Limpiar filtro">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 5H3"/><path d="M10 5a2 2 0 0 1 4 0"/><path d="M12 2v3"/><path d="M3 9h18"/><path d="M18 9l-1.81 10.86a2 2 0 0 1-2 1.14H9.81a2 2 0 0 1-2-1.14L6 9"/></svg>
+                                </button>
+                                <div id="ac-institucion-suggestions" class="institution-suggestions hidden"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end mt-3">
+                            <button type="button" class="btn-visualizar" onclick="renderAvanceACTable()">Visualizar</button>
+                        </div>
+                    </form>
+
+                    <div class="data-table-container">
+                        <table class="data-table" id="avance-ac-table">
+                            <thead>
+                                <tr>
+                                    <th>Periodo</th>
+                                    <th>No.</th>
+                                    <th>Actividad (s) Realizada (s)</th>
+                                    <th class="quarter-header">1T</th>
+                                    <th class="quarter-header">2T</th>
+                                    <th class="quarter-header">3T</th>
+                                    <th class="quarter-header">4T</th>
+                                    <th class="text-center-col">Editar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Datos de la tabla se cargarán aquí -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+                <!-- MEJORA 2: Modal para Modificar Avance (AC) actualizado -->
+                <div id="ac-advance-modal-overlay" class="modal-overlay hidden">
+                    <div class="modal-content advance-modal-content">
+                        <button class="modal-close-button" onclick="closeACAdvanceModal()">&times;</button>
+                        <h3 class="modal-header">Modifica Avance</h3>
+                        <h4 id="ac-advance-modal-subtitle" class="text-center text-sm text-gray-600 -mt-3 mb-4"></h4>
+
+                        <div class="input-group">
+                            <div class="label-and-input">
+                                <label>Primer Trimestre</label>
+                                <div class="input-container">
+                                    <input type="number" id="ac-avance-1t" value="0" min="0" max="100" oninput="syncSlider('ac-avance-1t', 'ac-slider-1t'); calculateACAccumulated();">
+                                    <span>%</span>
+                                </div>
+                            </div>
+                            <input type="range" id="ac-slider-1t" min="0" max="100" value="0" oninput="syncNumberInput('ac-slider-1t', 'ac-avance-1t'); calculateACAccumulated();">
+                        </div>
+                        <div class="input-group">
+                            <div class="label-and-input">
+                                <label>Segundo Trimestre</label>
+                                <div class="input-container">
+                                    <input type="number" id="ac-avance-2t" value="0" min="0" max="100" oninput="syncSlider('ac-avance-2t', 'ac-slider-2t'); calculateACAccumulated();">
+                                    <span>%</span>
+                                </div>
+                            </div>
+                            <input type="range" id="ac-slider-2t" min="0" max="100" value="0" oninput="syncNumberInput('ac-slider-2t', 'ac-avance-2t'); calculateACAccumulated();">
+                        </div>
+                        <div class="input-group">
+                            <div class="label-and-input">
+                                <label>Tercer Trimestre</label>
+                                <div class="input-container">
+                                    <input type="number" id="ac-avance-3t" value="0" min="0" max="100" oninput="syncSlider('ac-avance-3t', 'ac-slider-3t'); calculateACAccumulated();">
+                                    <span>%</span>
+                                </div>
+                            </div>
+                            <input type="range" id="ac-slider-3t" min="0" max="100" value="0" oninput="syncNumberInput('ac-slider-3t', 'ac-avance-3t'); calculateACAccumulated();">
+                        </div>
+                        <div class="input-group">
+                            <div class="label-and-input">
+                                <label>Cuarto Trimestre</label>
+                                <div class="input-container">
+                                    <input type="number" id="ac-avance-4t" value="0" min="0" max="100" oninput="syncSlider('ac-avance-4t', 'ac-slider-4t'); calculateACAccumulated();">
+                                    <span>%</span>
+                                </div>
+                            </div>
+                            <input type="range" id="ac-slider-4t" min="0" max="100" value="0" oninput="syncNumberInput('ac-slider-4t', 'ac-avance-4t'); calculateACAccumulated();">
+                        </div>
+
+                        <div class="total-row">
+                            <label>% Acumulado</label>
+                            <span id="ac-avance-acumulado">0%</span>
+                        </div>
+                        <div class="modal-buttons justify-center mt-6">
+                            <button type="button" class="btn-save" onclick="saveACAdvance()">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Módulo 'Procesos Registrados x Oficio' eliminado -->
                 <!-- Módulo 'Registro de Acciones de Usuarios' eliminado -->
                 <div id="module-comunicados" class="module-content hidden">
@@ -1557,8 +1854,6 @@
 
 
         // Carga de datos desde localStorage o uso de datos iniciales.
-        // En un entorno de producción, estas variables se inicializarían con datos obtenidos de una base de datos
-        // a través de llamadas a una API.
         let institutions = JSON.parse(localStorage.getItem('institutions_v11_1_1')) || initialInstitutionsData;
         let tipoInstitucionList = JSON.parse(localStorage.getItem('tipoInstitucionList_v11_1_1')) || defaultTipoInstitucion;
         let sectorList = JSON.parse(localStorage.getItem('sectorList_v11_1_1')) || defaultSector;
@@ -1605,6 +1900,37 @@
         let tiposUsuarioList = JSON.parse(localStorage.getItem('tiposUsuarioList_v11_1_1')) || defaultTiposUsuario;
         let cargosList = JSON.parse(localStorage.getItem('cargosList_v11_1_1')) || defaultCargos;
 
+        // Datos para los módulos de avance trimestral (AM y AC)
+        let avanceAMData = JSON.parse(localStorage.getItem('avanceAMData_v1_6')) || [
+            { id: 'am1', actividad: 'Difundir al personal de la entidad los objetivos, misión y visión.', avances: { '1T': 96, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'am2', actividad: 'Confirmar con el funcionamiento del Código de Ética y Prevención de conflictos de interés.', avances: { '1T': 10, '2T': 30, '3T': 60, '4T': 0 } },
+            { id: 'am3', actividad: 'Modernizar el microciclo con acceso a todo el personal para mejor difusión de las actividades del Comité.', avances: { '1T': 20, '2T': 0, '3T': 50, '4T': 0 } },
+            { id: 'am4', actividad: 'Definir y ejecutar el programa que resulte de la encargada de clima y cultura organizacional con la intervención de los titulares de las áreas, para establecer compromisos reales.', avances: { '1T': 0, '2T': 30, '3T': 50, '4T': 30 } },
+            { id: 'am5', actividad: 'Actualizar y difundir los perfiles de puestos.', avances: { '1T': 20, '2T': 30, '3T': 40, '4T': 20 } },
+            { id: 'am6', actividad: 'Revisión y en su caso actualización del procedimiento asignación y seguimiento de contratos de cesión parcial de derechos y de prestación de servicios portuarios', avances: { '1T': 0, '2T': 0, '3T': 50, '4T': 50 } },
+            { id: 'am7', actividad: 'Dar seguimiento a las acciones comprometidas en el PTAR-2024.', avances: { '1T': 30, '2T': 40, '3T': 0, '4T': 0 } },
+            { id: 'am8', actividad: 'Se realizarán reuniones con la alta dirección para exponer la cartera de proyectos al inicio del año y al cierre del programa se realizará reunión para informar del estado final de los proyectos definidos.', avances: { '1T': 50, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'am9', actividad: 'Difundir los medios para el registro, atención y respuesta de quejas y denuncias ante el Comité de Ética y de Prevención de Conflictos de Interés.', avances: { '1T': 30, '2T': 70, '3T': 0, '4T': 0 } },
+            { id: 'am10', actividad: 'Nueva Actividad de Mejora de Ejemplo', avances: { '1T': 0, '2T': 0, '3T': 0, '4T': 0 } }
+        ];
+
+        let avanceACData = JSON.parse(localStorage.getItem('avanceACData_v1_6')) || [
+            { id: 'ac1', actividad: 'Difusión interna y seguimiento puntual del procedimiento ADMN-DBO-GAF-P-00-010 Adquisiciones.', avances: { '1T': 25, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'ac2', actividad: 'Emisión de circular a las áreas requirentes en relación a la correcta aplicación del procedimiento de adquisiciones.', avances: { '1T': 20, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'ac3', actividad: 'Ajuste en costos operativos y administrativos (verificación de contratos de servicios, ajustes en viáticos, ajuste de bienes de uso recurrente).', avances: { '1T': 100, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'ac4', actividad: 'Ajuste en asignación de combustible para vehículos operativos y de oficina.', avances: { '1T': 25, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'ac5', actividad: 'Mantenimientos prioritarios a los bienes muebles e inmuebles.', avances: { '1T': 20, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'ac6', actividad: 'Buscar alternativas de otros mercados que no sea gasolineras.', avances: { '1T': 25, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'ac7', actividad: 'Establecer acuerdos para recuperar la cobranza de los clientes que no pueden pagar en los plazos establecidos en su contrato vigente.', avances: { '1T': 25, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'ac8', actividad: 'Generar los reportes por daños a la infraestructura portuaria.', avances: { '1T': 25, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'ac9', actividad: 'Generar los reportes de salidas no conformes.', avances: { '1T': 25, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'ac10', actividad: 'Atención y seguimiento a los daños ocasionados a la infraestructura.', avances: { '1T': 25, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'ac11', actividad: 'Modificaciones a los programas de obra pública a partir de que se tenga la disponibilidad del recurso.', avances: { '1T': 25, '2T': 0, '3T': 0, '4T': 0 } },
+            { id: 'ac12', actividad: 'Nueva Actividad de Control de Ejemplo', avances: { '1T': 0, '2T': 0, '3T': 0, '4T': 0 } }
+        ];
+
+        let currentEditingAdvanceItem = null; // Para guardar el item que se está editando en el modal de avance.
+        let currentAdvanceType = ''; // 'AM' o 'AC'
 
         // Variables de estado temporales para la UI.
         let selectedInstitutionsForProgramacion = [];
@@ -1677,7 +2003,8 @@
             populateActionFilters();
             populateAperturarModalActions();
             populateModalSelects();
-            populateUserModalSelects(); // Se llama aquí para asegurar que las listas estén pobladas al inicio
+            populateUserModalSelects(); 
+            populateAvancePeriodoSelects(); 
 
             // Asegura que el primer módulo de la barra lateral esté expandido por defecto.
             const firstModuleHeader = document.querySelector('.sidebar .module-header');
@@ -1723,10 +2050,8 @@
          */
         function logout(event) {
             event.preventDefault();
-            // En una aplicación real, aquí se borrarían los tokens de sesión y la información de usuario del lado del cliente.
             document.getElementById('main-app').classList.add('hidden');
             document.getElementById('login-page').classList.remove('hidden');
-            // Registra el cierre de sesión.
             const currentUser = users.find(u => u.clave === document.getElementById('username-login').value);
             if (currentUser) {
                 logUserAccess(currentUser.id, currentUser.siglasInstitucion, currentUser.clave, 'Login', 'Ninguna', 'N/A', 'Cierre', 'Éxito');
@@ -1763,51 +2088,51 @@
          * @param {HTMLElement} clickedElement - El elemento de la barra lateral que fue clickeado.
          */
         function showModule(moduleId, clickedElement) {
-            // CORRECCIÓN: Reiniciar la selección de instituciones al cambiar de módulo si el módulo actual es 'programacion-periodos'
             const currentModuleId = document.querySelector('.module-content:not(.hidden)')?.id;
             if (currentModuleId === 'module-programacion-periodos' && moduleId !== 'programacion-periodos') {
-                selectedInstitutionsForProgramacion = []; // Reinicia la selección
+                selectedInstitutionsForProgramacion = []; 
                 const allCheckboxes = document.querySelectorAll('#programacion-periodos-table tbody input[type="checkbox"]');
                 allCheckboxes.forEach(checkbox => {
-                    checkbox.checked = false; // Desmarca todos los checkboxes
-                    checkbox.closest('tr').classList.remove('selected'); // Remueve la clase 'selected'
+                    checkbox.checked = false; 
+                    checkbox.closest('tr').classList.remove('selected'); 
                 });
-                updateUiPostSelection(); // Actualiza el estado del checkbox "seleccionar todo" y el botón de historial
+                updateUiPostSelection(); 
             }
 
-            // Oculta todos los contenidos de módulos.
             document.querySelectorAll('.module-content').forEach(module => module.classList.add('hidden'));
             const targetModule = document.getElementById('module-' + moduleId);
             if (targetModule) {
-                // Muestra el módulo objetivo.
                 targetModule.classList.remove('hidden');
-                // Realiza acciones específicas al cargar ciertos módulos.
                 if (moduleId === 'catalogo-instituciones') {
                     renderInstitutionsTable();
                     populateModalSelects();
-                    // Limpia el filtro de catálogo al cargar el módulo
                     document.getElementById('catalogo-institucion-filter').value = '';
                     document.getElementById('catalogo-institucion-id').value = '';
                 } else if (moduleId === 'programacion-periodos') {
-                    // No se limpia selectedInstitutionsForProgramacion aquí para mantener la selección
                     renderProgramacionPeriodosTable();
                 } else if (moduleId === 'reporte-avance-institucional') {
                     renderReporteAvanceInstitucionalTable();
                 } else if (moduleId === 'control-usuarios') {
-                    renderUsersTable(); // Renderiza la tabla de usuarios al entrar al módulo.
-                    // Limpia el filtro de búsqueda de usuarios al cargar el módulo
+                    renderUsersTable(); 
                     document.getElementById('user-search-input').value = '';
                     document.querySelector('input[name="user_status_filter"][value="todos"]').checked = true;
+                } else if (moduleId === 'modifica-avance-am') {
+                    populateAvancePeriodoSelects();
+                    document.getElementById('am-institucion-filter').value = '';
+                    document.getElementById('am-institucion-id').value = '';
+                    renderAvanceAMTable();
+                } else if (moduleId === 'modifica-avance-ac') {
+                    populateAvancePeriodoSelects();
+                    document.getElementById('ac-institucion-filter').value = '';
+                    document.getElementById('ac-institucion-id').value = '';
+                    renderAvanceACTable();
                 }
             }
-            // Elimina la clase 'active-item' de todos los elementos de la barra lateral.
             document.querySelectorAll('.sidebar .submodule-list li').forEach(li => li.classList.remove('active-item'));
-            // Si se hizo clic en un elemento, agrega la clase 'active-item' a su padre <li>.
             if (clickedElement) {
                 const parentLi = clickedElement.closest('li');
                 if (parentLi) parentLi.classList.add('active-item');
 
-                // Asegura que el módulo padre esté expandido.
                 let parentUl = clickedElement.closest('.submodule-list');
                 if (parentUl && parentUl.classList.contains('hidden')) {
                     parentUl.classList.remove('hidden');
@@ -1834,44 +2159,52 @@
         function setupEventListeners() {
             const consultaInput = document.getElementById('consulta-institucion-filter');
             if(consultaInput) {
-                // Pasa el ID completo del elemento de sugerencias para evitar TypeError.
                 consultaInput.addEventListener('input', () => handleInstitutionFilter(consultaInput.value, 'consulta-institucion', institutions));
                 consultaInput.addEventListener('click', () => handleInstitutionFilter('', 'consulta-institucion', institutions, true));
             }
 
             const programacionInput = document.getElementById('programacion-institucion-filter');
             if(programacionInput) {
-                // *** INICIO DE LA CORRECCIÓN ***
-                // Se agrega un event listener para el evento 'input'.
                 programacionInput.addEventListener('input', () => {
-                    // Al escribir en el campo, se limpia el ID de la institución seleccionada.
-                    // Esto asegura que el filtro vuelva a funcionar por texto y no se quede "pegado" a una selección anterior.
                     document.getElementById('programacion-institucion-id').value = '';
-                    
-                    // Se muestran las sugerencias y se vuelve a renderizar la tabla con el filtro de texto.
                     handleInstitutionFilter(programacionInput.value, 'programacion-institucion', institutions);
                     renderProgramacionPeriodosTable();
                 });
-                // *** FIN DE LA CORRECCIÓN ***
-                
                 programacionInput.addEventListener('click', () => handleInstitutionFilter('', 'programacion-institucion', institutions, true));
             }
 
-            // CORRECCIÓN: Event listeners para el nuevo filtro en Catálogo de Instituciones
             const catalogoInput = document.getElementById('catalogo-institucion-filter');
             if(catalogoInput) {
                 catalogoInput.addEventListener('input', () => {
                     document.getElementById('catalogo-institucion-id').value = '';
                     handleInstitutionFilter(catalogoInput.value, 'catalogo-institucion', institutions);
-                    renderInstitutionsTable(); // Re-renderiza la tabla del catálogo al filtrar
+                    renderInstitutionsTable(); 
                 });
                 catalogoInput.addEventListener('click', () => handleInstitutionFilter('', 'catalogo-institucion', institutions, true));
+            }
+
+            // MEJORA 3: Se eliminan los listeners que actualizaban la tabla automáticamente.
+            const amInstitucionInput = document.getElementById('am-institucion-filter');
+            if(amInstitucionInput) {
+                amInstitucionInput.addEventListener('input', () => {
+                    document.getElementById('am-institucion-id').value = '';
+                    handleInstitutionFilter(amInstitucionInput.value, 'am-institucion', institutions);
+                });
+                amInstitucionInput.addEventListener('click', () => handleInstitutionFilter('', 'am-institucion', institutions, true));
+            }
+
+            const acInstitucionInput = document.getElementById('ac-institucion-filter');
+            if(acInstitucionInput) {
+                acInstitucionInput.addEventListener('input', () => {
+                    document.getElementById('ac-institucion-id').value = '';
+                    handleInstitutionFilter(acInstitucionInput.value, 'ac-institucion', institutions);
+                });
+                acInstitucionInput.addEventListener('click', () => handleInstitutionFilter('', 'ac-institucion', institutions, true));
             }
 
 
             const userModalInstitutionFilter = document.getElementById('user-siglas-institucion-filter');
             if (userModalInstitutionFilter) {
-                // Pasa el ID completo del elemento de sugerencias para evitar TypeError.
                 userModalInstitutionFilter.addEventListener('input', () => handleInstitutionFilter(userModalInstitutionFilter.value, 'user-siglas-institucion', institutions));
                 userModalInstitutionFilter.addEventListener('click', () => handleInstitutionFilter('', 'user-siglas-institucion', institutions, true));
             }
@@ -1886,7 +2219,6 @@
                 userForm.addEventListener('submit', handleUserFormSubmit);
             }
 
-            // Cierra las sugerencias de institución al hacer clic fuera.
             document.addEventListener('click', (event) => {
                 if (!event.target.closest('.institution-filter-container')) {
                     document.querySelectorAll('.institution-suggestions').forEach(el => el.classList.add('hidden'));
@@ -1921,7 +2253,6 @@
                 filtered.forEach(inst => {
                     const suggestionItem = document.createElement('div');
                     suggestionItem.textContent = `${inst.siglas} - ${inst.nombre}`;
-                    // Usa onmousedown para evitar que el blur del input oculte las sugerencias antes del click.
                     suggestionItem.onmousedown = () => selectInstitution(inst, contextPrefix);
                     suggestionsContainer.appendChild(suggestionItem);
                 });
@@ -1937,27 +2268,24 @@
          */
         function selectInstitution(inst, contextPrefix) {
             document.getElementById(`${contextPrefix}-filter`).value = `${inst.siglas} - ${inst.nombre}`;
-            // Si existe un input hidden para el ID, actualízalo.
             const hiddenIdInput = document.getElementById(`${contextPrefix}-id`);
             if(hiddenIdInput) {
                 hiddenIdInput.value = inst.id;
             }
-            // Oculta las sugerencias.
             document.getElementById(`${contextPrefix}-suggestions`).classList.add('hidden');
 
-            // Lógica específica para la selección de institución en el modal de usuario.
             if (contextPrefix === 'user-siglas-institucion') {
-                document.getElementById('user-siglas-institucion-id').value = inst.siglas; // Almacena las siglas.
+                document.getElementById('user-siglas-institucion-id').value = inst.siglas; 
             }
 
-            // Si el contexto es para programación de periodos, re-renderiza la tabla.
             if (contextPrefix === 'programacion-institucion') {
                 renderProgramacionPeriodosTable();
             }
-            // CORRECCIÓN: Si el contexto es para catálogo de instituciones, re-renderiza la tabla.
             if (contextPrefix === 'catalogo-institucion') {
                 renderInstitutionsTable();
             }
+            // MEJORA 3: Se elimina la actualización automática de la tabla al seleccionar institución.
+            // La actualización ahora solo se dispara con el botón "Visualizar".
         }
 
         /**
@@ -1971,9 +2299,9 @@
                 input.value = '';
             }
             if (hiddenIdInput) {
-                hiddenIdInput.value = ''; // Limpiar el ID oculto también
+                hiddenIdInput.value = ''; 
             }
-            renderProgramacionPeriodosTable(); // Vuelve a renderizar la tabla sin el filtro.
+            renderProgramacionPeriodosTable(); 
         }
 
         /**
@@ -1987,9 +2315,8 @@
                 input.value = '';
             }
             if (hiddenIdInput) {
-                hiddenIdInput.value = ''; // Limpiar el ID oculto también
+                hiddenIdInput.value = ''; 
             }
-            // No hay tabla que renderizar en este módulo, solo se limpia el input.
         }
 
         /**
@@ -2003,11 +2330,28 @@
                 input.value = '';
             }
             if (hiddenIdInput) {
-                hiddenIdInput.value = ''; // Limpiar el ID oculto también
+                hiddenIdInput.value = ''; 
             }
-            renderInstitutionsTable(); // Vuelve a renderizar la tabla sin el filtro.
+            renderInstitutionsTable(); 
         }
 
+        /**
+         * Limpia el filtro de institución en el módulo de Modifica Avance Trimestral AM.
+         */
+        function clearAMInstitutionFilter() {
+            document.getElementById('am-institucion-filter').value = '';
+            document.getElementById('am-institucion-id').value = '';
+            renderAvanceAMTable();
+        }
+
+        /**
+         * Limpia el filtro de institución en el módulo de Modifica Avance Trimestral AC.
+         */
+        function clearACInstitutionFilter() {
+            document.getElementById('ac-institucion-filter').value = '';
+            document.getElementById('ac-institucion-id').value = '';
+            renderAvanceACTable();
+        }
 
         // --- MÓDULO: CATÁLOGO DE INSTITUCIONES ---
         /**
@@ -2017,16 +2361,13 @@
             const tableBody = document.querySelector('#institutions-catalog-table tbody');
             tableBody.innerHTML = '';
 
-            // CORRECCIÓN: Obtener valor del filtro de catálogo
             const catalogoFilterInput = document.getElementById('catalogo-institucion-filter');
             const catalogoFilterText = catalogoFilterInput ? catalogoFilterInput.value.toLowerCase() : '';
-            const catalogoFilterId = document.getElementById('catalogo-institucion-id').value; // Obtener el ID seleccionado
+            const catalogoFilterId = document.getElementById('catalogo-institucion-id').value; 
 
             const filteredInstitutions = institutions.filter(inst => {
                 const instName = inst.nombre.toLowerCase();
                 const instSiglas = inst.siglas.toLowerCase();
-
-                // Si hay un ID seleccionado, filtrar por ID. De lo contrario, usar el filtro de texto.
                 if (catalogoFilterId) {
                     return inst.id === catalogoFilterId;
                 } else {
@@ -2155,9 +2496,8 @@
                 institutions.push({ id: newId, tipo, sector, siglas, nombre, estatus, ptciActualizado: 'No' });
             }
 
-            // Guarda los cambios en localStorage. En producción, se enviaría a la base de datos.
             localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
-            renderInstitutionsTable(); // Actualiza la tabla.
+            renderInstitutionsTable(); 
             closeInstitutionModal();
         }
 
@@ -2176,9 +2516,8 @@
         function deleteInstitution(id) {
             showConfirm('¿Está seguro de que desea eliminar esta institución?', () => {
                 institutions = institutions.filter(inst => inst.id !== id);
-                // Guarda los cambios en localStorage. En producción, se enviaría a la base de datos.
                 localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
-                renderInstitutionsTable(); // Actualiza la tabla.
+                renderInstitutionsTable(); 
             });
         }
 
@@ -2245,8 +2584,8 @@
          */
         function closeEditListModal() {
             document.getElementById('edit-list-modal-overlay').classList.add('hidden');
-            populateModalSelects(); // Vuelve a poblar los selects después de editar las listas.
-            populateUserModalSelects(); // Vuelve a poblar los selects de usuario.
+            populateModalSelects(); 
+            populateUserModalSelects(); 
         }
 
         /**
@@ -2261,7 +2600,7 @@
             document.getElementById('edit-single-list-item-type').value = listType;
             document.getElementById('edit-single-list-item-input').value = value;
             document.getElementById('edit-single-list-item-input').focus();
-            document.getElementById('edit-list-modal-overlay').classList.add('hidden'); // Oculta el modal de lista mientras se edita un solo elemento.
+            document.getElementById('edit-list-modal-overlay').classList.add('hidden'); 
         }
 
         /**
@@ -2269,7 +2608,7 @@
          */
         function closeEditSingleListItemModal() {
             document.getElementById('edit-single-list-item-modal-overlay').classList.add('hidden');
-            openEditListModal(document.getElementById('edit-single-list-item-type').value); // Vuelve a abrir el modal de lista.
+            openEditListModal(document.getElementById('edit-single-list-item-type').value); 
         }
 
         /**
@@ -2289,27 +2628,27 @@
                 case 'tipoInstitucion':
                     list = tipoInstitucionList;
                     localStorageKey = 'tipoInstitucionList_v11_1_1';
-                    affectedEntitiesProp = 'tipo'; // This is for institutions
+                    affectedEntitiesProp = 'tipo'; 
                     break;
                 case 'sector':
                     list = sectorList;
                     localStorageKey = 'sectorList_v11_1_1';
-                    affectedEntitiesProp = 'sector'; // This is for institutions
+                    affectedEntitiesProp = 'sector'; 
                     break;
                 case 'perfil':
                     list = perfilesList;
                     localStorageKey = 'perfilesList_v11_1_1';
-                    affectedEntitiesProp = 'perfil'; // This is for users
+                    affectedEntitiesProp = 'perfil'; 
                     break;
                 case 'tipoUsuario':
                     list = tiposUsuarioList;
                     localStorageKey = 'tiposUsuarioList_v11_1_1';
-                    affectedEntitiesProp = 'tipoUsuario'; // This is for users
+                    affectedEntitiesProp = 'tipoUsuario'; 
                     break;
                 case 'cargo':
                     list = cargosList;
                     localStorageKey = 'cargosList_v11_1_1';
-                    affectedEntitiesProp = 'cargo'; // This is for users
+                    affectedEntitiesProp = 'cargo'; 
                     break;
                 default:
                     return;
@@ -2320,12 +2659,11 @@
             list[index] = newValue;
             localStorage.setItem(localStorageKey, JSON.stringify(list));
 
-            // Actualiza las instituciones o usuarios que usaban el valor antiguo.
             if (listType === 'tipoInstitucion' || listType === 'sector') {
                 institutions.forEach(inst => { if (inst[affectedEntitiesProp] === oldItem) inst[affectedEntitiesProp] = newValue; });
                 localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
                 renderInstitutionsTable();
-            } else { // For perfil, tipoUsuario, cargo
+            } else { 
                 users.forEach(user => { if (user[affectedEntitiesProp] === oldItem) user[affectedEntitiesProp] = newValue; });
                 localStorage.setItem('users_v11_1_1', JSON.stringify(users));
                 renderUsersTable();
@@ -2379,7 +2717,7 @@
             list.push(newItem);
             localStorage.setItem(localStorageKey, JSON.stringify(list));
             input.value = '';
-            openEditListModal(currentEditingListType); // Recarga la lista en el modal.
+            openEditListModal(currentEditingListType); 
         }
 
         /**
@@ -2428,17 +2766,16 @@
                 list.splice(indexToRemove, 1);
                 localStorage.setItem(localStorageKey, JSON.stringify(list));
 
-                // Actualiza las instituciones o usuarios que usaban el valor antiguo.
                 if (listType === 'tipoInstitucion' || listType === 'sector') {
                     institutions.forEach(inst => { if (inst[affectedEntitiesProp] === itemToRemove) inst[affectedEntitiesProp] = ''; });
                     localStorage.setItem('institutions_v11_1_1', JSON.stringify(institutions));
                     renderInstitutionsTable();
-                } else { // For perfil, tipoUsuario, cargo
+                } else { 
                     users.forEach(user => { if (user[affectedEntitiesProp] === itemToRemove) user[affectedEntitiesProp] = ''; });
                     localStorage.setItem('users_v11_1_1', JSON.stringify(users));
                     renderUsersTable();
                 }
-                openEditListModal(listType); // Recarga la lista en el modal.
+                openEditListModal(listType); 
             });
         }
 
@@ -2451,14 +2788,13 @@
             const tableBody = document.querySelector('#programacion-periodos-table tbody');
             tableBody.innerHTML = '';
 
-            // *** INICIO DE LA CORRECCIÓN ***
             const institucionFilterInput = document.getElementById('programacion-institucion-filter');
-            const institucionIdInput = document.getElementById('programacion-institucion-id'); // Se obtiene el input oculto del ID.
+            const institucionIdInput = document.getElementById('programacion-institucion-id'); 
             const ptciFilterSelect = document.getElementById('ptci-actualizado-filter');
             const tipoAperturaFilterSelect = document.getElementById('tipo-accion-filter');
 
             const institucionFilterText = institucionFilterInput ? institucionFilterInput.value.toLowerCase() : '';
-            const institucionIdFilter = institucionIdInput ? institucionIdInput.value : ''; // Se obtiene el valor del ID.
+            const institucionIdFilter = institucionIdInput ? institucionIdInput.value : ''; 
             const ptciFilter = ptciFilterSelect ? ptciFilterSelect.value : 'todos';
             const tipoAperturaFilter = tipoAperturaFilterSelect ? tipoAperturaFilterSelect.value : 'todos';
 
@@ -2466,16 +2802,12 @@
                 const instName = inst.nombre.toLowerCase();
                 const instSiglas = inst.siglas.toLowerCase();
 
-                // Lógica de filtrado de institución mejorada:
-                // 1. Si hay un ID seleccionado, se usa para un filtro exacto.
-                // 2. Si no hay ID, se usa el filtro de texto (búsqueda en tiempo real).
                 let matchesInstitution;
                 if (institucionIdFilter) {
                     matchesInstitution = inst.id === institucionIdFilter;
                 } else {
                     matchesInstitution = institucionFilterText === '' || instName.includes(institucionFilterText) || instSiglas.includes(institucionFilterText);
                 }
-                // *** FIN DE LA CORRECCIÓN ***
 
                 const matchesPtci = ptciFilter === 'todos' || inst.ptciActualizado === ptciFilter;
 
@@ -2486,7 +2818,6 @@
             });
 
             if (institutionsToDisplay.length === 0) {
-                // Mensaje más específico cuando no hay resultados.
                 let noResultsMessage = "No se encontraron resultados.";
                 if (institucionFilterText || ptciFilter !== 'todos' || tipoAperturaFilter !== 'todos') {
                     noResultsMessage = "No se encontraron instituciones que coincidan con los filtros aplicados.";
@@ -2537,7 +2868,6 @@
             const checkboxes = document.querySelectorAll('#programacion-periodos-table tbody input[type="checkbox"]');
             checkboxes.forEach(checkbox => {
                 checkbox.checked = isChecked;
-                // Directly call toggleInstitutionSelection as it handles adding/removing from the array
                 toggleInstitutionSelection(checkbox, checkbox.dataset.institutionId);
             });
         }
@@ -2568,7 +2898,7 @@
         function updateUiPostSelection() {
             const allCheckboxes = document.querySelectorAll('#programacion-periodos-table tbody input[type="checkbox"]');
             const selectAllCheckbox = document.getElementById('select-all-institutions');
-            if (selectAllCheckbox) { // Add null check for selectAllCheckbox
+            if (selectAllCheckbox) { 
                 if (allCheckboxes.length > 0) {
                     const allVisibleChecked = Array.from(allCheckboxes).every(cb => cb.checked);
                     selectAllCheckbox.checked = allVisibleChecked;
@@ -2578,9 +2908,8 @@
                     selectAllCheckbox.indeterminate = false;
                 }
             }
-            // Muestra el botón de historial solo si hay exactamente una institución seleccionada.
             const historyButton = document.getElementById('history-button');
-            if (historyButton) { // Add null check for historyButton
+            if (historyButton) { 
                 historyButton.style.display = selectedInstitutionsForProgramacion.length === 1 ? 'inline-flex' : 'none';
             }
         }
@@ -2592,7 +2921,7 @@
         function populateActionFilters() {
             const mainFilter = document.getElementById('tipo-accion-filter');
             const historyFilter = document.getElementById('history-action-filter');
-            if (mainFilter) { // Add null check
+            if (mainFilter) { 
                 mainFilter.innerHTML = '<option value="todos">Todas las Acciones</option>';
                 for (const category in availableActionsCategories) {
                     const mainOptgroup = document.createElement('optgroup');
@@ -2604,7 +2933,7 @@
                     mainFilter.appendChild(mainOptgroup);
                 }
             }
-            if (historyFilter) { // Add null check
+            if (historyFilter) { 
                 historyFilter.innerHTML = '<option value="todos">Todas las Acciones</option>';
                 for (const category in availableActionsCategories) {
                     const historyOptgroup = document.createElement('optgroup');
@@ -2623,7 +2952,7 @@
          */
         function populateAperturarModalActions() {
             const form = document.getElementById('aperturar-form');
-            if (!form) return; // Add null check
+            if (!form) return; 
             form.innerHTML = '';
 
             const currentYear = new Date().getFullYear();
@@ -2707,7 +3036,7 @@
                 const newAction = {
                     periodo, trimestre, fechaInicio, fechaFin,
                     accionesPermitidas,
-                    usuario: 'admin_user', // Usuario por defecto para el log.
+                    usuario: 'admin_user', 
                     timestamp: new Date().toISOString()
                 };
 
@@ -2721,7 +3050,6 @@
                 if (!programmedPeriodsHistory[inst.id]) programmedPeriodsHistory[inst.id] = [];
                 programmedPeriodsHistory[inst.id].push(newAction);
             });
-            // Guarda los cambios en localStorage. En producción, se enviaría a la base de datos.
             localStorage.setItem('programmedPeriods_v11_1_1', JSON.stringify(programmedPeriods));
             localStorage.setItem('programmedPeriodsHistory_v11_1_1', JSON.stringify(programmedPeriodsHistory));
 
@@ -2734,18 +3062,15 @@
          * Abre el modal "Aperturar Sistema".
          */
         function openAperturarModal() {
-            // Check if selectedInstitutionsForProgramacion is populated
             if (selectedInstitutionsForProgramacion.length === 0) {
                 showAlert('Por favor, selecciona al menos una institución.');
                 return;
             }
-            // Resetea los checkboxes de acción al recargar el modal.
             document.querySelectorAll('input[name="accion-permitida"]').forEach(cb => cb.checked = false);
-            // Actualiza las fechas al abrir el modal.
             updateDatesByPeriodAndTrimestre();
 
             const display = document.getElementById('selected-institutions-display');
-            if (display) { // Add null check
+            if (display) { 
                 display.textContent = `Instituciones seleccionadas: ${selectedInstitutionsForProgramacion.map(i => i.siglas).join(', ')}`;
                 display.classList.remove('hidden');
             }
@@ -2766,7 +3091,7 @@
             const fechaInicioInput = document.getElementById('aperturar-fecha-inicio');
             const fechaFinInput = document.getElementById('aperturar-fecha-fin');
 
-            if (!periodoSelect || !trimestreSelect || !fechaInicioInput || !fechaFinInput) return; // Defensive checks
+            if (!periodoSelect || !trimestreSelect || !fechaInicioInput || !fechaFinInput) return; 
 
             const year = parseInt(periodoSelect.value);
             const trimestre = trimestreSelect.value;
@@ -2775,35 +3100,32 @@
 
             let lastDayOfQuarter;
             switch (trimestre) {
-                case '1T': // Enero-Marzo
-                    lastDayOfQuarter = new Date(year, 2, 31); // 31 de marzo
+                case '1T': 
+                    lastDayOfQuarter = new Date(year, 2, 31); 
                     break;
-                case '2T': // Abril-Junio
-                    lastDayOfQuarter = new Date(year, 5, 30); // 30 de junio
+                case '2T': 
+                    lastDayOfQuarter = new Date(year, 5, 30); 
                     break;
-                case '3T': // Julio-Septiembre
-                    lastDayOfQuarter = new Date(year, 8, 30); // 30 de septiembre
+                case '3T': 
+                    lastDayOfQuarter = new Date(year, 8, 30); 
                     break;
-                case '4T': // Octubre-Diciembre
-                    lastDayOfQuarter = new Date(year, 11, 31); // 31 de diciembre
+                case '4T': 
+                    lastDayOfQuarter = new Date(year, 11, 31); 
                     break;
                 default:
                     return;
             }
 
-            // Fecha Inicio = último día del trimestre + 1 mes
             let startDate = new Date(lastDayOfQuarter);
             startDate.setMonth(startDate.getMonth() + 1);
-            startDate.setDate(1); // Establecer al primer día del mes siguiente
+            startDate.setDate(1); 
 
             fechaInicioInput.value = startDate.toISOString().split('T')[0];
 
-            // Fecha Fin = Fecha Inicio + 15 días (saltar fines de semana)
             let endDate = new Date(startDate);
             let addedDays = 0;
             while (addedDays < 15) {
                 endDate.setDate(endDate.getDate() + 1);
-                // Si es sábado (6) o domingo (0), no contar el día
                 if (endDate.getDay() !== 0 && endDate.getDay() !== 6) {
                     addedDays++;
                 }
@@ -2815,19 +3137,19 @@
          * Abre el modal de historial para una institución seleccionada.
          */
         function openHistoryModal() {
-            if (selectedInstitutionsForProgramacion.length !== 1) return; // Solo si hay una institución seleccionada.
+            if (selectedInstitutionsForProgramacion.length !== 1) return; 
             const inst = selectedInstitutionsForProgramacion[0];
             const historyInstitutionName = document.getElementById('history-institution-name');
             const historyActionFilter = document.getElementById('history-action-filter');
 
-            if (historyInstitutionName) { // Add null check
+            if (historyInstitutionName) { 
                 historyInstitutionName.textContent = `${inst.siglas} - ${inst.nombre}`;
             }
-            if (historyActionFilter) { // Add null check
-                historyActionFilter.value = 'todos'; // Filtro por defecto.
+            if (historyActionFilter) { 
+                historyActionFilter.value = 'todos'; 
             }
 
-            renderHistoryTable(); // Renderiza la tabla de historial.
+            renderHistoryTable(); 
             document.getElementById('history-modal-overlay').classList.remove('hidden');
         }
 
@@ -2841,13 +3163,13 @@
             const historyTableBody = document.getElementById('history-table-body');
             const actionFilterSelect = document.getElementById('history-action-filter');
 
-            if (!historyTableBody || !actionFilterSelect) return; // Defensive checks
+            if (!historyTableBody || !actionFilterSelect) return; 
 
             historyTableBody.innerHTML = '';
             const actionFilter = actionFilterSelect.value;
             const historyForInst = (programmedPeriodsHistory[inst.id] || []).filter(entry =>
                 actionFilter === 'todos' || (entry.accionesPermitidas && entry.accionesPermitidas.includes(actionFilter))
-            ).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)); // Ordena por fecha descendente.
+            ).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)); 
             if (historyForInst.length === 0) {
                 historyTableBody.innerHTML = `<tr><td colspan="6" class="text-center text-gray-500 py-3">No hay historial para el filtro seleccionado.</td></tr>`;
                 return;
@@ -2858,7 +3180,7 @@
                 row.innerHTML = `
                     <td class="text-center-col">${entry.periodo || 'N/A'}</td>
                     <td class="text-center-col">${entry.trimestre || 'N/A'}</td>
-                    <td>${(entry.accionesPermitidas || []).join('<br>')}</td> <!-- Modificado para saltos de línea -->
+                    <td>${(entry.accionesPermitidas || []).join('<br>')}</td>
                     <td class="text-center-col">${entry.fechaInicio || 'N/A'}</td>
                     <td class="text-center-col">${entry.fechaFin || 'N/A'}</td>
                     <td>${entry.usuario || 'N/A'}</td>
@@ -2879,21 +3201,17 @@
             const table = document.querySelector('#module-reporte-avance-institucional .data-table');
             const tbody = table.querySelector('tbody');
 
-            // Limpiar cuerpo existente.
             tbody.innerHTML = '';
 
-            // Obtener valores de los filtros.
             const estatusFilterInput = document.querySelector('input[name="estatus_reporte"]:checked');
             const anioFilterSelect = document.getElementById('anio_input');
             const trimestreReporteFilterSelect = document.getElementById('trimestre_reporte_input');
 
-            // Defensive checks for null elements
-            const estatusFilter = estatusFilterInput ? estatusFilterInput.value : '1'; // Default to '1' (Activo)
+            const estatusFilter = estatusFilterInput ? estatusFilterInput.value : '1'; 
             const anioFilter = anioFilterSelect ? anioFilterSelect.value : 'todos';
             const trimestreReporteFilter = trimestreReporteFilterSelect ? trimestreReporteFilterSelect.value : 'todos';
 
 
-            // Filtrar instituciones según el estado.
             const filteredInstitutions = institutions.filter(inst => {
                 const isActive = inst.estatus === 'Activa';
                 return (estatusFilter === '1' && isActive) || (estatusFilter === '0' && !isActive);
@@ -2904,10 +3222,8 @@
                 return;
             }
 
-            // Rellenar el cuerpo de la tabla.
             let hasData = false;
             filteredInstitutions.forEach(inst => {
-                // Encontrar el período programado para la institución actual.
                 const programmedPeriod = programmedPeriods.find(p =>
                     p.institucionId === inst.id &&
                     (anioFilter === 'todos' || p.periodo === anioFilter) &&
@@ -2916,9 +3232,7 @@
 
                 if (programmedPeriod) {
                     hasData = true;
-                    // Aquí se simulan los datos de avance. En una aplicación real, estos vendrían de la base de datos.
                     const data = {
-                        // Evaluación de la Institución
                         periodoCapturaSCII: '2024-01-01',
                         abiertoHastaSCII: '2024-03-31',
                         procesosPrioritarios: 'Sí',
@@ -2942,7 +3256,6 @@
                         abiertoHastaSeguimientoAC: '2024-09-30',
                         finalizadoSeguimientoAC: 'Sí',
                         reporteTrimestralAC: 'Sí',
-                        // Evaluación del OIC
                         periodoCapturaRevisionOIC: '2024-01-01',
                         abiertoHastaRevisionOIC: '2024-03-31',
                         informeOICFinalizado: 'Sí',
@@ -2962,7 +3275,6 @@
                     dataRow += `<td class="text-center-col">${inst.siglas}</td>`;
                     dataRow += `<td>${inst.nombre}</td>`;
 
-                    // Evaluación de la Institución (23 columnas)
                     dataRow += `<td class="text-center-col">${data.periodoCapturaSCII}</td>`;
                     dataRow += `<td class="text-center-col">${data.abiertoHastaSCII}</td>`;
                     dataRow += `<td class="text-center-col">${data.procesosPrioritarios}</td>`;
@@ -2987,7 +3299,6 @@
                     dataRow += `<td class="text-center-col">${data.finalizadoSeguimientoAC}</td>`;
                     dataRow += `<td class="text-center-col">${data.reporteTrimestralAC}</td>`;
 
-                    // Evaluación del OIC (11 columnas)
                     dataRow += `<td class="text-center-col">${data.periodoCapturaRevisionOIC}</td>`;
                     dataRow += `<td class="text-center-col">${data.abiertoHastaRevisionOIC}</td>`;
                     dataRow += `<td class="text-center-col">${data.informeOICFinalizado}</td>`;
@@ -3014,7 +3325,6 @@
          * Exporta los datos del reporte de avance institucional a un archivo CSV.
          */
         function exportReporteAvanceInstitucional() {
-            // CORRECCIÓN: Definición manual de encabezados para el CSV para asegurar que sean idénticos.
             const headers = [
                 "Periodo", "Trimestre", "Siglas", "Institución",
                 "Evaluación del SCII - Periodo Captura", "Evaluación del SCII - Abierto Hasta", "Evaluación del SCII - Procesos Prioritarios", "Evaluación del SCII - Evaluación del SCII",
@@ -3033,14 +3343,12 @@
             const rows = Array.from(tableBody.querySelectorAll('tr'));
 
             rows.forEach(row => {
-                // Saltar filas que no contienen datos (ej. "No se encontraron datos...")
                 if (row.classList.contains('text-center')) {
                     return;
                 }
 
                 const rowData = Array.from(row.querySelectorAll('td')).map(td => {
                     let text = td.textContent.trim();
-                    // Escapar comas y comillas dobles en el texto.
                     if (text.includes(',') || text.includes('"') || text.includes('\n')) {
                         text = `"${text.replace(/"/g, '""')}"`;
                     }
@@ -3073,9 +3381,8 @@
             const tipoUsuarioSelect = document.getElementById('user-tipo-usuario');
             const cargoSelect = document.getElementById('user-cargo');
 
-            // Perfiles.
-            if (perfilSelect) { // Add null check
-                perfilSelect.innerHTML = ''; // Eliminar la opción "Seleccione Perfil"
+            if (perfilSelect) { 
+                perfilSelect.innerHTML = ''; 
                 perfilesList.forEach(item => {
                     const option = document.createElement('option');
                     option.value = item;
@@ -3084,9 +3391,8 @@
                 });
             }
 
-            // Tipos de Usuario.
-            if (tipoUsuarioSelect) { // Add null check
-                tipoUsuarioSelect.innerHTML = ''; // Eliminar la opción "Seleccione Tipo"
+            if (tipoUsuarioSelect) { 
+                tipoUsuarioSelect.innerHTML = ''; 
                 tiposUsuarioList.forEach(item => {
                     const option = document.createElement('option');
                     option.value = item;
@@ -3095,9 +3401,8 @@
                 });
             }
 
-            // Cargos.
-            if (cargoSelect) { // Add null check
-                cargoSelect.innerHTML = ''; // Eliminar la opción "Seleccione Cargo"
+            if (cargoSelect) { 
+                cargoSelect.innerHTML = ''; 
                 cargosList.forEach(item => {
                     const option = document.createElement('option');
                     option.value = item;
@@ -3112,13 +3417,12 @@
          */
         function renderUsersTable() {
             const tableBody = document.querySelector('#users-table tbody');
-            if (!tableBody) return; // Defensive check
+            if (!tableBody) return; 
             tableBody.innerHTML = '';
 
             const statusFilterInput = document.querySelector('input[name="user_status_filter"]:checked');
             const searchTermInput = document.getElementById('user-search-input');
 
-            // Defensive checks for null elements
             const statusFilter = statusFilterInput ? statusFilterInput.value : 'todos';
             const searchTerm = searchTermInput ? searchTermInput.value.toLowerCase() : '';
 
@@ -3132,7 +3436,7 @@
                                       user.clave.toLowerCase().includes(searchTerm) ||
                                       user.nombre.toLowerCase().includes(searchTerm) ||
                                       user.siglasInstitucion.toLowerCase().includes(searchTerm) ||
-                                      institutionName.includes(searchTerm); // Busca por nombre de institución también.
+                                      institutionName.includes(searchTerm); 
 
                 return matchesStatus && matchesSearch;
             });
@@ -3149,10 +3453,10 @@
                 row.innerHTML = `
                     <td class="text-center-col">${user.siglasInstitucion}</td>
                     <td>${institutionName}</td>
-                    <td>${user.nombre}</td> <!-- Nueva columna Nombre -->
+                    <td>${user.nombre}</td>
                     <td>${user.perfil}</td>
                     <td class="text-center-col">${user.clave}</td>
-                    <td class="text-center-col">**********</td> <!-- Contraseña siempre oculta -->
+                    <td class="text-center-col">**********</td>
                     <td class="text-center-col">${user.estatus}</td>
                     <td>${user.correo || 'N/A'}</td>
                     <td>${user.telefono || 'N/A'}</td>
@@ -3195,15 +3499,15 @@
             const modalOverlay = document.getElementById('user-modal-overlay');
             const modalTitle = document.getElementById('user-modal-title');
             const form = document.getElementById('user-form');
-            form.reset(); // Limpia el formulario.
-            populateUserModalSelects(); // Asegura que los selects estén poblados.
+            form.reset(); 
+            populateUserModalSelects(); 
 
             document.getElementById('user-id-edit').value = '';
-            document.getElementById('user-siglas-institucion-filter').value = ''; // Limpia el input del filtro de institución.
-            document.getElementById('user-siglas-institucion-id').value = ''; // Limpia el ID oculto de la institución.
-            document.getElementById('user-password').value = ''; // Limpia la contraseña para nuevos usuarios.
-            document.getElementById('user-no-oficio').value = ''; // Limpia el campo No. de Oficio.
-            document.getElementById('user-file-name').value = ''; // Limpia el nombre del archivo.
+            document.getElementById('user-siglas-institucion-filter').value = ''; 
+            document.getElementById('user-siglas-institucion-id').value = ''; 
+            document.getElementById('user-password').value = ''; 
+            document.getElementById('user-no-oficio').value = ''; 
+            document.getElementById('user-file-name').value = ''; 
 
             if (userId) {
                 modalTitle.textContent = 'Editar Usuario';
@@ -3218,18 +3522,17 @@
                     document.getElementById('user-telefono').value = userToEdit.telefono;
                     document.getElementById('user-tipo-usuario').value = userToEdit.tipoUsuario;
                     document.getElementById('user-cargo').value = userToEdit.cargo;
-                    document.getElementById('user-no-oficio').value = userToEdit.noOficioDesignacion || ''; // Carga el No. de Oficio.
-                    // Establece el valor para el input del filtro de institución.
+                    document.getElementById('user-no-oficio').value = userToEdit.noOficioDesignacion || ''; 
                     const institution = institutions.find(inst => inst.siglas === userToEdit.siglasInstitucion);
                     if (institution) {
                         document.getElementById('user-siglas-institucion-filter').value = `${institution.siglas} - ${institution.nombre}`;
-                        document.getElementById('user-siglas-institucion-id').value = institution.siglas; // Almacena las siglas.
+                        document.getElementById('user-siglas-institucion-id').value = institution.siglas; 
                     }
-                    document.getElementById('user-password').value = userToEdit.password; // Muestra la contraseña para edición.
+                    document.getElementById('user-password').value = userToEdit.password; 
                 }
             } else {
                 modalTitle.textContent = 'Agregar Usuario';
-                document.querySelector('input[name="user-estatus"][value="Activo"]').checked = true; // Por defecto, activo.
+                document.querySelector('input[name="user-estatus"][value="Activo"]').checked = true; 
             }
             modalOverlay.classList.remove('hidden');
         }
@@ -3239,7 +3542,7 @@
          */
         function closeUserModal() {
             document.getElementById('user-modal-overlay').classList.add('hidden');
-            document.getElementById('user-siglas-institucion-suggestions').classList.add('hidden'); // Oculta las sugerencias.
+            document.getElementById('user-siglas-institucion-suggestions').classList.add('hidden'); 
         }
 
         /**
@@ -3258,10 +3561,9 @@
             const telefono = document.getElementById('user-telefono').value.trim();
             const tipoUsuario = document.getElementById('user-tipo-usuario').value;
             const cargo = document.getElementById('user-cargo').value;
-            const noOficioDesignacion = document.getElementById('user-no-oficio').value.trim(); // Nuevo campo
-            const siglasInstitucion = document.getElementById('user-siglas-institucion-id').value; // Obtiene de input hidden.
+            const noOficioDesignacion = document.getElementById('user-no-oficio').value.trim(); 
+            const siglasInstitucion = document.getElementById('user-siglas-institucion-id').value; 
 
-            // Validación de campos obligatorios.
             if (!clave || !password || !nombre || !perfil || !siglasInstitucion || !tipoUsuario || !cargo) {
                 showAlert('Por favor, complete todos los campos obligatorios (Nombre de Usuario, Contraseña, Nombre, Perfil, Siglas Institución, Tipo Usuario, Cargo).');
                 return;
@@ -3269,13 +3571,11 @@
 
             let modifiedFields = 'N/A';
             if (id) {
-                // Edita un usuario existente.
                 const index = users.findIndex(user => user.id === id);
                 if (index !== -1) {
-                    const oldUser = { ...users[index] }; // Copia los datos antiguos del usuario.
+                    const oldUser = { ...users[index] }; 
                     users[index] = { ...oldUser, clave, password, nombre, perfil, estatus, correo, telefono, tipoUsuario, cargo, siglasInstitucion, noOficioDesignacion };
 
-                    // Determina los campos modificados para el log.
                     const changedFields = [];
                     for (const key in users[index]) {
                         if (users[index][key] !== oldUser[key] && key !== 'id') {
@@ -3288,24 +3588,19 @@
                         modifiedFields = 'Ninguna';
                     }
                 }
-                // Registra la acción de modificación.
                 logUserAccess(id, siglasInstitucion, clave, 'Control de Usuarios', 'Modificación', modifiedFields, 'Edición', 'Éxito');
             } else {
-                // Agrega un nuevo usuario.
-                const newId = 'user' + Date.now().toString(); // Genera ID único.
-                // Verifica si la clave de usuario ya existe.
+                const newId = 'user' + Date.now().toString(); 
                 if (users.some(user => user.clave === clave)) {
                     showAlert('La clave de usuario ya existe. Por favor, utilice una clave diferente.');
                     return;
                 }
                 users.push({ id: newId, clave, password, nombre, perfil, estatus, correo, telefono, tipoUsuario, cargo, siglasInstitucion, noOficioDesignacion });
-                // Registra la acción de adición.
                 logUserAccess(newId, siglasInstitucion, clave, 'Control de Usuarios', 'Agregación', 'Nuevo usuario creado', 'Creación', 'Éxito');
             }
 
-            // Guarda los cambios en localStorage. En producción, se enviaría a la base de datos.
             localStorage.setItem('users_v11_1_1', JSON.stringify(users));
-            renderUsersTable(); // Actualiza la tabla.
+            renderUsersTable(); 
             closeUserModal();
             showAlert('Usuario guardado correctamente.');
         }
@@ -3319,13 +3614,11 @@
                 const userToDelete = users.find(user => user.id === userId);
                 if (userToDelete) {
                     users = users.filter(user => user.id !== userId);
-                    userAccessLogs = userAccessLogs.filter(log => log.userId !== userId); // Elimina logs asociados.
-                    // Guarda los cambios en localStorage. En producción, se enviaría a la base de datos.
+                    userAccessLogs = userAccessLogs.filter(log => log.userId !== userId); 
                     localStorage.setItem('users_v11_1_1', JSON.stringify(users));
                     localStorage.setItem('userAccessLogs_v11_1_1', JSON.stringify(userAccessLogs));
-                    renderUsersTable(); // Actualiza la tabla.
+                    renderUsersTable(); 
                     showAlert('Usuario eliminado correctamente.');
-                    // Registra la acción de eliminación.
                     logUserAccess(userToDelete.id, userToDelete.siglasInstitucion, userToDelete.clave, 'Control de Usuarios', 'Eliminación', `Usuario ${userToDelete.clave} eliminado`, 'Eliminación', 'Éxito');
                 }
             });
@@ -3334,14 +3627,6 @@
         // --- Logging de Acceso de Usuarios ---
         /**
          * Registra un evento de acceso de usuario.
-         * @param {string} userId - ID del usuario.
-         * @param {string} siglas - Siglas de la institución del usuario.
-         * @param {string} claveUsuario - Clave del usuario.
-         * @param {string} moduloAccedido - Módulo al que se accedió.
-         * @param {string} accionRealizada - Acción realizada (ej. 'Modificación', 'Agregación').
-         * @param {string} campoModificado - Campo o entidad modificada (ej. 'Datos de usuario', 'Institución X').
-         * @param {string} tipoEvento - Tipo de evento ('Inicio', 'Cierre', 'Error', 'Edición', 'Creación', 'Eliminación').
-         * @param {string} resultado - Resultado de la acción ('Éxito', 'Fallo').
          */
         function logUserAccess(userId, siglas, claveUsuario, moduloAccedido, accionRealizada, campoModificado, tipoEvento, resultado) {
             const now = new Date();
@@ -3354,7 +3639,7 @@
 
             const fechaAcceso = `${year}-${month}-${day}`;
             const horaInicio = `${hours}:${minutes}:${seconds}`;
-            const horaCierre = `${hours}:${minutes}:${seconds}`; // Simplificado para el prototipo.
+            const horaCierre = `${hours}:${minutes}:${seconds}`; 
 
             userAccessLogs.push({
                 userId,
@@ -3364,16 +3649,15 @@
                 fechaAcceso,
                 horaInicio,
                 horaCierre,
-                duracionSesion: 0, // Simplificado, en una app real se calcularía.
+                duracionSesion: 0, 
                 moduloAccedido,
                 accionRealizada,
-                campoModificado, // Nuevo campo.
+                campoModificado, 
                 tipoEvento,
                 resultado,
-                direccionIP: '127.0.0.1', // Placeholder. En producción, se obtendría la IP real.
-                agenteUsuario: navigator.userAgent // Información del navegador.
+                direccionIP: '127.0.0.1', 
+                agenteUsuario: navigator.userAgent 
             });
-            // Guarda los logs en localStorage. En producción, se enviaría a la base de datos.
             localStorage.setItem('userAccessLogs_v11_1_1', JSON.stringify(userAccessLogs));
         }
 
@@ -3527,6 +3811,279 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        // --- MÓDULOS: MODIFICA AVANCE TRIMESTRAL (AM y AC) ---
+
+        /**
+         * Popula los selects de periodo para los módulos de avance (AM y AC).
+         */
+        function populateAvancePeriodoSelects() {
+            const amPeriodoSelect = document.getElementById('am-periodo-select');
+            const acPeriodoSelect = document.getElementById('ac-periodo-select');
+            const currentYear = new Date().getFullYear();
+            const years = Array.from({ length: 10 }, (_, i) => currentYear - i); 
+
+            [amPeriodoSelect, acPeriodoSelect].forEach(select => {
+                if (select) {
+                    select.innerHTML = '';
+                    years.forEach(year => {
+                        const option = new Option(year, year);
+                        select.appendChild(option);
+                    });
+                    select.value = currentYear; 
+                }
+            });
+        }
+
+        /**
+         * Renderiza la tabla para el módulo de Avance Trimestral AM.
+         */
+        function renderAvanceAMTable() {
+            const tableBody = document.querySelector('#avance-am-table tbody');
+            if (!tableBody) return;
+
+            const institucionId = document.getElementById('am-institucion-id').value;
+            const periodo = document.getElementById('am-periodo-select').value;
+
+            if (!institucionId) {
+                tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-gray-500 py-3">Por favor, seleccione una institución para visualizar los datos.</td></tr>`;
+                return;
+            }
+
+            tableBody.innerHTML = '';
+            if (avanceAMData.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-gray-500 py-3">No hay actividades registradas para el periodo ${periodo}.</td></tr>`;
+                return;
+            }
+
+            avanceAMData.forEach((item, index) => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${periodo}</td>
+                    <td>${index + 1}</td>
+                    <td>${item.actividad}</td>
+                    <td class="text-center-col">${item.avances['1T']}%</td>
+                    <td class="text-center-col">${item.avances['2T']}%</td>
+                    <td class="text-center-col">${item.avances['3T']}%</td>
+                    <td class="text-center-col">${item.avances['4T']}%</td>
+                    <td class="text-center-col">
+                        <button type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white p-1 rounded-md text-xs" onclick="openAMAdvanceModal('${item.id}')" title="Editar Avance">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="M15 5l4 4"/></svg>
+                        </button>
+                    </td>
+                `;
+            });
+        }
+
+        /**
+         * Renderiza la tabla para el módulo de Avance Trimestral AC.
+         */
+        function renderAvanceACTable() {
+            const tableBody = document.querySelector('#avance-ac-table tbody');
+            if (!tableBody) return;
+
+            const institucionId = document.getElementById('ac-institucion-id').value;
+            const periodo = document.getElementById('ac-periodo-select').value;
+
+            if (!institucionId) {
+                tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-gray-500 py-3">Por favor, seleccione una institución para visualizar los datos.</td></tr>`;
+                return;
+            }
+
+            tableBody.innerHTML = '';
+            if (avanceACData.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-gray-500 py-3">No hay actividades registradas para el periodo ${periodo}.</td></tr>`;
+                return;
+            }
+
+            avanceACData.forEach((item, index) => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${periodo}</td>
+                    <td>${index + 1}</td>
+                    <td>${item.actividad}</td>
+                    <td class="text-center-col">${item.avances['1T']}%</td>
+                    <td class="text-center-col">${item.avances['2T']}%</td>
+                    <td class="text-center-col">${item.avances['3T']}%</td>
+                    <td class="text-center-col">${item.avances['4T']}%</td>
+                    <td class="text-center-col">
+                        <button type="button" class="bg-yellow-500 hover:bg-yellow-600 text-white p-1 rounded-md text-xs" onclick="openACAdvanceModal('${item.id}')" title="Editar Avance">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="M15 5l4 4"/></svg>
+                        </button>
+                    </td>
+                `;
+            });
+        }
+
+        /**
+         * Sincroniza el valor de un input numérico con un slider.
+         * @param {string} numberInputId - ID del input numérico.
+         * @param {string} sliderId - ID del slider.
+         */
+        function syncSlider(numberInputId, sliderId) {
+            const numberInput = document.getElementById(numberInputId);
+            const slider = document.getElementById(sliderId);
+            let value = parseInt(numberInput.value);
+            if (isNaN(value) || value < 0) value = 0;
+            if (value > 100) value = 100;
+            numberInput.value = value;
+            slider.value = value;
+        }
+
+        /**
+         * Sincroniza el valor de un slider con un input numérico.
+         * @param {string} sliderId - ID del slider.
+         * @param {string} numberInputId - ID del input numérico.
+         */
+        function syncNumberInput(sliderId, numberInputId) {
+            const slider = document.getElementById(sliderId);
+            const numberInput = document.getElementById(numberInputId);
+            numberInput.value = slider.value;
+        }
+
+        /**
+         * Abre el modal para modificar el avance de una actividad de AM.
+         * @param {string} itemId - El ID de la actividad.
+         */
+        function openAMAdvanceModal(itemId) {
+            currentAdvanceType = 'AM';
+            currentEditingAdvanceItem = avanceAMData.find(item => item.id === itemId);
+            if (!currentEditingAdvanceItem) return;
+
+            const periodo = document.getElementById('am-periodo-select').value;
+            document.getElementById('am-advance-modal-subtitle').textContent = `Acción #${avanceAMData.findIndex(i => i.id === itemId) + 1} - ${periodo}`;
+
+            document.getElementById('am-avance-1t').value = currentEditingAdvanceItem.avances['1T'];
+            document.getElementById('am-avance-2t').value = currentEditingAdvanceItem.avances['2T'];
+            document.getElementById('am-avance-3t').value = currentEditingAdvanceItem.avances['3T'];
+            document.getElementById('am-avance-4t').value = currentEditingAdvanceItem.avances['4T'];
+            
+            syncSlider('am-avance-1t', 'am-slider-1t');
+            syncSlider('am-avance-2t', 'am-slider-2t');
+            syncSlider('am-avance-3t', 'am-slider-3t');
+            syncSlider('am-avance-4t', 'am-slider-4t');
+
+            calculateAMAccumulated();
+            document.getElementById('am-advance-modal-overlay').classList.remove('hidden');
+        }
+
+        /**
+         * Cierra el modal de avance AM.
+         */
+        function closeAMAdvanceModal() {
+            document.getElementById('am-advance-modal-overlay').classList.add('hidden');
+            currentEditingAdvanceItem = null;
+        }
+
+        /**
+         * Calcula y muestra el porcentaje acumulado en el modal de avance AM.
+         */
+        function calculateAMAccumulated() {
+            const t1 = parseFloat(document.getElementById('am-avance-1t').value) || 0;
+            const t2 = parseFloat(document.getElementById('am-avance-2t').value) || 0;
+            const t3 = parseFloat(document.getElementById('am-avance-3t').value) || 0;
+            const t4 = parseFloat(document.getElementById('am-avance-4t').value) || 0;
+            const total = t1 + t2 + t3 + t4;
+            document.getElementById('am-avance-acumulado').textContent = `${Math.min(total, 100)}%`;
+        }
+
+        /**
+         * Guarda los cambios de avance para una actividad AM.
+         */
+        function saveAMAdvance() {
+            if (!currentEditingAdvanceItem) return;
+            const t1 = parseFloat(document.getElementById('am-avance-1t').value) || 0;
+            const t2 = parseFloat(document.getElementById('am-avance-2t').value) || 0;
+            const t3 = parseFloat(document.getElementById('am-avance-3t').value) || 0;
+            const t4 = parseFloat(document.getElementById('am-avance-4t').value) || 0;
+            
+            if ((t1 + t2 + t3 + t4) > 100) {
+                showAlert('El avance acumulado no puede ser mayor a 100%.');
+                return;
+            }
+
+            currentEditingAdvanceItem.avances['1T'] = t1;
+            currentEditingAdvanceItem.avances['2T'] = t2;
+            currentEditingAdvanceItem.avances['3T'] = t3;
+            currentEditingAdvanceItem.avances['4T'] = t4;
+
+            localStorage.setItem('avanceAMData_v1_6', JSON.stringify(avanceAMData));
+            renderAvanceAMTable();
+            closeAMAdvanceModal();
+            showAlert('Avance guardado correctamente.');
+        }
+
+        /**
+         * Abre el modal para modificar el avance de una actividad de AC.
+         * @param {string} itemId - El ID de la actividad.
+         */
+        function openACAdvanceModal(itemId) {
+            currentAdvanceType = 'AC';
+            currentEditingAdvanceItem = avanceACData.find(item => item.id === itemId);
+            if (!currentEditingAdvanceItem) return;
+
+            const periodo = document.getElementById('ac-periodo-select').value;
+            document.getElementById('ac-advance-modal-subtitle').textContent = `Acción #${avanceACData.findIndex(i => i.id === itemId) + 1} - ${periodo}`;
+
+            document.getElementById('ac-avance-1t').value = currentEditingAdvanceItem.avances['1T'];
+            document.getElementById('ac-avance-2t').value = currentEditingAdvanceItem.avances['2T'];
+            document.getElementById('ac-avance-3t').value = currentEditingAdvanceItem.avances['3T'];
+            document.getElementById('ac-avance-4t').value = currentEditingAdvanceItem.avances['4T'];
+
+            syncSlider('ac-avance-1t', 'ac-slider-1t');
+            syncSlider('ac-avance-2t', 'ac-slider-2t');
+            syncSlider('ac-avance-3t', 'ac-slider-3t');
+            syncSlider('ac-avance-4t', 'ac-slider-4t');
+
+            calculateACAccumulated();
+            document.getElementById('ac-advance-modal-overlay').classList.remove('hidden');
+        }
+
+        /**
+         * Cierra el modal de avance AC.
+         */
+        function closeACAdvanceModal() {
+            document.getElementById('ac-advance-modal-overlay').classList.add('hidden');
+            currentEditingAdvanceItem = null;
+        }
+
+        /**
+         * Calcula y muestra el porcentaje acumulado en el modal de avance AC.
+         */
+        function calculateACAccumulated() {
+            const t1 = parseFloat(document.getElementById('ac-avance-1t').value) || 0;
+            const t2 = parseFloat(document.getElementById('ac-avance-2t').value) || 0;
+            const t3 = parseFloat(document.getElementById('ac-avance-3t').value) || 0;
+            const t4 = parseFloat(document.getElementById('ac-avance-4t').value) || 0;
+            const total = t1 + t2 + t3 + t4;
+            document.getElementById('ac-avance-acumulado').textContent = `${Math.min(total, 100)}%`;
+        }
+
+        /**
+         * Guarda los cambios de avance para una actividad AC.
+         */
+        function saveACAdvance() {
+            if (!currentEditingAdvanceItem) return;
+            const t1 = parseFloat(document.getElementById('ac-avance-1t').value) || 0;
+            const t2 = parseFloat(document.getElementById('ac-avance-2t').value) || 0;
+            const t3 = parseFloat(document.getElementById('ac-avance-3t').value) || 0;
+            const t4 = parseFloat(document.getElementById('ac-avance-4t').value) || 0;
+
+            if ((t1 + t2 + t3 + t4) > 100) {
+                showAlert('El avance acumulado no puede ser mayor a 100%.');
+                return;
+            }
+
+            currentEditingAdvanceItem.avances['1T'] = t1;
+            currentEditingAdvanceItem.avances['2T'] = t2;
+            currentEditingAdvanceItem.avances['3T'] = t3;
+            currentEditingAdvanceItem.avances['4T'] = t4;
+
+            localStorage.setItem('avanceACData_v1_6', JSON.stringify(avanceACData));
+            renderAvanceACTable();
+            closeACAdvanceModal();
+            showAlert('Avance guardado correctamente.');
         }
 
     </script>
