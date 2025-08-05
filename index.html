@@ -1323,24 +1323,12 @@
                                 <label for="user-tipo-usuario" style="min-width: 120px;">Tipo Usuario</label>
                                 <div class="flex-grow flex items-center gap-2">
                                     <select id="user-tipo-usuario" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required></select>
-                                    <button type="button" class="edit-list-button" onclick="openEditListModal('tipoUsuario')">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
-                                            <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-                                            <path d="M15 5l4 4"/>
-                                        </svg>
-                                    </button>
                                 </div>
                             </div>
                             <div class="modal-form-group" style="display: flex; align-items: center; gap: 0.5rem;">
                                 <label for="user-perfil" style="min-width: 120px;">Perfil</label>
                                 <div class="flex-grow flex items-center gap-2">
                                     <select id="user-perfil" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required></select>
-                                    <button type="button" class="edit-list-button" onclick="openEditListModal('perfil')">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
-                                            <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-                                            <path d="M15 5l4 4"/>
-                                        </svg>
-                                    </button>
                                 </div>
                             </div>
                              <div class="modal-form-group">
@@ -1846,8 +1834,8 @@
         ];
 
         // Listas de opciones para los campos de usuario.
-        let defaultPerfiles = ["Coordinador de Control Interno", "Instancia de Control Interno", "Riesgos"];
-        let defaultTiposUsuario = ["Interno", "Externo"];
+        let defaultPerfiles = ["Coordinador de Control Interno", "Instancia de Control Interno", "Riesgos", "Consulta"];
+        let defaultTiposUsuario = ["Interno", "OR"];
         let defaultCargos = ["Director General", "Director de Área", "Subdirector", "Jefe de Departamento", "Analista", "Consultor"];
         const defaultAccionesRealizadas = ["Ninguna", "Modificación", "Eliminación", "Agregación"];
         const defaultTiposEvento = ["Inicio", "Cierre", "Error"];
@@ -2163,6 +2151,17 @@
                 consultaInput.addEventListener('click', () => handleInstitutionFilter('', 'consulta-institucion', institutions, true));
             }
 
+            const estatusRadios = document.querySelectorAll('#module-consulta-instituciones input[name="estatus"]');
+            estatusRadios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    const input = document.getElementById('consulta-institucion-filter');
+                    const hiddenIdInput = document.getElementById('consulta-institucion-id');
+                    input.value = '';
+                    hiddenIdInput.value = '';
+                    document.getElementById('consulta-institucion-suggestions').classList.add('hidden');
+                });
+            });
+
             const programacionInput = document.getElementById('programacion-institucion-filter');
             if(programacionInput) {
                 programacionInput.addEventListener('input', () => {
@@ -2242,7 +2241,18 @@
             suggestionsContainer.innerHTML = '';
             const lowerCaseFilter = filterValue.toLowerCase();
 
-            const filtered = data.filter(inst =>
+            let institutionsToFilter = data;
+            if (contextPrefix === 'consulta-institucion') {
+                const estatusRadio = document.querySelector('#module-consulta-instituciones input[name="estatus"]:checked');
+                if (estatusRadio) {
+                    const estatusString = estatusRadio.value === '1' ? 'Activa' : 'Inactiva';
+                    institutionsToFilter = data.filter(inst => inst.estatus === estatusString);
+                }
+            } else if (contextPrefix === 'programacion-institucion') {
+                institutionsToFilter = data.filter(inst => inst.estatus === 'Activa');
+            }
+
+            const filtered = institutionsToFilter.filter(inst =>
                 lowerCaseFilter === '' ||
                 inst.nombre.toLowerCase().includes(lowerCaseFilter) ||
                 inst.siglas.toLowerCase().includes(lowerCaseFilter)
@@ -2814,7 +2824,7 @@
                 const programmedPeriod = programmedPeriods.find(pp => pp.institucionId === inst.id);
                 const hasMatchingProgrammedPeriod = tipoAperturaFilter === 'todos' || (programmedPeriod && programmedPeriod.accionesPermitidas && programmedPeriod.accionesPermitidas.includes(tipoAperturaFilter));
 
-                return matchesInstitution && matchesPtci && hasMatchingProgrammedPeriod;
+                return inst.estatus === 'Activa' && matchesInstitution && matchesPtci && hasMatchingProgrammedPeriod;
             });
 
             if (institutionsToDisplay.length === 0) {
