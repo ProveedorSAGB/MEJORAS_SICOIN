@@ -745,9 +745,9 @@
                 </div>
                 <!-- Título central que se expande -->
                 <div class="header-title">
-                    <h1>SICOIN – MEJORA PROPUESTA</h1>
+                    <h1>SICOIN</h1>
                     <h2>Sistema de Control Interno Institucional</h2>
-                    <h3>V 1.7</h3>
+                    <h3>Interfaz Visual Propuesta V 1.0</h3>
                 </div>
                 <!-- Logo derecho -->
                 <div class="header-logo">
@@ -811,16 +811,12 @@
                             </h3>
                             <ul class="submodule-list hidden">
                                 <li><a href="#" onclick="showModule('reporte-avance-institucional', this)">▪ Reporte de Avance Institucional</a></li>
-                                <li><a href="#" onclick="showModule('acciones-mejora-reporte', this)">▪ Acciones de Mejora</a></li>
-                                <li><a href="#" onclick="showModule('acciones-control-reporte', this)">▪ Acciones de Control</a></li>
-                                <li><a href="#" onclick="showModule('seguimiento-trimestral', this)">▪ Reporte Seguimiento Trimestral</a></li>
-                                <li><a href="#" onclick="showModule('conclusion', this)">▪ Conclusión</a></li>
-                                <li><a href="#" onclick="showModule('consolidado', this)">▪ Consolidado</a></li>
-                                <li><a href="#" onclick="showModule('reporte-acciones-mejora', this)">▪ Reporte Acciones Mejora</a></li>
+                                <li><a href="#" onclick="showModule('conclusion', this)">▪ Reporte de Conclusión</a></li>
+                                <li><a href="#" onclick="showModule('consolidado', this)">▪ Reporte Consolidado</a></li>
                                 <li><a href="#" onclick="showModule('reporte-ptci-ptar', this)">▪ Reporte PTCI y PTAR (Excel)</a></li>
-                                <li><a href="#" onclick="showModule('evaluacion-oic', this)">▪ Evaluación de OIC (Excel)</a></li>
-                                <li><a href="#" onclick="showModule('acciones-mejora-trimestre', this)">▪ Acciones Mejora por Trimestre</a></li>
-                                <li><a href="#" onclick="showModule('acciones-control-trimestre', this)">▪ Acciones Control Trimestral</a></li>
+                                <li><a href="#" onclick="showModule('evaluacion-oic', this)">▪ Reporte de Evaluación del OIC (Excel)</a></li>
+                                <li><a href="#" onclick="showModule('acciones-mejora-trimestre', this)">▪ Acciones de Mejora por Trimestre</a></li>
+                                <li><a href="#" onclick="showModule('acciones-control-trimestre', this)">▪ Acciones de Control por Trimestre</a></li>
                                 <li><a href="#" onclick="showModule('imprimir-ptci', this)">▪ Imprimir Programa de Trabajo de Control Interno</a></li>
                                 <li><a href="#" onclick="showModule('imprimir-ptar', this)">▪ Imprimir Programa de Trabajo de Administración de Riesgo</a></li>
                             </ul>
@@ -1085,7 +1081,7 @@
                                     <th>Institución</th>
                                     <th class="text-center-col">Actualizó PTCI</th>
                                     <th class="text-center-col">Trimestre</th>
-                                    <th>Acción Permitida</th>
+                                    <th>ACCIÓN PERMITIDA</th>
                                     <th class="text-center-col">Fecha Inicio</th>
                                     <th class="text-center-col">Fecha Fin</th>
                                 </tr>
@@ -1315,9 +1311,17 @@
                             <div class="modal-form-group">
                                 <label for="user-estatus">Estatus</label>
                                 <div class="radio-group">
-                                    <label><input type="radio" name="user-estatus" value="Activo" checked><span>Activo</span></label>
-                                    <label><input type="radio" name="user-estatus" value="Inactivo"><span>Inactivo</span></label>
+                                    <label><input type="radio" name="user-estatus" value="Activo" checked onchange="handleUserStatusChange()"><span>Activo</span></label>
+                                    <label><input type="radio" name="user-estatus" value="Inactivo" onchange="handleUserStatusChange()"><span>Inactivo</span></label>
                                 </div>
+                            </div>
+                            <div id="user-fecha-alta-group" class="modal-form-group hidden">
+                                <label for="user-fecha-alta">Fecha de Alta</label>
+                                <input type="date" id="user-fecha-alta" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs">
+                            </div>
+                            <div id="user-fecha-baja-group" class="modal-form-group hidden">
+                                <label for="user-fecha-baja">Fecha de Baja</label>
+                                <input type="date" id="user-fecha-baja" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs">
                             </div>
                             <div class="modal-form-group" style="display: flex; align-items: center; gap: 0.5rem;">
                                 <label for="user-tipo-usuario" style="min-width: 120px;">Tipo Usuario</label>
@@ -1332,7 +1336,7 @@
                                 </div>
                             </div>
                              <div class="modal-form-group">
-                                <label for="user-siglas-institucion-filter">Siglas Institución</label>
+                                <label for="user-siglas-institucion-filter">Siglas / Institución</label>
                                 <div class="institution-filter-container">
                                     <input type="text" id="user-siglas-institucion-filter" class="institution-filter-input" placeholder="Buscar institución..." autocomplete="off" required>
                                     <input type="hidden" id="user-siglas-institucion-id">
@@ -1345,22 +1349,14 @@
                             </div>
                             <div class="modal-form-group" style="display: flex; align-items: center; gap: 0.5rem;">
                                 <label for="user-cargo" style="min-width: 120px;">Cargo</label>
-                                <div class="flex-grow flex items-center gap-2">
-                                    <select id="user-cargo" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required></select>
-                                    <button type="button" class="edit-list-button" onclick="openEditListModal('cargo')">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
-                                            <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
-                                            <path d="M15 5l4 4"/>
-                                        </svg>
-                                    </button>
-                                </div>
+                                <input type="text" id="user-cargo" class="flex-grow px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" required>
                             </div>
                             <div class="modal-form-group">
                                 <label for="user-no-oficio">No. de Oficio de Designación</label>
                                 <input type="text" id="user-no-oficio" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs">
                             </div>
                             <div class="modal-form-group">
-                                <label for="user-file-upload">Cargar Archivo</label>
+                                <label for="user-file-upload">Cargar Oficio en PDF</label>
                                 <div class="flex items-center gap-2">
                                     <input type="text" id="user-file-name" class="flex-grow px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" placeholder="Ningún archivo seleccionado" readonly>
                                     <button type="button" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded-md text-xs" onclick="document.getElementById('user-file-input').click()">
@@ -1372,6 +1368,10 @@
                             <div class="modal-form-group">
                                 <label for="user-correo">Correo</label>
                                 <input type="email" id="user-correo" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs">
+                            </div>
+                            <div class="modal-form-group flex items-center gap-2">
+                                <input type="checkbox" id="user-send-credentials" class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <label for="user-send-credentials" class="text-xs text-gray-700">¿Enviar claves al correo añadido?</label>
                             </div>
                             <div class="modal-form-group">
                                 <label for="user-telefono">Teléfono</label>
@@ -1386,7 +1386,21 @@
                                 </div>
                                 <div class="modal-form-group">
                                     <label for="user-password">Contraseña</label>
-                                    <input type="password" id="user-password" class="w-full px-2 py-0.5 border border-gray-300 rounded-md shadow-sm text-xs" placeholder="**********" required>
+                                    <div class="relative">
+                                        <input type="password" id="user-password" class="w-full px-2 py-0.5 pr-8 border border-gray-300 rounded-md shadow-sm text-xs" placeholder="**********" required>
+                                        <button type="button" onclick="togglePasswordVisibility('user-password', this)" class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                                            <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye">
+                                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+                                                <circle cx="12" cy="12" r="3"/>
+                                            </svg>
+                                            <svg id="eye-off-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off hidden">
+                                                <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+                                                <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+                                                <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+                                                <line x1="2" x2="22" y1="2" y2="22"/>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -1417,16 +1431,21 @@
                                         <th class="text-center-col">Siglas</th>
                                         <th class="text-center-col">Clave de Usuario</th>
                                         <th class="text-center-col">Fecha de Acceso</th>
-                                        <th class="text-center-col">Hora de Inicio</th>
-                                        <th class="text-center-col">Hora de Cierre</th>
+                                        <th class="text-center-col">Hora de Inicio de Sesión</th>
+                                        <th class="text-center-col">Hora de Cierre de Sesión</th>
                                         <th class="text-center-col">Duración (min)</th>
-                                        <th>Módulo Accedido</th>
-                                        <th>Acción Realizada</th>
-                                        <th>Campo Modificado</th>
-                                        <th>Tipo de Evento</th>
-                                        <th>Resultado</th>
-                                        <th>Dirección IP</th>
-                                        <th>Agente de Usuario</th>
+                                        <th class="text-center-col">Módulo Accedido</th>
+                                        <th class="text-center-col">Submódulo</th>
+                                        <th class="text-center-col">Acción Realizada</th>
+                                        <th class="text-center-col">Tipo de Evento</th>
+                                        <th class="text-center-col">Campo Modificado</th>
+                                        <th class="text-center-col">Entidad o Tabla Lógica</th>
+                                        <th class="text-center-col">ID del Registro Modificado</th>
+                                        <th class="text-center-col">Valor Anterior</th>
+                                        <th class="text-center-col">Valor Nuevo</th>
+                                        <th class="text-center-col">Resultado</th>
+                                        <th class="text-center-col">Dirección IP</th>
+                                        <th class="text-center-col">Agente de Usuario</th>
                                     </tr>
                                 </thead>
                                 <tbody id="user-access-report-table-body">
@@ -1654,26 +1673,11 @@
                     </div>
                 </div>
 
-                <!-- Módulo 'Procesos Registrados x Oficio' eliminado -->
+
                 <!-- Módulo 'Registro de Acciones de Usuarios' eliminado -->
                 <div id="module-comunicados" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Comunicados</h2>
                     <!-- Código para el módulo 'Comunicados' irá aquí. -->
-                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
-                </div>
-                <div id="module-acciones-mejora-reporte" class="module-content hidden">
-                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte: Acciones de Mejora</h2>
-                    <!-- Código para el módulo 'Reporte: Acciones de Mejora' irá aquí. -->
-                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
-                </div>
-                <div id="module-acciones-control-reporte" class="module-content hidden">
-                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte: Acciones de Control</h2>
-                    <!-- Código para el módulo 'Reporte: Acciones de Control' irá aquí. -->
-                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
-                </div>
-                <div id="module-seguimiento-trimestral" class="module-content hidden">
-                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte Seguimiento Trimestral</h2>
-                    <!-- Código para el módulo 'Reporte Seguimiento Trimestral' irá aquí. -->
                     <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-conclusion" class="module-content hidden">
@@ -1684,11 +1688,6 @@
                 <div id="module-consolidado" class="module-content hidden">
                     <h2 class="text-base font-bold text-center mb-3 text-gray-800">Consolidado</h2>
                     <!-- Código para el módulo 'Consolidado' irá aquí. -->
-                    <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
-                </div>
-                <div id="module-reporte-acciones-mejora" class="module-content hidden">
-                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Reporte Acciones Mejora</h2>
-                    <!-- Código para el módulo 'Reporte Acciones Mejora' irá aquí. -->
                     <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-reporte-ptci-ptar" class="module-content hidden">
@@ -1702,12 +1701,12 @@
                     <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-acciones-mejora-trimestre" class="module-content hidden">
-                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Acciones Mejora por Trimestre</h2>
+                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Acciones de Mejora por Trimestre</h2>
                     <!-- Código para el módulo 'Acciones Mejora por Trimestre' irá aquí. -->
                     <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
                 <div id="module-acciones-control-trimestre" class="module-content hidden">
-                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Acciones Control Trimestral</h2>
+                    <h2 class="text-base font-bold text-center mb-3 text-gray-800">Acciones de Control por Trimestre</h2>
                     <!-- Código para el módulo 'Acciones Control Trimestral' irá aquí. -->
                     <!-- Este espacio está reservado para la implementación futura de la lógica y la interfaz de usuario. -->
                 </div>
@@ -1813,10 +1812,10 @@
 
         // Datos iniciales para usuarios. Incluye el usuario por defecto para el login.
         const initialUsersData = [
-            { id: 'user1', clave: 'admin_user', password: 'password123', nombre: 'Administrador Principal', perfil: 'Coordinador de Control Interno', estatus: 'Activo', correo: 'admin.user@example.com', telefono: '5511112222', tipoUsuario: 'Interno', cargo: 'Director General', siglasInstitucion: 'APBP', noOficioDesignacion: 'OF-001-2024' },
-            { id: 'user2', clave: 'maria_g', password: 'password123', nombre: 'María García', perfil: 'Instancia de Control Interno', estatus: 'Activo', correo: 'maria.garcia@example.com', telefono: '5587654321', tipoUsuario: 'Interno', cargo: 'Jefe de Departamento', siglasInstitucion: 'ASIPONA ACAPULCO', noOficioDesignacion: 'OF-002-2024' },
-            { id: 'user3', clave: 'carlos_l', password: 'password123', nombre: 'Carlos López', perfil: 'Riesgos', estatus: 'Inactivo', correo: 'carlos.lopez@example.com', telefono: '5511223344', tipoUsuario: 'Externo', cargo: 'Consultor', siglasInstitucion: 'ASIPONA ALTAMIRA', noOficioDesignacion: 'N/A' },
-            { id: 'user4', clave: 'ana_d', password: 'password123', nombre: 'Ana Díaz', perfil: 'Coordinador de Control Interno', estatus: 'Activo', correo: 'ana.diaz@example.com', telefono: '5599887766', tipoUsuario: 'Interno', cargo: 'Subdirector', siglasInstitucion: 'ASIPONA COATZACOALCOS', noOficioDesignacion: 'OF-004-2024' },
+            { id: 'user1', clave: 'admin_user', password: 'password123', nombre: 'Administrador Principal', perfil: 'Coordinador de Control Interno', estatus: 'Activo', correo: 'admin.user@example.com', telefono: '5511112222', tipoUsuario: 'Interno', cargo: 'Director General', siglasInstitucion: 'APBP', noOficioDesignacion: 'OF-001-2024', fechaAlta: '2024-01-01', fechaBaja: null },
+            { id: 'user2', clave: 'maria_g', password: 'password123', nombre: 'María García', perfil: 'Instancia de Control Interno', estatus: 'Activo', correo: 'maria.garcia@example.com', telefono: '5587654321', tipoUsuario: 'Interno', cargo: 'Jefe de Departamento', siglasInstitucion: 'ASIPONA ACAPULCO', noOficioDesignacion: 'OF-002-2024', fechaAlta: '2024-02-15', fechaBaja: null },
+            { id: 'user3', clave: 'carlos_l', password: 'password123', nombre: 'Carlos López', perfil: 'Riesgos', estatus: 'Inactivo', correo: 'carlos.lopez@example.com', telefono: '5511223344', tipoUsuario: 'Externo', cargo: 'Consultor', siglasInstitucion: 'ASIPONA ALTAMIRA', noOficioDesignacion: 'N/A', fechaAlta: '2023-05-10', fechaBaja: '2024-06-30' },
+            { id: 'user4', clave: 'ana_d', password: 'password123', nombre: 'Ana Díaz', perfil: 'Coordinador de Control Interno', estatus: 'Activo', correo: 'ana.diaz@example.com', telefono: '5599887766', tipoUsuario: 'Interno', cargo: 'Subdirector', siglasInstitucion: 'ASIPONA COATZACOALCOS', noOficioDesignacion: 'OF-004-2024', fechaAlta: '2024-03-20', fechaBaja: null },
         ];
 
         // Datos iniciales para los registros de acceso de usuarios.
@@ -3389,7 +3388,6 @@
         function populateUserModalSelects() {
             const perfilSelect = document.getElementById('user-perfil');
             const tipoUsuarioSelect = document.getElementById('user-tipo-usuario');
-            const cargoSelect = document.getElementById('user-cargo');
 
             if (perfilSelect) { 
                 perfilSelect.innerHTML = ''; 
@@ -3408,16 +3406,6 @@
                     option.value = item;
                     option.textContent = item;
                     tipoUsuarioSelect.appendChild(option);
-                });
-            }
-
-            if (cargoSelect) { 
-                cargoSelect.innerHTML = ''; 
-                cargosList.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item;
-                    option.textContent = item;
-                    cargoSelect.appendChild(option);
                 });
             }
         }
@@ -3519,9 +3507,26 @@
             document.getElementById('user-no-oficio').value = ''; 
             document.getElementById('user-file-name').value = ''; 
 
+            document.getElementById('user-fecha-alta-group').classList.add('hidden');
+            document.getElementById('user-fecha-baja-group').classList.add('hidden');
+            document.getElementById('user-fecha-alta').value = '';
+            document.getElementById('user-fecha-baja').value = '';
+            document.getElementById('user-send-credentials').checked = false;
+
+            // Reset password visibility toggle
+            const passwordInput = document.getElementById('user-password');
+            const eyeIcon = document.querySelector('#user-modal-overlay #eye-icon');
+            const eyeOffIcon = document.querySelector('#user-modal-overlay #eye-off-icon');
+            if (passwordInput) {
+                passwordInput.type = 'password';
+                if (eyeIcon) eyeIcon.classList.remove('hidden');
+                if (eyeOffIcon) eyeOffIcon.classList.add('hidden');
+            }
+
             if (userId) {
                 modalTitle.textContent = 'Editar Usuario';
                 const userToEdit = users.find(user => user.id === userId);
+                form.dataset.originalStatus = userToEdit.estatus;
                 if (userToEdit) {
                     document.getElementById('user-id-edit').value = userToEdit.id;
                     document.getElementById('user-clave').value = userToEdit.clave;
@@ -3542,8 +3547,10 @@
                 }
             } else {
                 modalTitle.textContent = 'Agregar Usuario';
+                form.dataset.originalStatus = ''; // No original status for new user
                 document.querySelector('input[name="user-estatus"][value="Activo"]').checked = true; 
             }
+            handleUserStatusChange(); // Call handler to set initial visibility
             modalOverlay.classList.remove('hidden');
         }
 
@@ -3553,6 +3560,52 @@
         function closeUserModal() {
             document.getElementById('user-modal-overlay').classList.add('hidden');
             document.getElementById('user-siglas-institucion-suggestions').classList.add('hidden'); 
+        }
+
+        /**
+         * Maneja el cambio de estatus del usuario en el modal para mostrar/ocultar campos de fecha.
+         */
+        function handleUserStatusChange() {
+            const isEditing = !!document.getElementById('user-id-edit').value;
+            const form = document.getElementById('user-form');
+            const newStatus = document.querySelector('input[name="user-estatus"]:checked').value;
+            const originalStatus = form.dataset.originalStatus;
+
+            const fechaAltaGroup = document.getElementById('user-fecha-alta-group');
+            const fechaBajaGroup = document.getElementById('user-fecha-baja-group');
+
+            // Ocultar ambos por defecto
+            fechaAltaGroup.classList.add('hidden');
+            fechaBajaGroup.classList.add('hidden');
+
+            if (!isEditing && newStatus === 'Activo') {
+                // Creando un nuevo usuario y se marca como Activo
+                fechaAltaGroup.classList.remove('hidden');
+            } else if (isEditing && newStatus === 'Inactivo' && originalStatus === 'Activo') {
+                // Editando un usuario y se cambia de Activo a Inactivo
+                fechaBajaGroup.classList.remove('hidden');
+            }
+        }
+
+        /**
+         * Alterna la visibilidad de un campo de contraseña.
+         * @param {string} inputId - El ID del campo de contraseña.
+         * @param {HTMLElement} button - El botón que fue clickeado.
+         */
+        function togglePasswordVisibility(inputId, button) {
+            const passwordInput = document.getElementById(inputId);
+            const eyeIcon = button.querySelector('#eye-icon');
+            const eyeOffIcon = button.querySelector('#eye-off-icon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.add('hidden');
+                eyeOffIcon.classList.remove('hidden');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('hidden');
+                eyeOffIcon.classList.add('hidden');
+            }
         }
 
         /**
@@ -3573,6 +3626,9 @@
             const cargo = document.getElementById('user-cargo').value;
             const noOficioDesignacion = document.getElementById('user-no-oficio').value.trim(); 
             const siglasInstitucion = document.getElementById('user-siglas-institucion-id').value; 
+            const fechaAlta = document.getElementById('user-fecha-alta').value;
+            const fechaBaja = document.getElementById('user-fecha-baja').value;
+            const sendCredentials = document.getElementById('user-send-credentials').checked;
 
             if (!clave || !password || !nombre || !perfil || !siglasInstitucion || !tipoUsuario || !cargo) {
                 showAlert('Por favor, complete todos los campos obligatorios (Nombre de Usuario, Contraseña, Nombre, Perfil, Siglas Institución, Tipo Usuario, Cargo).');
@@ -3584,7 +3640,7 @@
                 const index = users.findIndex(user => user.id === id);
                 if (index !== -1) {
                     const oldUser = { ...users[index] }; 
-                    users[index] = { ...oldUser, clave, password, nombre, perfil, estatus, correo, telefono, tipoUsuario, cargo, siglasInstitucion, noOficioDesignacion };
+                    users[index] = { ...oldUser, clave, password, nombre, perfil, estatus, correo, telefono, tipoUsuario, cargo, siglasInstitucion, noOficioDesignacion, fechaBaja: fechaBaja || oldUser.fechaBaja };
 
                     const changedFields = [];
                     for (const key in users[index]) {
